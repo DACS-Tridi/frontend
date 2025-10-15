@@ -38,6 +38,8 @@ interface GenreTag {
   styleUrls: ['./tridify-view.css']
 })
 export class TridifyViewComponent {
+  protected mobileMenuOpen = false;
+
   protected readonly navigationPrimary = [
     { icon: '🏠', label: 'Home', active: true },
     { icon: '🧭', label: 'Explore', active: false },
@@ -126,6 +128,14 @@ export class TridifyViewComponent {
     streakLabel: 'Current streak',
     streakValue: 7
   };
+
+  protected toggleMobileMenu(): void {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
+  }
+
+  protected closeMobileMenu(): void {
+    this.mobileMenuOpen = false;
+  }
 
   protected getRatingStars(rating: number): Array<'full' | 'half' | 'empty'> {
     const stars: Array<'full' | 'half' | 'empty'> = [];

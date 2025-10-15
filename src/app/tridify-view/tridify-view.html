@@ -1,5 +1,14 @@
 <div class="tridify-shell">
-  <aside class="sidebar">
+  <div class="sidebar-backdrop" *ngIf="mobileMenuOpen" (click)="closeMobileMenu()"></div>
+  <aside class="sidebar" [class.open]="mobileMenuOpen">
+    <button
+      type="button"
+      class="sidebar-close"
+      aria-label="Cerrar menú"
+      (click)="closeMobileMenu()"
+    >
+      ✕
+    </button>
     <div class="sidebar-header">
       <div class="brand">Tridify</div>
       <p class="tagline">Discover the freshest underground records curated by the community.</p>
@@ -18,7 +27,7 @@
       <div class="nav-section">
         <h4>Menu</h4>
         <ul>
-          <li *ngFor="let item of navigationPrimary" [class.active]="item.active">
+          <li *ngFor="let item of navigationPrimary" [class.active]="item.active" (click)="closeMobileMenu()">
             <span class="icon">{{ item.icon }}</span>
             <span class="label">{{ item.label }}</span>
           </li>
@@ -28,7 +37,7 @@
       <div class="nav-section">
         <h4>Library</h4>
         <ul>
-          <li *ngFor="let item of navigationLibrary">
+          <li *ngFor="let item of navigationLibrary" (click)="closeMobileMenu()">
             <span class="icon">{{ item.icon }}</span>
             <span class="label">{{ item.label }}</span>
           </li>
@@ -38,7 +47,7 @@
       <div class="nav-section">
         <h4>Community</h4>
         <ul>
-          <li *ngFor="let item of navigationCommunity">
+          <li *ngFor="let item of navigationCommunity" (click)="closeMobileMenu()">
             <span class="icon">{{ item.icon }}</span>
             <span class="label">{{ item.label }}</span>
           </li>
@@ -55,6 +64,10 @@
   </aside>
 
   <section class="content">
+    <button type="button" class="mobile-menu-button" (click)="toggleMobileMenu()">
+      <span class="icon">☰</span>
+      Menu
+    </button>
     <header class="content-header">
       <div class="title-group">
         <h1>Top Reviews for Today</h1>
