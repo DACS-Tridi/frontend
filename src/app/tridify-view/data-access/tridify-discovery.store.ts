@@ -12,10 +12,19 @@ import {
   UpcomingAlbum
 } from '../models/discovery.models';
 import {
-  TRIDIFY_DISCOVERY_FIXTURES,
-  TRIDIFY_DISCOVERY_SEARCH_FIXTURE
-} from './tridify-discovery.fixtures';
-import { TridifyDiscoveryApiService } from './tridify-discovery.api';
+  DAILY_CHALLENGE_FIXTURE,
+  GENRES_FIXTURE,
+  TOP_REVIEWS_FIXTURE,
+  TOP_REVIEWERS_FIXTURE,
+  TRIDIFY_DISCOVERY_SEARCH_FIXTURE,
+  UPCOMING_ALBUMS_FIXTURE,
+  USER_PROFILE_FIXTURE
+} from './fixtures';
+import { TridifyAlbumService } from './services/tridify-album.service';
+import { TridifyGenreService } from './services/tridify-genre.service';
+import { TridifyReviewService } from './services/tridify-review.service';
+import { TridifyReviewerService } from './services/tridify-reviewer.service';
+import { TridifyUserService } from './services/tridify-user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +46,13 @@ export class TridifyDiscoveryStore {
   readonly upcomingAlbums$ = this.upcomingAlbumsSubject.asObservable();
   readonly searchResults$ = this.searchResultsSubject.asObservable();
 
-  constructor(private readonly api: TridifyDiscoveryApiService) {}
+  constructor(
+    private readonly userService: TridifyUserService,
+    private readonly reviewService: TridifyReviewService,
+    private readonly reviewerService: TridifyReviewerService,
+    private readonly genreService: TridifyGenreService,
+    private readonly albumService: TridifyAlbumService
+  ) {}
 
   initialize(): void {
     this.loadUserProfile();
@@ -55,8 +70,8 @@ export class TridifyDiscoveryStore {
       return;
     }
 
-    this.api
-      .searchDiscoveries({ term: sanitized })
+    this.albumService
+      .searchAlbums({ term: sanitized })
       .pipe(
         take(1),
         catchError(error => {
@@ -72,46 +87,46 @@ export class TridifyDiscoveryStore {
   }
 
   private loadUserProfile(): void {
-    this.api
+    this.userService
       .getUserProfile()
       .pipe(
         take(1),
         catchError(error => {
           console.warn('Using fixture user profile after API error', error);
-          return of(TRIDIFY_DISCOVERY_FIXTURES.userProfile);
+          return of(USER_PROFILE_FIXTURE);
         })
       )
       .subscribe(profile => this.userProfileSubject.next(profile));
   }
 
   private loadTopReviews(): void {
-    this.api
+    this.reviewService
       .getTopReviewsForToday()
       .pipe(
         take(1),
         catchError(error => {
           console.warn('Using fixture reviews after API error', error);
-          return of(TRIDIFY_DISCOVERY_FIXTURES.topReviews);
+          return of(TOP_REVIEWS_FIXTURE);
         })
       )
       .subscribe(reviews => this.topReviewsSubject.next(reviews));
   }
 
   private loadReviewerSpotlights(): void {
-    this.api
+    this.reviewerService
       .getReviewerSpotlights()
       .pipe(
         take(1),
         catchError(error => {
           console.warn('Using fixture reviewers after API error', error);
-          return of(TRIDIFY_DISCOVERY_FIXTURES.topReviewers);
+          return of(TOP_REVIEWERS_FIXTURE);
         })
       )
       .subscribe(reviewers => this.topReviewersSubject.next(reviewers));
   }
 
   private loadGenres(): void {
-    this.api
+    this.genreService
       .getGenres()
       .pipe(
         take(1),
@@ -121,40 +136,40 @@ export class TridifyDiscoveryStore {
               ? {
                   id: `genre-${index}`,
                   label: genre,
-                  accent: TRIDIFY_DISCOVERY_FIXTURES.genres[index]?.accent ?? '#6366f1'
+                  accent: GENRES_FIXTURE[index]?.accent ?? '#6366f1'
                 }
               : genre
           )
         ),
         catchError(error => {
           console.warn('Using fixture genres after API error', error);
-          return of(TRIDIFY_DISCOVERY_FIXTURES.genres);
+          return of(GENRES_FIXTURE);
         })
       )
       .subscribe(genres => this.genresSubject.next(genres));
   }
 
   private loadDailyChallenge(): void {
-    this.api
+    this.reviewService
       .getDailyChallenge()
       .pipe(
         take(1),
         catchError(error => {
           console.warn('Using fixture daily challenge after API error', error);
-          return of(TRIDIFY_DISCOVERY_FIXTURES.dailyChallenge);
+          return of(DAILY_CHALLENGE_FIXTURE);
         })
       )
       .subscribe(challenge => this.dailyChallengeSubject.next(challenge));
   }
 
   private loadUpcomingAlbums(): void {
-    this.api
+    this.albumService
       .getUpcomingAlbums()
       .pipe(
         take(1),
         catchError(error => {
           console.warn('Using fixture upcoming albums after API error', error);
-          return of(TRIDIFY_DISCOVERY_FIXTURES.upcomingAlbums);
+          return of(UPCOMING_ALBUMS_FIXTURE);
         })
       )
       .subscribe(albums => this.upcomingAlbumsSubject.next(albums));
