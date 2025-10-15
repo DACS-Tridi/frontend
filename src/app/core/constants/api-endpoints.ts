@@ -10,6 +10,17 @@ export const API_ENDPOINTS = {
     USER: 'user',
     DASHBOARD: 'dashboard'
   },
+
+  TRIDIFY: {
+    BASE_URL: 'tridify',
+    USER_PROFILE: 'tridify/user-profile',
+    SEARCH: 'tridify/search',
+    UPCOMING_ALBUMS: 'tridify/upcoming-albums',
+    TODAY_REVIEWS: 'tridify/reviews/today',
+    GENRES: 'tridify/genres',
+    REVIEWER_SPOTLIGHT: 'tridify/reviewers/spotlight',
+    DAILY_CHALLENGE: 'tridify/challenges/daily'
+  },
   
   // Assets locales
   ASSETS: {

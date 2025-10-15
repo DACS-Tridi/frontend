@@ -7,6 +7,18 @@
   font-family: 'Inter', 'Segoe UI', Roboto, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .tridify-shell {
   display: grid;
   grid-template-columns: 280px 1fr;
@@ -240,17 +252,43 @@
   line-height: 1.6;
 }
 
+.search-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 320px;
+  padding: 0.75rem 1.1rem;
+  border-radius: 16px;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  box-shadow: 0 14px 36px rgba(7, 11, 25, 0.4);
+  backdrop-filter: blur(14px);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.search-group .icon {
+  font-size: 1.1rem;
+  color: rgba(148, 163, 184, 0.85);
+}
+
 .search-group input {
-  background: rgba(148, 163, 184, 0.08);
-  border: 1px solid rgba(148, 163, 184, 0.2);
-  border-radius: 14px;
-  padding: 0.85rem 1.15rem;
-  color: #e2e8f0;
-  width: 260px;
+  flex: 1;
+  background: transparent;
+  border: 0;
+  outline: none;
+  color: #f8fafc;
+  font-size: 0.95rem;
 }
 
 .search-group input::placeholder {
   color: rgba(148, 163, 184, 0.6);
+}
+
+.search-group:focus-within {
+  border-color: rgba(94, 234, 212, 0.55);
+  background: rgba(15, 23, 42, 0.85);
+  box-shadow: 0 18px 42px rgba(45, 212, 191, 0.18);
 }
 
 .content-grid {
@@ -634,6 +672,7 @@
 
   .search-group {
     width: 100%;
+    min-width: 0;
   }
 
   .search-group input {

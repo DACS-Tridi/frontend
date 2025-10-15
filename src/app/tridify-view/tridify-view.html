@@ -14,11 +14,11 @@
       <p class="tagline">Discover the freshest underground records curated by the community.</p>
     </div>
 
-    <div class="profile-card">
-      <div class="avatar">J</div>
+    <div class="profile-card" *ngIf="(userProfile$ | async) as userProfile">
+      <div class="avatar" [style.background]="userProfile.avatarGradient">{{ userProfile.avatarInitials }}</div>
       <div class="profile-info">
-        <h3>juani</h3>
-        <p>Underground curator</p>
+        <h3>{{ userProfile.displayName }}</h3>
+        <p>{{ userProfile.roleTagline }}</p>
       </div>
       <button class="new-review-button">+ New Review</button>
     </div>
@@ -56,9 +56,9 @@
     </nav>
 
     <div class="sidebar-footer">
-      <div class="footer-card">
+      <div class="footer-card" *ngIf="(userProfile$ | async) as userProfile">
         <h5>Listening streak</h5>
-        <p>12 days without missing a review session. Keep it going!</p>
+        <p>{{ userProfile.streakDays }} days without missing a review session. Keep it going!</p>
       </div>
     </div>
   </aside>
@@ -73,9 +73,16 @@
         <h1>Top Reviews for Today</h1>
         <p>Hand-picked highlights from the tastemakers that keep Tridify buzzing.</p>
       </div>
-      <div class="search-group">
-        <input type="text" placeholder="Search genres, albums, curators" />
-      </div>
+      <form class="search-group" [formGroup]="searchForm" (ngSubmit)="submitSearch()">
+        <span class="icon" aria-hidden="true">🔍</span>
+        <input
+          type="search"
+          formControlName="term"
+          placeholder="Search genres, albums, curators"
+          aria-label="Search the Tridify catalog"
+        />
+        <button type="submit" class="visually-hidden">Search</button>
+      </form>
     </header>
 
     <div class="content-grid">
@@ -89,7 +96,7 @@
           <div class="reviews-list">
             <article
               class="review-card"
-              *ngFor="let review of topReviews"
+              *ngFor="let review of (topReviews$ | async); trackBy: reviewTrackBy"
               [class.violet]="review.tone === 'violet'"
               [class.cyan]="review.tone === 'cyan'"
             >
@@ -150,7 +157,11 @@
           </div>
 
           <div class="genre-grid">
-            <div class="genre-chip" *ngFor="let genre of genres" [style.--accent]="genre.accent">
+            <div
+              class="genre-chip"
+              *ngFor="let genre of (genres$ | async); trackBy: genreTrackBy"
+              [style.--accent]="genre.accent"
+            >
               <span class="dot"></span>
               <span>{{ genre.label }}</span>
             </div>
@@ -166,7 +177,10 @@
           </div>
 
           <div class="reviewer-list">
-            <article class="reviewer-card" *ngFor="let reviewer of topReviewers">
+            <article
+              class="reviewer-card"
+              *ngFor="let reviewer of (topReviewers$ | async); trackBy: reviewerTrackBy"
+            >
               <div class="reviewer-cover" [style.background-image]="reviewer.avatarColor"></div>
               <div class="reviewer-body">
                 <div class="reviewer-meta">
@@ -184,7 +198,7 @@
           </div>
         </section>
 
-        <section class="challenge-card">
+        <section class="challenge-card" *ngIf="(dailyChallenge$ | async) as dailyChallenge">
           <h2>{{ dailyChallenge.title }}</h2>
           <p class="subtitle">{{ dailyChallenge.subtitle }}</p>
           <p class="description">{{ dailyChallenge.description }}</p>

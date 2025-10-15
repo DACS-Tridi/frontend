@@ -1,43 +1,23 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-interface ReviewCard {
-  user: string;
-  album: string;
-  highlight: string;
-  cover: string;
-  rating: number;
-  stats: {
-    likes: number;
-    comments: number;
-    shares: number;
-  };
-  tags: string[];
-  tone: 'violet' | 'cyan';
-}
-
-interface ReviewerCard {
-  username: string;
-  name: string;
-  specialty: string;
-  highlight: string;
-  avatarColor: string;
-  streak: number;
-}
-
-interface GenreTag {
-  label: string;
-  accent: string;
-}
+import { TridifyDiscoveryStore } from './data-access/tridify-discovery.store';
+import { GenreChip, ReviewHighlight, ReviewerSpotlight } from './models/discovery.models';
 
 @Component({
   selector: 'app-tridify-view',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './tridify-view.html',
   styleUrls: ['./tridify-view.css']
 })
-export class TridifyViewComponent {
+export class TridifyViewComponent implements OnInit {
+  private readonly discoveryStore = inject(TridifyDiscoveryStore);
+  private readonly fb = inject(FormBuilder);
+
   protected mobileMenuOpen = false;
 
   protected readonly navigationPrimary = [
@@ -58,76 +38,31 @@ export class TridifyViewComponent {
     { icon: '🎯', label: 'Daily Challenge' }
   ];
 
-  protected readonly topReviews: ReviewCard[] = [
-    {
-      user: 'juani',
-      album: 'Radiohead - KID A (2000)',
-      highlight:
-        'El disco que redefinió cómo podía sonar el rock. “Everything In Its Right Place” es hipnótica, “How to Disappear Completely” te atrapa al instante, y “Idioteque” sigue siendo un himno del mundo. Difícil, sí, pero si le das su tiempo, te vuela la cabeza.',
-      cover: 'radial-gradient(circle at 20% 20%, #ffb347, #ff0844 60%, #1a1a1a 90%)',
-      rating: 4.9,
-      stats: { likes: 327, comments: 4, shares: 12 },
-      tags: ['Art Rock', 'Electronic', 'Avant-Garde'],
-      tone: 'violet'
-    },
-    {
-      user: 'santiago',
-      album: 'Proyecto Ángel - Santiago (1990)',
-      highlight:
-        'Un viaje cósmico de cumbia con alma tech. El tema “Ciru-Cumbia” es un mantra imposible de ignorar. Entre el sonido de los sintetizadores y los cantos de Ángeles, el Disco directamente te transporta a otro planeta.',
-      cover: 'radial-gradient(circle at 30% 70%, #4facfe, #00f2fe 55%, #0c1f3f 90%)',
-      rating: 4.7,
-      stats: { likes: 214, comments: 12, shares: 8 },
-      tags: ['Cumbia Futurista', 'Latin Fusion'],
-      tone: 'cyan'
-    }
-  ];
+  protected readonly userProfile$ = this.discoveryStore.userProfile$;
+  protected readonly topReviews$ = this.discoveryStore.topReviews$;
+  protected readonly topReviewers$ = this.discoveryStore.topReviewers$;
+  protected readonly genres$ = this.discoveryStore.genres$;
+  protected readonly dailyChallenge$ = this.discoveryStore.dailyChallenge$;
 
-  protected readonly topReviewers: ReviewerCard[] = [
-    {
-      username: '@elptadelfrente',
-      name: 'El Pata del Frente',
-      specialty: 'Neo-Psychedelia',
-      highlight: '“Matías” es el disco definitivo para entender el under platense. No hay desperdicio.',
-      avatarColor: 'linear-gradient(135deg, #ff9a9e, #fad0c4)',
-      streak: 48
-    },
-    {
-      username: '@bangelo',
-      name: 'B. Angelo',
-      specialty: 'Minimal Wave',
-      highlight: 'Fiorito Records rescató esta joya perdida de 1983. Sintetizadores que cortan el aire.',
-      avatarColor: 'linear-gradient(135deg, #a1c4fd, #c2e9fb)',
-      streak: 36
-    },
-    {
-      username: '@facuyalanf100',
-      name: 'Facu Yalan F100',
-      specialty: 'Italo Disco',
-      highlight: '“Turbo Amor” se escucha mejor a 120 km/h. Disco brillante para autopistas nocturnas.',
-      avatarColor: 'linear-gradient(135deg, #f6d365, #fda085)',
-      streak: 28
-    }
-  ];
+  protected readonly searchForm = this.fb.nonNullable.group({
+    term: ['']
+  });
 
-  protected readonly genres: GenreTag[] = [
-    { label: 'Progressive Rock', accent: '#7367f0' },
-    { label: 'Chillwave', accent: '#17ead9' },
-    { label: 'Minimal', accent: '#f76b8a' },
-    { label: 'Dubstep', accent: '#ff9f43' },
-    { label: 'Nightcore', accent: '#5f27cd' },
-    { label: 'Shoegaze', accent: '#48dbfb' },
-    { label: 'Jazztronica', accent: '#ff6b6b' },
-    { label: 'Ambient', accent: '#1dd1a1' }
-  ];
+  protected readonly reviewTrackBy = (_: number, review: ReviewHighlight) => review.id;
+  protected readonly reviewerTrackBy = (_: number, reviewer: ReviewerSpotlight) => reviewer.id;
+  protected readonly genreTrackBy = (_: number, genre: GenreChip) => genre.id;
 
-  protected readonly dailyChallenge = {
-    title: 'Daily Challenge',
-    subtitle: 'Review a hidden gem from the 80s',
-    description: 'Explora tu biblioteca y encuentra un disco olvidado con menos de 5k reproducciones.',
-    streakLabel: 'Current streak',
-    streakValue: 7
-  };
+  ngOnInit(): void {
+    this.discoveryStore.initialize();
+
+    this.searchForm.controls.term.valueChanges
+      .pipe(debounceTime(300), distinctUntilChanged(), takeUntilDestroyed())
+      .subscribe(value => {
+        if (!value.trim()) {
+          this.discoveryStore.clearSearch();
+        }
+      });
+  }
 
   protected toggleMobileMenu(): void {
     this.mobileMenuOpen = !this.mobileMenuOpen;
@@ -135,6 +70,11 @@ export class TridifyViewComponent {
 
   protected closeMobileMenu(): void {
     this.mobileMenuOpen = false;
+  }
+
+  protected submitSearch(): void {
+    const term = this.searchForm.controls.term.value;
+    this.discoveryStore.search(term);
   }
 
   protected getRatingStars(rating: number): Array<'full' | 'half' | 'empty'> {
