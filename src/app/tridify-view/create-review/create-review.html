@@ -14,14 +14,16 @@
         <label for="albumId">ID del álbum<span aria-hidden="true">*</span></label>
         <input
           id="albumId"
-          type="number"
+          type="text"
           formControlName="albumId"
-          min="1"
-          placeholder="Ej: 42"
+          placeholder="Ej: 1NDJk94691Vydq1IrIeGC0"
+          autocomplete="off"
+          autocapitalize="off"
+          spellcheck="false"
           [class.invalid]="isInvalid('albumId')"
         />
         <div class="error" *ngIf="showError('albumId', 'required')">Este campo es obligatorio.</div>
-        <div class="error" *ngIf="showError('albumId', 'min')">El ID debe ser mayor o igual a 1.</div>
+        <div class="error" *ngIf="showError('albumId', 'pattern')">Ingresá un ID de Spotify válido (22 caracteres alfanuméricos).</div>
       </div>
 
       <div class="form-group">

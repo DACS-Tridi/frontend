@@ -12,7 +12,7 @@ import { ReviewCreatePayload, ReviewCreateRequest } from '../models/review-creat
 type ReviewCreateControlName = 'albumId' | 'highlight' | 'rating' | 'tags' | 'tone' | 'reviewBody';
 
 interface ReviewCreateFormValue {
-  albumId: number | null;
+  albumId: string;
   highlight: string;
   rating: number | null;
   tags: string;
@@ -38,8 +38,11 @@ export class CreateReviewComponent implements OnDestroy {
   ];
 
   protected readonly reviewForm = this.fb.group({
-    albumId: this.fb.control<number | null>(null, {
-      validators: [Validators.required, Validators.min(1)]
+    albumId: this.fb.control('', {
+      validators: [
+        Validators.required,
+        Validators.pattern(/^[A-Za-z0-9]{22}$/)
+      ]
     }),
     highlight: this.fb.control('', {
       validators: [Validators.required, Validators.maxLength(320)]
@@ -81,7 +84,7 @@ export class CreateReviewComponent implements OnDestroy {
 
     const rawValue = this.reviewForm.getRawValue() as ReviewCreateFormValue;
     const payload: ReviewCreatePayload = {
-      albumId: Number(rawValue.albumId),
+      albumId: rawValue.albumId.trim(),
       highlight: rawValue.highlight.trim(),
       rating: Number(rawValue.rating),
       tags: this.parseTags(rawValue.tags),
@@ -116,7 +119,7 @@ export class CreateReviewComponent implements OnDestroy {
 
   protected resetForm(): void {
     this.reviewForm.reset({
-      albumId: null,
+      albumId: '',
       highlight: '',
       rating: null,
       tags: '',

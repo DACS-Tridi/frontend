@@ -1,5 +1,5 @@
 export interface ReviewCreateRequest {
-  albumId: number;
+  albumId: string;
   highlight: string;
   rating: number;
   tags: string[];
