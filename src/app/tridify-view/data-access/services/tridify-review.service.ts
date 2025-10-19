@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { API_ENDPOINTS } from '../../../core/constants/api-endpoints';
 import { BaseApiService } from '../../../core/services/base-api.service';
 import { DailyChallenge, ReviewHighlight } from '../../models/discovery.models';
+import { ReviewCreatePayload } from '../../models/review-create.models';
 
 @Injectable({
   providedIn: 'root'
@@ -20,5 +21,9 @@ export class TridifyReviewService extends BaseApiService {
 
   getDailyChallenge(): Observable<DailyChallenge> {
     return this.get<DailyChallenge>(API_ENDPOINTS.TRIDIFY.DAILY_CHALLENGE);
+  }
+
+  createReview(payload: ReviewCreatePayload): Observable<ReviewHighlight> {
+    return this.post<ReviewHighlight>(API_ENDPOINTS.TRIDIFY.CREATE_REVIEW, payload);
   }
 }

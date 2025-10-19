@@ -1,0 +1,143 @@
+<section class="review-create">
+  <div class="review-create__breadcrumbs">
+    <a routerLink="/tridify" class="back-link">← Volver al discovery</a>
+  </div>
+
+  <div class="review-create__layout">
+    <form class="review-form" [formGroup]="reviewForm" (ngSubmit)="submit()" novalidate>
+      <header class="review-form__header">
+        <h1>Crear una nueva review</h1>
+        <p>Completa los campos para registrar tu reseña. El contenido largo quedará guardado localmente por ahora.</p>
+      </header>
+
+      <div class="form-group">
+        <label for="albumId">ID del álbum<span aria-hidden="true">*</span></label>
+        <input
+          id="albumId"
+          type="number"
+          formControlName="albumId"
+          min="1"
+          placeholder="Ej: 42"
+          [class.invalid]="isInvalid('albumId')"
+        />
+        <div class="error" *ngIf="showError('albumId', 'required')">Este campo es obligatorio.</div>
+        <div class="error" *ngIf="showError('albumId', 'min')">El ID debe ser mayor o igual a 1.</div>
+      </div>
+
+      <div class="form-group">
+        <label for="highlight">Highlight de la review<span aria-hidden="true">*</span></label>
+        <textarea
+          id="highlight"
+          formControlName="highlight"
+          rows="4"
+          maxlength="320"
+          placeholder="Resumí en pocas líneas la idea principal de tu review"
+          [class.invalid]="isInvalid('highlight')"
+        ></textarea>
+        <div class="helper">{{ reviewForm.controls.highlight.value?.length || 0 }}/320 caracteres</div>
+        <div class="error" *ngIf="showError('highlight', 'required')">El highlight es obligatorio.</div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="rating">Puntaje<span aria-hidden="true">*</span></label>
+          <input
+            id="rating"
+            type="number"
+            formControlName="rating"
+            step="0.1"
+            min="0"
+            max="5"
+            placeholder="Ej: 4.5"
+            [class.invalid]="isInvalid('rating')"
+          />
+          <div class="error" *ngIf="showError('rating', 'required')">El puntaje es obligatorio.</div>
+          <div class="error" *ngIf="showError('rating', 'min')">El puntaje no puede ser menor a 0.</div>
+          <div class="error" *ngIf="showError('rating', 'max')">El puntaje máximo es 5.</div>
+        </div>
+
+        <div class="form-group">
+          <label for="tone">Tono visual<span aria-hidden="true">*</span></label>
+          <select id="tone" formControlName="tone" [class.invalid]="isInvalid('tone')">
+            <option *ngFor="let toneOption of toneOptions" [value]="toneOption.value">
+              {{ toneOption.label }}
+            </option>
+          </select>
+          <div class="error" *ngIf="showError('tone', 'required')">Elegí un tono.</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="tags">Tags (separados por coma)</label>
+        <input
+          id="tags"
+          type="text"
+          formControlName="tags"
+          placeholder="Ej: Art Rock, Electronic, Avant-Garde"
+          [class.invalid]="isInvalid('tags')"
+        />
+        <div class="helper" *ngIf="tagsPreview.length">
+          Vista previa de tags:
+          <span class="tag" *ngFor="let tag of tagsPreview">{{ tag }}</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="reviewBody">Review completa (solo frontend)</label>
+        <textarea
+          id="reviewBody"
+          formControlName="reviewBody"
+          rows="6"
+          maxlength="2000"
+          placeholder="Escribí la review completa. No se enviará al backend todavía, pero quedará registrada en el frontend."
+        ></textarea>
+        <div class="helper">{{ reviewForm.controls.reviewBody.value?.length || 0 }}/2000 caracteres</div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="primary" [disabled]="isSubmitting">
+          {{ isSubmitting ? 'Guardando...' : 'Crear review' }}
+        </button>
+        <button type="button" class="secondary" (click)="resetForm()" [disabled]="isSubmitting">Limpiar</button>
+      </div>
+
+      <div class="feedback" *ngIf="submitSuccess">
+        ✅ Review creada correctamente en el BFF.
+      </div>
+      <div class="feedback error" *ngIf="submitError">
+        ⚠️ {{ submitError }}
+      </div>
+    </form>
+
+    <aside class="review-preview">
+      <h2>Resumen del payload</h2>
+      <p>Esta es la información que se enviará al endpoint del BFF.</p>
+      <ul>
+        <li><strong>Album ID:</strong> {{ lastDraft?.albumId || reviewForm.controls.albumId.value || '—' }}</li>
+        <li><strong>Highlight:</strong> {{ lastDraft?.highlight || reviewForm.controls.highlight.value || '—' }}</li>
+        <li><strong>Puntaje:</strong> {{ lastDraft?.rating || reviewForm.controls.rating.value || '—' }}</li>
+        <li><strong>Tono:</strong> {{ lastDraft?.tone || reviewForm.controls.tone.value || '—' }}</li>
+        <li><strong>Tags:</strong>
+          <span *ngIf="(lastDraft?.tags?.length || tagsPreview.length) === 0">—</span>
+          <span class="tag" *ngFor="let tag of (lastDraft?.tags?.length ? lastDraft?.tags : tagsPreview)">
+            {{ tag }}
+          </span>
+        </li>
+      </ul>
+
+      <h3>Review extendida</h3>
+      <p>
+        {{ lastDraft?.reviewBody || reviewForm.controls.reviewBody.value || 'El texto completo de la review quedará guardado solo en el frontend.' }}
+      </p>
+
+      <div class="created-review" *ngIf="createdReview">
+        <h3>Respuesta del BFF</h3>
+        <p><strong>ID:</strong> {{ createdReview.id }}</p>
+        <p><strong>Álbum:</strong> {{ createdReview.album }}</p>
+        <p><strong>Usuario:</strong> {{ createdReview.user }}</p>
+        <p><strong>Puntaje:</strong> {{ createdReview.rating | number: '1.1-1' }}</p>
+        <p><strong>Highlight:</strong> {{ createdReview.highlight }}</p>
+      </div>
+    </aside>
+  </div>
+</section>

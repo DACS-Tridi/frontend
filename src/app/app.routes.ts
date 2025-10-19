@@ -19,5 +19,10 @@ export const routes: Routes = [
     path: 'tridify',
     loadComponent: () => import('./tridify-view/tridify-view').then(m => m.TridifyViewComponent)
   },
+  {
+    path: 'tridify/reviews/new',
+    loadComponent: () =>
+      import('./tridify-view/create-review/create-review').then(m => m.CreateReviewComponent)
+  },
   { path: '**', redirectTo: '/home' }
 ];

@@ -155,6 +155,10 @@
   box-shadow: 0 10px 25px rgba(99, 102, 241, 0.35);
   cursor: pointer;
   transition: transform 0.2s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .new-review-button:hover {
