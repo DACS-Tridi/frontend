@@ -2,7 +2,7 @@ import { ReviewerSpotlight } from '../../models/discovery.models';
 
 export const TOP_REVIEWERS_FIXTURE: ReviewerSpotlight[] = [
   {
-    id: 'reviewer-elptadelfrente',
+    id: 1,
     username: '@elptadelfrente',
     name: 'El Pata del Frente',
     specialty: 'Neo-Psychedelia',
@@ -11,7 +11,7 @@ export const TOP_REVIEWERS_FIXTURE: ReviewerSpotlight[] = [
     streak: 48
   },
   {
-    id: 'reviewer-bangelo',
+    id: 2,
     username: '@bangelo',
     name: 'B. Angelo',
     specialty: 'Minimal Wave',
@@ -20,7 +20,7 @@ export const TOP_REVIEWERS_FIXTURE: ReviewerSpotlight[] = [
     streak: 36
   },
   {
-    id: 'reviewer-facuyalanf100',
+    id: 3,
     username: '@facuyalanf100',
     name: 'Facu Yalan F100',
     specialty: 'Italo Disco',

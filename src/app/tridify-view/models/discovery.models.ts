@@ -15,11 +15,13 @@ export interface ReviewStats {
 }
 
 export interface ReviewHighlight {
-  id: string;
+  id: number;
   user: string;
+  userId: number;
   album: string;
+  albumId: number;
   highlight: string;
-  cover: string;
+  imageUrl: string;
   rating: number;
   stats: ReviewStats;
   tags: string[];
@@ -28,7 +30,7 @@ export interface ReviewHighlight {
 }
 
 export interface ReviewerSpotlight {
-  id: string;
+  id: number;
   username: string;
   name: string;
   specialty: string;
@@ -52,7 +54,7 @@ export interface DailyChallenge {
 }
 
 export interface UpcomingAlbum {
-  id: string;
+  id: number;
   artist: string;
   title: string;
   releaseDate: string;
@@ -63,7 +65,7 @@ export interface UpcomingAlbum {
 export type SearchResultType = 'album' | 'review' | 'curator';
 
 export interface SearchResultItem {
-  id: string;
+  id: number;
   type: SearchResultType;
   title: string;
   description: string;

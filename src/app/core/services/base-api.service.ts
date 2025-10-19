@@ -122,7 +122,7 @@ export class BaseApiService {
     }
     
     // Construir URL normal
-    return `${this.baseUrl}/${endpoint}`.replace(/\/+/g, '/');
+    return `${this.baseUrl.replace(/\/+$/, '')}/${endpoint.replace(/^\/+/, '')}`;
   }
 
   /**

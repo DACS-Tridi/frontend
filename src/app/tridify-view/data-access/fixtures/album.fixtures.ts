@@ -2,7 +2,7 @@ import { UpcomingAlbum } from '../../models/discovery.models';
 
 export const UPCOMING_ALBUMS_FIXTURE: UpcomingAlbum[] = [
   {
-    id: 'upcoming-cosmic-waves',
+    id: 1,
     artist: 'Los Microclimas',
     title: 'Cosmic Waves',
     releaseDate: '2024-11-08',
@@ -10,7 +10,7 @@ export const UPCOMING_ALBUMS_FIXTURE: UpcomingAlbum[] = [
     tags: ['Neo-Perreo', 'Downtempo']
   },
   {
-    id: 'upcoming-spectral',
+    id: 2,
     artist: 'Anita Pliegues',
     title: 'Spectral Bloom',
     releaseDate: '2024-11-15',
