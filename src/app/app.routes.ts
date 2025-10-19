@@ -10,10 +10,14 @@ export const routes: Routes = [
     loadComponent: () => import('./table-grid/table-grid').then(m => m.TableGridComponent),
     canActivate: [RoleAGuard]
   },
-  { 
-    path: 'dashboard', 
+  {
+    path: 'dashboard',
     loadComponent: () => import('./dashboard-view/dashboard-view').then(m => m.DashboardViewComponent),
     canActivate: [RoleBGuard]
+  },
+  {
+    path: 'tridify',
+    loadComponent: () => import('./tridify-view/tridify-view').then(m => m.TridifyViewComponent)
   },
   { path: '**', redirectTo: '/home' }
 ];

@@ -1,0 +1,217 @@
+<div class="tridify-shell">
+  <div class="sidebar-backdrop" *ngIf="mobileMenuOpen" (click)="closeMobileMenu()"></div>
+  <aside class="sidebar" [class.open]="mobileMenuOpen">
+    <button
+      type="button"
+      class="sidebar-close"
+      aria-label="Cerrar menú"
+      (click)="closeMobileMenu()"
+    >
+      ✕
+    </button>
+    <div class="sidebar-header">
+      <div class="brand">Tridify</div>
+      <p class="tagline">Discover the freshest underground records curated by the community.</p>
+    </div>
+
+    <div class="profile-card" *ngIf="(userProfile$ | async) as userProfile">
+      <div class="avatar" [style.background]="userProfile.avatarGradient">{{ userProfile.avatarInitials }}</div>
+      <div class="profile-info">
+        <h3>{{ userProfile.displayName }}</h3>
+        <p>{{ userProfile.roleTagline }}</p>
+      </div>
+      <button class="new-review-button">+ New Review</button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <h4>Menu</h4>
+        <ul>
+          <li *ngFor="let item of navigationPrimary" [class.active]="item.active" (click)="closeMobileMenu()">
+            <span class="icon">{{ item.icon }}</span>
+            <span class="label">{{ item.label }}</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="nav-section">
+        <h4>Library</h4>
+        <ul>
+          <li *ngFor="let item of navigationLibrary" (click)="closeMobileMenu()">
+            <span class="icon">{{ item.icon }}</span>
+            <span class="label">{{ item.label }}</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="nav-section">
+        <h4>Community</h4>
+        <ul>
+          <li *ngFor="let item of navigationCommunity" (click)="closeMobileMenu()">
+            <span class="icon">{{ item.icon }}</span>
+            <span class="label">{{ item.label }}</span>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="footer-card" *ngIf="(userProfile$ | async) as userProfile">
+        <h5>Listening streak</h5>
+        <p>{{ userProfile.streakDays }} days without missing a review session. Keep it going!</p>
+      </div>
+    </div>
+  </aside>
+
+  <section class="content">
+    <button type="button" class="mobile-menu-button" (click)="toggleMobileMenu()">
+      <span class="icon">☰</span>
+      Menu
+    </button>
+    <header class="content-header">
+      <div class="title-group">
+        <h1>Top Reviews for Today</h1>
+        <p>Hand-picked highlights from the tastemakers that keep Tridify buzzing.</p>
+      </div>
+      <form class="search-group" [formGroup]="searchForm" (ngSubmit)="submitSearch()">
+        <span class="icon" aria-hidden="true">🔍</span>
+        <input
+          type="search"
+          formControlName="term"
+          placeholder="Buscá géneros, álbumes o curadores"
+          aria-label="Buscar en el catálogo de Tridify"
+        />
+        <button type="submit" class="search-button">
+          <span class="label">Buscar</span>
+          <span class="chevron" aria-hidden="true">⏎</span>
+        </button>
+      </form>
+    </header>
+
+    <div class="content-grid">
+      <div class="main-panel">
+        <section class="reviews-section">
+          <div class="section-header">
+            <h2>Top Reviews for Today</h2>
+            <button class="ghost-button">View all</button>
+          </div>
+
+          <div class="reviews-list">
+            <article
+              class="review-card"
+              *ngFor="let review of (topReviews$ | async); trackBy: reviewTrackBy"
+              [class.violet]="review.tone === 'violet'"
+              [class.cyan]="review.tone === 'cyan'"
+            >
+              <div class="cover" [style.background-image]="review.imageUrl"></div>
+              <div class="review-body">
+                <div class="review-meta">
+                  <div class="reviewer">
+                    <div class="reviewer-avatar">{{ review.user.charAt(0).toUpperCase() }}</div>
+                    <div>
+                      <span class="name">{{ review.user }}</span>
+                      <span class="timestamp">Posted 2h ago</span>
+                    </div>
+                  </div>
+                  <div class="rating">
+                    <span class="score">{{ review.rating | number: '1.1-1' }}</span>
+                    <div class="stars">
+                      <span
+                        *ngFor="let star of getRatingStars(review.rating)"
+                        class="star"
+                        [class.full]="star === 'full'"
+                        [class.half]="star === 'half'"
+                        [class.empty]="star === 'empty'"
+                      ></span>
+                    </div>
+                  </div>
+                </div>
+
+                <h3 class="album">{{ review.album }}</h3>
+                <p class="highlight">{{ review.highlight }}</p>
+
+                <div class="tags">
+                  <span class="tag" *ngFor="let tag of review.tags">{{ tag }}</span>
+                </div>
+
+                <div class="review-footer">
+                  <div class="stat">
+                    <span class="icon">❤️</span>
+                    <span>{{ review.stats.likes }}</span>
+                  </div>
+                  <div class="stat">
+                    <span class="icon">💬</span>
+                    <span>{{ review.stats.comments }}</span>
+                  </div>
+                  <div class="stat">
+                    <span class="icon">🔁</span>
+                    <span>{{ review.stats.shares }}</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="genres-section">
+          <div class="section-header">
+            <h2>Explore by Genre</h2>
+            <button class="ghost-button">View all</button>
+          </div>
+
+          <div class="genre-grid">
+            <div
+              class="genre-chip"
+              *ngFor="let genre of (genres$ | async); trackBy: genreTrackBy"
+              [style.--accent]="genre.accent"
+            >
+              <span class="dot"></span>
+              <span>{{ genre.label }}</span>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <aside class="side-panel">
+        <section class="top-reviewers">
+          <div class="section-header">
+            <h2>Top Reviewers</h2>
+            <button class="ghost-button">See leaderboard</button>
+          </div>
+
+          <div class="reviewer-list">
+            <article
+              class="reviewer-card"
+              *ngFor="let reviewer of (topReviewers$ | async); trackBy: reviewerTrackBy"
+            >
+              <div class="reviewer-cover" [style.background-image]="reviewer.avatarColor"></div>
+              <div class="reviewer-body">
+                <div class="reviewer-meta">
+                  <span class="name">{{ reviewer.name }}</span>
+                  <span class="username">{{ reviewer.username }}</span>
+                </div>
+                <p class="specialty">{{ reviewer.specialty }}</p>
+                <p class="highlight">{{ reviewer.highlight }}</p>
+                <div class="streak">
+                  <span class="label">Streak</span>
+                  <span class="value">{{ reviewer.streak }} days</span>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="challenge-card" *ngIf="(dailyChallenge$ | async) as dailyChallenge">
+          <h2>{{ dailyChallenge.title }}</h2>
+          <p class="subtitle">{{ dailyChallenge.subtitle }}</p>
+          <p class="description">{{ dailyChallenge.description }}</p>
+          <div class="streak">
+            <span class="label">{{ dailyChallenge.streakLabel }}</span>
+            <span class="value">{{ dailyChallenge.streakValue }} days</span>
+          </div>
+          <button class="primary-button">Start reviewing</button>
+        </section>
+      </aside>
+    </div>
+  </section>
+</div>
