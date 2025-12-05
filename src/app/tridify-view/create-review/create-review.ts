@@ -256,7 +256,7 @@ export class CreateReviewComponent implements OnInit, OnDestroy {
   }
 
   private extractSpotifyId(result: SearchResultItem): string | null {
-    const fromMetadata = (result.metadata?.spotifyId ?? result.metadata?.id ?? result.metadata?.albumId) as
+    const fromMetadata = (result.metadata?.['spotifyId'] ?? result.metadata?.['id'] ?? result.metadata?.['albumId']) as
       | string
       | number
       | undefined;

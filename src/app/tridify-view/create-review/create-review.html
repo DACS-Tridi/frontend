@@ -37,7 +37,7 @@
                 <div class="album-result__meta">
                   <p class="album-result__title">{{ album.title }}</p>
                   <p class="album-result__description">{{ album.description }}</p>
-                  <p class="album-result__id">ID: {{ (album.metadata?.spotifyId || album.metadata?.id || album.id) || '—' }}</p>
+                  <p class="album-result__id">ID: {{ (album.metadata?.['spotifyId'] || album.metadata?.['id'] || album.id) || '—' }}</p>
                 </div>
                 <button type="button" class="tertiary" (click)="selectAlbum(album)">Usar</button>
               </li>
