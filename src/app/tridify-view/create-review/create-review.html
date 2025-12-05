@@ -10,21 +10,55 @@
         <p>Completa los campos para registrar tu reseña. El contenido largo quedará guardado localmente por ahora.</p>
       </header>
 
-      <div class="form-group">
-        <label for="albumId">ID del álbum<span aria-hidden="true">*</span></label>
-        <input
-          id="albumId"
-          type="text"
-          formControlName="albumId"
-          placeholder="Ej: 1NDJk94691Vydq1IrIeGC0"
-          autocomplete="off"
-          autocapitalize="off"
-          spellcheck="false"
-          [class.invalid]="isInvalid('albumId')"
-        />
-        <div class="error" *ngIf="showError('albumId', 'required')">Este campo es obligatorio.</div>
-        <div class="error" *ngIf="showError('albumId', 'pattern')">Ingresá un ID de Spotify válido (22 caracteres alfanuméricos).</div>
-      </div>
+        <div class="form-group">
+          <div class="form-group__header">
+            <label for="albumSearch">Álbum<span aria-hidden="true">*</span></label>
+            <div class="pill">Buscador de Spotify</div>
+          </div>
+          <input
+            id="albumSearch"
+            type="search"
+            [formControl]="albumSearchControl"
+            placeholder="Buscá por artista o título de álbum"
+            autocomplete="off"
+            autocapitalize="off"
+            spellcheck="false"
+          />
+          <div class="helper">
+            Seleccioná un álbum del buscador para rellenar el ID de Spotify. Debe tener 22 caracteres.
+          </div>
+          <div class="error" *ngIf="albumSearchError">{{ albumSearchError }}</div>
+          <div class="loader" *ngIf="albumSearchLoading">Buscando álbumes...</div>
+
+          <div class="album-results" *ngIf="albumResults.length">
+            <p class="album-results__title">Resultados</p>
+            <ul>
+              <li *ngFor="let album of albumResults" class="album-result">
+                <div class="album-result__meta">
+                  <p class="album-result__title">{{ album.title }}</p>
+                  <p class="album-result__description">{{ album.description }}</p>
+                  <p class="album-result__id">ID: {{ (album.metadata?.spotifyId || album.metadata?.id || album.id) || '—' }}</p>
+                </div>
+                <button type="button" class="tertiary" (click)="selectAlbum(album)">Usar</button>
+              </li>
+            </ul>
+          </div>
+
+          <div class="selected-album" *ngIf="selectedAlbum">
+            <div>
+              <p class="selected-album__label">Álbum seleccionado</p>
+              <p class="selected-album__title">{{ selectedAlbum.title }}</p>
+              <p class="selected-album__id">ID de Spotify: {{ reviewForm.controls.albumId.value }}</p>
+            </div>
+            <button type="button" class="link" (click)="clearSelectedAlbum()">Cambiar</button>
+          </div>
+
+          <input type="hidden" formControlName="albumId" />
+          <div class="error" *ngIf="showError('albumId', 'required')">Este campo es obligatorio.</div>
+          <div class="error" *ngIf="showError('albumId', 'pattern')">
+            Ingresá un ID de Spotify válido (22 caracteres alfanuméricos).
+          </div>
+        </div>
 
       <div class="form-group">
         <label for="highlight">Highlight de la review<span aria-hidden="true">*</span></label>

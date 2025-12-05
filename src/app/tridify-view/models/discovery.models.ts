@@ -65,7 +65,7 @@ export interface UpcomingAlbum {
 export type SearchResultType = 'album' | 'review' | 'curator';
 
 export interface SearchResultItem {
-  id: number;
+  id: string | number;
   type: SearchResultType;
   title: string;
   description: string;
