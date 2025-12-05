@@ -1,37 +1,37 @@
 <section class="review-create">
   <div class="review-create__breadcrumbs">
-    <a routerLink="/tridify" class="back-link">← Volver al discovery</a>
+    <a routerLink="/tridify" class="back-link">← Back to discovery</a>
   </div>
 
   <div class="review-create__layout">
     <form class="review-form" [formGroup]="reviewForm" (ngSubmit)="submit()" novalidate>
       <header class="review-form__header">
-        <h1>Crear una nueva review</h1>
-        <p>Completa los campos para registrar tu reseña. El contenido largo quedará guardado localmente por ahora.</p>
+        <h1>Create a new review</h1>
+        <p>Fill in the fields to save your review. The long-form text will stay on the frontend for now.</p>
       </header>
 
         <div class="form-group">
           <div class="form-group__header">
-            <label for="albumSearch">Álbum<span aria-hidden="true">*</span></label>
-            <div class="pill">Buscador de Spotify</div>
+            <label for="albumSearch">Album<span aria-hidden="true">*</span></label>
+            <div class="pill">Spotify search</div>
           </div>
           <input
             id="albumSearch"
             type="search"
             [formControl]="albumSearchControl"
-            placeholder="Buscá por artista o título de álbum"
+            placeholder="Search by artist or album title"
             autocomplete="off"
             autocapitalize="off"
             spellcheck="false"
           />
           <div class="helper">
-            Seleccioná un álbum del buscador para rellenar el ID de Spotify. Debe tener 22 caracteres.
+            Select an album from search to fill the Spotify ID. It must be 22 characters long.
           </div>
           <div class="error" *ngIf="albumSearchError">{{ albumSearchError }}</div>
-          <div class="loader" *ngIf="albumSearchLoading">Buscando álbumes...</div>
+          <div class="loader" *ngIf="albumSearchLoading">Searching albums...</div>
 
           <div class="album-results" *ngIf="albumResults.length">
-            <p class="album-results__title">Resultados</p>
+            <p class="album-results__title">Results</p>
             <ul>
               <li *ngFor="let album of albumResults" class="album-result">
                 <div class="album-result__meta">
@@ -39,44 +39,44 @@
                   <p class="album-result__description">{{ album.description }}</p>
                   <p class="album-result__id">ID: {{ (album.metadata?.['spotifyId'] || album.metadata?.['id'] || album.id) || '—' }}</p>
                 </div>
-                <button type="button" class="tertiary" (click)="selectAlbum(album)">Usar</button>
+                <button type="button" class="tertiary" (click)="selectAlbum(album)">Use</button>
               </li>
             </ul>
           </div>
 
           <div class="selected-album" *ngIf="selectedAlbum">
             <div>
-              <p class="selected-album__label">Álbum seleccionado</p>
+              <p class="selected-album__label">Selected album</p>
               <p class="selected-album__title">{{ selectedAlbum.title }}</p>
-              <p class="selected-album__id">ID de Spotify: {{ reviewForm.controls.albumId.value }}</p>
+              <p class="selected-album__id">Spotify ID: {{ reviewForm.controls.albumId.value }}</p>
             </div>
-            <button type="button" class="link" (click)="clearSelectedAlbum()">Cambiar</button>
+            <button type="button" class="link" (click)="clearSelectedAlbum()">Change</button>
           </div>
 
           <input type="hidden" formControlName="albumId" />
-          <div class="error" *ngIf="showError('albumId', 'required')">Este campo es obligatorio.</div>
+          <div class="error" *ngIf="showError('albumId', 'required')">This field is required.</div>
           <div class="error" *ngIf="showError('albumId', 'pattern')">
-            Ingresá un ID de Spotify válido (22 caracteres alfanuméricos).
+            Enter a valid Spotify ID (22 alphanumeric characters).
           </div>
         </div>
 
       <div class="form-group">
-        <label for="highlight">Highlight de la review<span aria-hidden="true">*</span></label>
+        <label for="highlight">Review highlight<span aria-hidden="true">*</span></label>
         <textarea
           id="highlight"
           formControlName="highlight"
           rows="4"
           maxlength="320"
-          placeholder="Resumí en pocas líneas la idea principal de tu review"
+          placeholder="Summarize the main idea in a few lines"
           [class.invalid]="isInvalid('highlight')"
         ></textarea>
-        <div class="helper">{{ reviewForm.controls.highlight.value?.length || 0 }}/320 caracteres</div>
-        <div class="error" *ngIf="showError('highlight', 'required')">El highlight es obligatorio.</div>
+        <div class="helper">{{ reviewForm.controls.highlight.value?.length || 0 }}/320 characters</div>
+        <div class="error" *ngIf="showError('highlight', 'required')">Highlight is required.</div>
       </div>
 
       <div class="form-row">
         <div class="form-group">
-          <label for="rating">Puntaje<span aria-hidden="true">*</span></label>
+          <label for="rating">Rating<span aria-hidden="true">*</span></label>
           <input
             id="rating"
             type="number"
@@ -84,61 +84,61 @@
             step="0.1"
             min="0"
             max="5"
-            placeholder="Ej: 4.5"
+            placeholder="E.g., 4.5"
             [class.invalid]="isInvalid('rating')"
           />
-          <div class="error" *ngIf="showError('rating', 'required')">El puntaje es obligatorio.</div>
-          <div class="error" *ngIf="showError('rating', 'min')">El puntaje no puede ser menor a 0.</div>
-          <div class="error" *ngIf="showError('rating', 'max')">El puntaje máximo es 5.</div>
+          <div class="error" *ngIf="showError('rating', 'required')">Rating is required.</div>
+          <div class="error" *ngIf="showError('rating', 'min')">Rating cannot be below 0.</div>
+          <div class="error" *ngIf="showError('rating', 'max')">Rating cannot exceed 5.</div>
         </div>
 
         <div class="form-group">
-          <label for="tone">Tono visual<span aria-hidden="true">*</span></label>
+          <label for="tone">Visual tone<span aria-hidden="true">*</span></label>
           <select id="tone" formControlName="tone" [class.invalid]="isInvalid('tone')">
             <option *ngFor="let toneOption of toneOptions" [value]="toneOption.value">
               {{ toneOption.label }}
             </option>
           </select>
-          <div class="error" *ngIf="showError('tone', 'required')">Elegí un tono.</div>
+          <div class="error" *ngIf="showError('tone', 'required')">Choose a tone.</div>
         </div>
       </div>
 
       <div class="form-group">
-        <label for="tags">Tags (separados por coma)</label>
+        <label for="tags">Tags (comma-separated)</label>
         <input
           id="tags"
           type="text"
           formControlName="tags"
-          placeholder="Ej: Art Rock, Electronic, Avant-Garde"
+          placeholder="E.g., Art Rock, Electronic, Avant-Garde"
           [class.invalid]="isInvalid('tags')"
         />
         <div class="helper" *ngIf="tagsPreview.length">
-          Vista previa de tags:
+          Tag preview:
           <span class="tag" *ngFor="let tag of tagsPreview">{{ tag }}</span>
         </div>
       </div>
 
       <div class="form-group">
-        <label for="reviewBody">Review completa (solo frontend)</label>
+        <label for="reviewBody">Full review (frontend only)</label>
         <textarea
           id="reviewBody"
           formControlName="reviewBody"
           rows="6"
           maxlength="2000"
-          placeholder="Escribí la review completa. No se enviará al backend todavía, pero quedará registrada en el frontend."
+          placeholder="Write the full review. It won't be sent to the backend yet, but it will stay on the frontend."
         ></textarea>
-        <div class="helper">{{ reviewForm.controls.reviewBody.value?.length || 0 }}/2000 caracteres</div>
+        <div class="helper">{{ reviewForm.controls.reviewBody.value?.length || 0 }}/2000 characters</div>
       </div>
 
       <div class="form-actions">
         <button type="submit" class="primary" [disabled]="isSubmitting">
-          {{ isSubmitting ? 'Guardando...' : 'Crear review' }}
+          {{ isSubmitting ? 'Saving...' : 'Create review' }}
         </button>
-        <button type="button" class="secondary" (click)="resetForm()" [disabled]="isSubmitting">Limpiar</button>
+        <button type="button" class="secondary" (click)="resetForm()" [disabled]="isSubmitting">Clear</button>
       </div>
 
       <div class="feedback" *ngIf="submitSuccess">
-        ✅ Review creada correctamente en el BFF.
+        ✅ Review created successfully in the BFF.
       </div>
       <div class="feedback error" *ngIf="submitError">
         ⚠️ {{ submitError }}
@@ -146,13 +146,13 @@
     </form>
 
     <aside class="review-preview">
-      <h2>Resumen del payload</h2>
-      <p>Esta es la información que se enviará al endpoint del BFF.</p>
+      <h2>Payload summary</h2>
+      <p>This is the information that will be sent to the BFF endpoint.</p>
       <ul>
         <li><strong>Album ID:</strong> {{ lastDraft?.albumId || reviewForm.controls.albumId.value || '—' }}</li>
         <li><strong>Highlight:</strong> {{ lastDraft?.highlight || reviewForm.controls.highlight.value || '—' }}</li>
-        <li><strong>Puntaje:</strong> {{ lastDraft?.rating || reviewForm.controls.rating.value || '—' }}</li>
-        <li><strong>Tono:</strong> {{ lastDraft?.tone || reviewForm.controls.tone.value || '—' }}</li>
+        <li><strong>Rating:</strong> {{ lastDraft?.rating || reviewForm.controls.rating.value || '—' }}</li>
+        <li><strong>Tone:</strong> {{ lastDraft?.tone || reviewForm.controls.tone.value || '—' }}</li>
         <li><strong>Tags:</strong>
           <span *ngIf="(lastDraft?.tags?.length || tagsPreview.length) === 0">—</span>
           <span class="tag" *ngFor="let tag of (lastDraft?.tags?.length ? lastDraft?.tags : tagsPreview)">
@@ -161,17 +161,17 @@
         </li>
       </ul>
 
-      <h3>Review extendida</h3>
+      <h3>Extended review</h3>
       <p>
-        {{ lastDraft?.reviewBody || reviewForm.controls.reviewBody.value || 'El texto completo de la review quedará guardado solo en el frontend.' }}
+        {{ lastDraft?.reviewBody || reviewForm.controls.reviewBody.value || 'The full review text will stay only on the frontend.' }}
       </p>
 
       <div class="created-review" *ngIf="createdReview">
-        <h3>Respuesta del BFF</h3>
+        <h3>BFF response</h3>
         <p><strong>ID:</strong> {{ createdReview.id }}</p>
-        <p><strong>Álbum:</strong> {{ createdReview.album }}</p>
-        <p><strong>Usuario:</strong> {{ createdReview.user }}</p>
-        <p><strong>Puntaje:</strong> {{ createdReview.rating | number: '1.1-1' }}</p>
+        <p><strong>Album:</strong> {{ createdReview.album }}</p>
+        <p><strong>User:</strong> {{ createdReview.user }}</p>
+        <p><strong>Rating:</strong> {{ createdReview.rating | number: '1.1-1' }}</p>
         <p><strong>Highlight:</strong> {{ createdReview.highlight }}</p>
       </div>
     </aside>

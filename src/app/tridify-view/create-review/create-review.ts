@@ -45,8 +45,8 @@ export class CreateReviewComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
   protected readonly toneOptions = [
-    { value: 'violet', label: 'Violeta' },
-    { value: 'cyan', label: 'Cian' }
+    { value: 'violet', label: 'Violet' },
+    { value: 'cyan', label: 'Cyan' }
   ];
 
   protected readonly reviewForm = this.fb.group({
@@ -101,7 +101,7 @@ export class CreateReviewComponent implements OnInit, OnDestroy {
   protected selectAlbum(result: SearchResultItem): void {
     const id = this.extractSpotifyId(result);
     if (!id) {
-      this.albumSearchError = 'No encontramos un ID de Spotify válido para este álbum.';
+      this.albumSearchError = 'We could not find a valid Spotify ID for this album.';
       return;
     }
 
@@ -212,7 +212,7 @@ export class CreateReviewComponent implements OnInit, OnDestroy {
       }
     }
 
-    return 'No pudimos crear la review. Probá de nuevo en unos segundos.';
+    return 'We could not create the review. Please try again in a few seconds.';
   }
 
   private listenToAlbumSearch(): void {
@@ -246,7 +246,7 @@ export class CreateReviewComponent implements OnInit, OnDestroy {
     return this.albumService.searchAlbums({ term }).pipe(
       map(results => results.filter(result => result.type === 'album')),
       catchError(() => {
-        this.albumSearchError = 'No pudimos buscar álbumes en este momento.';
+        this.albumSearchError = 'We could not search albums right now.';
         return of([]);
       }),
       finalize(() => {
