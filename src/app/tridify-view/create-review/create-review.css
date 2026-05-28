@@ -161,6 +161,19 @@ select.invalid {
   background: rgba(138, 180, 255, 0.08);
 }
 
+.album-result__cover {
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.album-result__meta {
+  flex: 1;
+  min-width: 0;
+}
+
 .album-result__meta p {
   margin: 0.1rem 0;
 }
@@ -207,6 +220,19 @@ select.invalid {
   align-items: center;
 }
 
+.selected-album__cover {
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.selected-album__info {
+  flex: 1;
+  min-width: 0;
+}
+
 .selected-album__label {
   margin: 0 0 0.25rem;
   font-weight: 700;
@@ -218,7 +244,7 @@ select.invalid {
   font-size: 1rem;
 }
 
-.selected-album__id {
+.selected-album__description {
   margin: 0;
   font-size: 0.9rem;
   color: rgba(248, 248, 251, 0.7);

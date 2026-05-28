@@ -129,13 +129,11 @@ export class CreateReviewComponent implements OnInit, OnDestroy {
       highlight: rawValue.highlight.trim(),
       rating: Number(rawValue.rating),
       tags: this.parseTags(rawValue.tags),
-      tone: rawValue.tone
-    };
-
-    this.lastDraft = {
-      ...payload,
+      tone: rawValue.tone,
       reviewBody: rawValue.reviewBody.trim()
     };
+
+    this.lastDraft = payload;
 
     this.isSubmitting = true;
     this.submitSuccess = false;

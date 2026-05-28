@@ -7,4 +7,4 @@ export interface ReviewCreateRequest {
   reviewBody: string;
 }
 
-export type ReviewCreatePayload = Omit<ReviewCreateRequest, 'reviewBody'>;
+export type ReviewCreatePayload = ReviewCreateRequest;

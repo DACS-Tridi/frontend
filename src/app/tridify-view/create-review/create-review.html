@@ -7,7 +7,7 @@
     <form class="review-form" [formGroup]="reviewForm" (ngSubmit)="submit()" novalidate>
       <header class="review-form__header">
         <h1>Create a new review</h1>
-        <p>Fill in the fields to save your review. The long-form text will stay on the frontend for now.</p>
+        <p>Fill in the fields to save your review.</p>
       </header>
 
         <div class="form-group">
@@ -34,10 +34,10 @@
             <p class="album-results__title">Results</p>
             <ul>
               <li *ngFor="let album of albumResults" class="album-result">
+                <img *ngIf="album.metadata?.['imageUrl']" [src]="album.metadata?.['imageUrl']" [alt]="album.title" class="album-result__cover" />
                 <div class="album-result__meta">
                   <p class="album-result__title">{{ album.title }}</p>
                   <p class="album-result__description">{{ album.description }}</p>
-                  <p class="album-result__id">ID: {{ (album.metadata?.['spotifyId'] || album.metadata?.['id'] || album.id) || '—' }}</p>
                 </div>
                 <button type="button" class="tertiary" (click)="selectAlbum(album)">Use</button>
               </li>
@@ -45,10 +45,11 @@
           </div>
 
           <div class="selected-album" *ngIf="selectedAlbum">
-            <div>
+            <img *ngIf="selectedAlbum.metadata?.['imageUrl']" [src]="selectedAlbum.metadata?.['imageUrl']" [alt]="selectedAlbum.title" class="selected-album__cover" />
+            <div class="selected-album__info">
               <p class="selected-album__label">Selected album</p>
               <p class="selected-album__title">{{ selectedAlbum.title }}</p>
-              <p class="selected-album__id">Spotify ID: {{ reviewForm.controls.albumId.value }}</p>
+              <p class="selected-album__description">{{ selectedAlbum.description }}</p>
             </div>
             <button type="button" class="link" (click)="clearSelectedAlbum()">Change</button>
           </div>
@@ -119,13 +120,13 @@
       </div>
 
       <div class="form-group">
-        <label for="reviewBody">Full review (frontend only)</label>
+        <label for="reviewBody">Full review</label>
         <textarea
           id="reviewBody"
           formControlName="reviewBody"
           rows="6"
           maxlength="2000"
-          placeholder="Write the full review. It won't be sent to the backend yet, but it will stay on the frontend."
+          placeholder="Write the full review..."
         ></textarea>
         <div class="helper">{{ reviewForm.controls.reviewBody.value?.length || 0 }}/2000 characters</div>
       </div>
@@ -146,28 +147,23 @@
     </form>
 
     <aside class="review-preview">
-      <h2>Payload summary</h2>
-      <p>This is the information that will be sent to the BFF endpoint.</p>
+      <h2>Preview</h2>
       <ul>
-        <li><strong>Album ID:</strong> {{ lastDraft?.albumId || reviewForm.controls.albumId.value || '—' }}</li>
-        <li><strong>Highlight:</strong> {{ lastDraft?.highlight || reviewForm.controls.highlight.value || '—' }}</li>
-        <li><strong>Rating:</strong> {{ lastDraft?.rating || reviewForm.controls.rating.value || '—' }}</li>
-        <li><strong>Tone:</strong> {{ lastDraft?.tone || reviewForm.controls.tone.value || '—' }}</li>
+        <li><strong>Album:</strong> {{ selectedAlbum?.title || '—' }}</li>
+        <li><strong>Highlight:</strong> {{ reviewForm.controls.highlight.value || '—' }}</li>
+        <li><strong>Rating:</strong> {{ reviewForm.controls.rating.value ?? '—' }}</li>
+        <li><strong>Tone:</strong> {{ reviewForm.controls.tone.value || '—' }}</li>
         <li><strong>Tags:</strong>
-          <span *ngIf="(lastDraft?.tags?.length || tagsPreview.length) === 0">—</span>
-          <span class="tag" *ngFor="let tag of (lastDraft?.tags?.length ? lastDraft?.tags : tagsPreview)">
-            {{ tag }}
-          </span>
+          <span *ngIf="tagsPreview.length === 0">—</span>
+          <span class="tag" *ngFor="let tag of tagsPreview">{{ tag }}</span>
         </li>
       </ul>
 
-      <h3>Extended review</h3>
-      <p>
-        {{ lastDraft?.reviewBody || reviewForm.controls.reviewBody.value || 'The full review text will stay only on the frontend.' }}
-      </p>
+      <h3>Review</h3>
+      <p>{{ reviewForm.controls.reviewBody.value || '—' }}</p>
 
       <div class="created-review" *ngIf="createdReview">
-        <h3>BFF response</h3>
+        <h3>Saved</h3>
         <p><strong>ID:</strong> {{ createdReview.id }}</p>
         <p><strong>Album:</strong> {{ createdReview.album }}</p>
         <p><strong>User:</strong> {{ createdReview.user }}</p>
