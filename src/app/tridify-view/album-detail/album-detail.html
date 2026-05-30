@@ -1,0 +1,94 @@
+<div class="album-detail-page" *ngIf="pageData$ | async as data; else loadingTpl">
+
+  <div class="error-banner" *ngIf="data.error">
+    <p>{{ data.error }}</p>
+    <a routerLink="/tridify">← Volver</a>
+  </div>
+
+  <ng-container *ngIf="data.album as album">
+
+    <!-- Header del álbum -->
+    <div class="album-header">
+      <div class="album-cover">
+        <img
+          *ngIf="album.imageUrl"
+          [src]="album.imageUrl"
+          [alt]="album.name"
+          class="cover-img"
+        />
+        <div *ngIf="!album.imageUrl" class="cover-placeholder">🎵</div>
+      </div>
+
+      <div class="album-info">
+        <h1 class="album-name">{{ album.name }}</h1>
+        <p class="album-artists">{{ album.artists?.join(', ') }}</p>
+        <div class="album-meta">
+          <span class="meta-item">📅 {{ album.releaseDate | date: 'yyyy' }}</span>
+          <span class="meta-item">🎵 {{ album.totalTracks }} tracks</span>
+        </div>
+
+        <!-- Promedio -->
+        <div class="average-rating" *ngIf="data.reviewsData && data.reviewsData.totalReviews > 0">
+          <div class="stars-row">
+            <span
+              *ngFor="let star of getRatingStars(data.reviewsData.averageRating)"
+              class="star"
+              [class.star--full]="star === 'full'"
+              [class.star--half]="star === 'half'"
+              [class.star--empty]="star === 'empty'"
+            >★</span>
+          </div>
+          <span class="avg-value">{{ data.reviewsData.averageRating | number: '1.1-1' }}</span>
+          <span class="avg-label">({{ data.reviewsData.totalReviews }} reseñas)</span>
+        </div>
+        <p class="no-reviews-yet" *ngIf="!data.reviewsData || data.reviewsData.totalReviews === 0">
+          Todavía no hay reseñas para este álbum.
+        </p>
+
+        <a
+          class="btn-create-review"
+          [routerLink]="['/tridify/reviews/new']"
+          [queryParams]="{ albumId: album.id }"
+        >
+          + Escribir reseña
+        </a>
+      </div>
+    </div>
+
+    <!-- Lista de reviews -->
+    <section class="reviews-section" *ngIf="data.reviewsData && data.reviewsData.totalReviews > 0">
+      <h2 class="reviews-title">Reseñas</h2>
+
+      <div class="review-card" *ngFor="let review of data.reviewsData.reviews; trackBy: reviewTrackBy">
+        <div class="review-header">
+          <span class="review-user">{{ review.user || 'Usuario' }}</span>
+          <div class="review-stars">
+            <span
+              *ngFor="let star of getRatingStars(review.rating)"
+              class="star star--sm"
+              [class.star--full]="star === 'full'"
+              [class.star--half]="star === 'half'"
+              [class.star--empty]="star === 'empty'"
+            >★</span>
+          </div>
+          <span class="review-date">{{ review.postedAt | date: 'dd/MM/yyyy' }}</span>
+        </div>
+
+        <p class="review-highlight" *ngIf="review.highlight">{{ review.highlight }}</p>
+
+        <p class="review-body-text" *ngIf="review.reviewBody">{{ review.reviewBody }}</p>
+
+        <div class="review-tags" *ngIf="review.tags?.length">
+          <span class="tag" *ngFor="let tag of review.tags">{{ tag }}</span>
+        </div>
+      </div>
+    </section>
+
+  </ng-container>
+</div>
+
+<ng-template #loadingTpl>
+  <div class="loading-state">
+    <p>Cargando álbum...</p>
+  </div>
+</ng-template>

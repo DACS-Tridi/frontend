@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { API_ENDPOINTS } from '../../../core/constants/api-endpoints';
 import { BaseApiService } from '../../../core/services/base-api.service';
-import { SearchResultItem, TridifySearchPayload, UpcomingAlbum } from '../../models/discovery.models';
+import { AlbumDetail, AlbumReviewsResponse, SearchResultItem, TridifySearchPayload, UpcomingAlbum } from '../../models/discovery.models';
 
 @Injectable({
   providedIn: 'root'
@@ -20,5 +20,13 @@ export class TridifyAlbumService extends BaseApiService {
 
   searchAlbums(payload: TridifySearchPayload): Observable<SearchResultItem[]> {
     return this.post<SearchResultItem[]>(API_ENDPOINTS.TRIDIFY.SEARCH, payload);
+  }
+
+  getAlbumDetail(spotifyId: string): Observable<AlbumDetail> {
+    return this.get<AlbumDetail>(`${API_ENDPOINTS.TRIDIFY.ALBUM_DETAIL}/${spotifyId}`);
+  }
+
+  getAlbumReviews(albumId: string): Observable<AlbumReviewsResponse> {
+    return this.get<AlbumReviewsResponse>(`${API_ENDPOINTS.TRIDIFY.ALBUM_REVIEWS}/${albumId}`);
   }
 }

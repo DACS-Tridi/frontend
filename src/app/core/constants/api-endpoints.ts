@@ -18,6 +18,8 @@ export const API_ENDPOINTS = {
     UPCOMING_ALBUMS: 'tridify/upcoming-albums',
     TODAY_REVIEWS: 'tridify/reviews/today',
     CREATE_REVIEW: 'tridify/reviews',
+    ALBUM_DETAIL: 'tridify/albums',
+    ALBUM_REVIEWS: 'tridify/reviews/album',
     GENRES: 'tridify/genres',
     REVIEWER_SPOTLIGHT: 'tridify/reviewers/spotlight',
     DAILY_CHALLENGE: 'tridify/challenges/daily'

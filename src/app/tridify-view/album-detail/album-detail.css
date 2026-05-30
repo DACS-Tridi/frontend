@@ -1,0 +1,233 @@
+.album-detail-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  color: #e2e8f0;
+}
+
+/* Header */
+.album-header {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.album-cover {
+  flex-shrink: 0;
+}
+
+.cover-img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.cover-placeholder {
+  width: 200px;
+  height: 200px;
+  background: #1e293b;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+}
+
+.album-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.album-name {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  color: #f8fafc;
+}
+
+.album-artists {
+  font-size: 1.1rem;
+  color: #94a3b8;
+  margin: 0;
+}
+
+.album-meta {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.meta-item {
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+/* Rating promedio */
+.average-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.stars-row {
+  display: flex;
+  gap: 2px;
+}
+
+.star {
+  font-size: 1.25rem;
+  color: #334155;
+}
+
+.star--full { color: #f59e0b; }
+.star--half { color: #fbbf24; opacity: 0.6; }
+.star--empty { color: #334155; }
+
+.star--sm {
+  font-size: 1rem;
+}
+
+.avg-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #f8fafc;
+}
+
+.avg-label {
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.no-reviews-yet {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin: 0.5rem 0;
+}
+
+.btn-create-review {
+  display: inline-block;
+  margin-top: 0.75rem;
+  padding: 0.6rem 1.25rem;
+  background: #6366f1;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s;
+  align-self: flex-start;
+}
+
+.btn-create-review:hover {
+  background: #4f46e5;
+}
+
+/* Reviews */
+.reviews-section {
+  border-top: 1px solid #1e293b;
+  padding-top: 2rem;
+}
+
+.reviews-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #f8fafc;
+}
+
+.review-card {
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.review-user {
+  font-weight: 600;
+  color: #c7d2fe;
+}
+
+.review-stars {
+  display: flex;
+  gap: 1px;
+}
+
+.review-date {
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: #475569;
+}
+
+.review-highlight {
+  color: #cbd5e1;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.review-body-text {
+  color: #94a3b8;
+  font-size: 0.875rem;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.review-tags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.tag {
+  background: #1e293b;
+  color: #94a3b8;
+  border-radius: 4px;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.75rem;
+}
+
+/* Estados */
+.loading-state,
+.error-banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  color: #64748b;
+  gap: 1rem;
+}
+
+.error-banner a {
+  color: #6366f1;
+  text-decoration: none;
+}
+
+@media (max-width: 640px) {
+  .album-header {
+    flex-direction: column;
+  }
+
+  .cover-img,
+  .cover-placeholder {
+    width: 160px;
+    height: 160px;
+  }
+
+  .album-name {
+    font-size: 1.5rem;
+  }
+}

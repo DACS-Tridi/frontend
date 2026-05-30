@@ -1,151 +1,261 @@
 <div class="tridify-shell">
   <div class="sidebar-backdrop" *ngIf="mobileMenuOpen" (click)="closeMobileMenu()"></div>
-  <aside class="sidebar" [class.open]="mobileMenuOpen">
-    <button
-      type="button"
-      class="sidebar-close"
-      aria-label="Cerrar menú"
-      (click)="closeMobileMenu()"
-    >
-      ✕
-    </button>
-    <div class="sidebar-header">
-      <div class="brand">Tridify</div>
-      <p class="tagline">Discover the freshest underground records curated by the community.</p>
-    </div>
 
-    <div class="profile-card" *ngIf="(userProfile$ | async) as userProfile">
-      <div class="avatar" [style.background]="userProfile.avatarGradient">{{ userProfile.avatarInitials }}</div>
-      <div class="profile-info">
-        <h3>{{ userProfile.displayName }}</h3>
-        <p>{{ userProfile.roleTagline }}</p>
+  <!-- ═══════════════════════════════════════
+       LEFT SIDEBAR — WINAMP MAIN PANEL
+  ═══════════════════════════════════════ -->
+  <aside class="winamp-sidebar" [class.open]="mobileMenuOpen">
+
+    <!-- Title bar -->
+    <div class="winamp-title-bar">
+      <div class="win-led-group">
+        <span class="win-led win-led--red"></span>
+        <span class="win-led win-led--yellow"></span>
+        <span class="win-led win-led--green"></span>
       </div>
-      <a class="new-review-button" routerLink="/tridify/reviews/new">+ New Review</a>
+      <span class="winamp-bar-title">TRIDIFY v2.1.0</span>
+      <button class="sidebar-close" type="button" aria-label="Cerrar menú" (click)="closeMobileMenu()">✕</button>
     </div>
 
-    <nav class="sidebar-nav">
-      <div class="nav-section">
-        <h4>Menu</h4>
-        <ul>
-          <li *ngFor="let item of navigationPrimary" [class.active]="item.active" (click)="closeMobileMenu()">
-            <span class="icon">{{ item.icon }}</span>
-            <span class="label">{{ item.label }}</span>
+    <!-- Brand display -->
+    <div class="winamp-brand-panel">
+      <div class="brand-scanline-overlay"></div>
+      <div class="brand-name">TRIDIFY</div>
+      <div class="brand-tagline">El visor piola del under porteño. Bandas zarpadas, curadas por la gente.</div>
+    </div>
+
+    <!-- Profile card -->
+    <div class="winamp-profile-panel" *ngIf="(userProfile$ | async) as userProfile">
+      <div class="profile-display">
+        <div class="profile-avatar-frame">
+          <div class="profile-avatar" [style.background]="userProfile.avatarGradient">
+            {{ userProfile.avatarInitials }}
+          </div>
+        </div>
+        <div class="profile-meta">
+          <div class="profile-name-display">{{ userProfile.displayName }}</div>
+          <div class="profile-role-display">{{ userProfile.roleTagline }}</div>
+        </div>
+      </div>
+      <a class="winamp-action-btn" routerLink="/tridify/reviews/new">⊕ SUBIR ALTA REVIEW</a>
+    </div>
+
+    <!-- Navigation — mechanical button list -->
+    <nav class="winamp-nav">
+      <div class="nav-group">
+        <div class="nav-group-label">// MENÚ</div>
+        <ul class="nav-list">
+          <li
+            class="winamp-nav-item"
+            *ngFor="let item of navigationPrimary"
+            [class.active]="item.active"
+            (click)="closeMobileMenu()"
+          >
+            <span class="nav-item-led" [class.on]="item.active"></span>
+            <span class="nav-item-icon">{{ item.icon }}</span>
+            <span class="nav-item-label">{{ item.label }}</span>
           </li>
         </ul>
       </div>
 
-      <div class="nav-section">
-        <h4>Library</h4>
-        <ul>
-          <li *ngFor="let item of navigationLibrary" (click)="closeMobileMenu()">
-            <span class="icon">{{ item.icon }}</span>
-            <span class="label">{{ item.label }}</span>
+      <div class="nav-group">
+        <div class="nav-group-label">// BIBLIOTECA</div>
+        <ul class="nav-list">
+          <li
+            class="winamp-nav-item"
+            *ngFor="let item of navigationLibrary"
+            (click)="closeMobileMenu()"
+          >
+            <span class="nav-item-led"></span>
+            <span class="nav-item-icon">{{ item.icon }}</span>
+            <span class="nav-item-label">{{ item.label }}</span>
           </li>
         </ul>
       </div>
 
-      <div class="nav-section">
-        <h4>Community</h4>
-        <ul>
-          <li *ngFor="let item of navigationCommunity" (click)="closeMobileMenu()">
-            <span class="icon">{{ item.icon }}</span>
-            <span class="label">{{ item.label }}</span>
+      <div class="nav-group">
+        <div class="nav-group-label">// COMUNIDAD</div>
+        <ul class="nav-list">
+          <li
+            class="winamp-nav-item"
+            *ngFor="let item of navigationCommunity"
+            (click)="closeMobileMenu()"
+          >
+            <span class="nav-item-led"></span>
+            <span class="nav-item-icon">{{ item.icon }}</span>
+            <span class="nav-item-label">{{ item.label }}</span>
           </li>
         </ul>
       </div>
     </nav>
 
-    <div class="sidebar-footer">
-      <div class="footer-card" *ngIf="(userProfile$ | async) as userProfile">
-        <h5>Listening streak</h5>
-        <p>{{ userProfile.streakDays }} days without missing a review session. Keep it going!</p>
-      </div>
+    <!-- Streak footer -->
+    <div class="winamp-footer-panel" *ngIf="(userProfile$ | async) as userProfile">
+      <div class="footer-scanline"></div>
+      <div class="footer-label-row">// RACHA ACTIVA</div>
+      <div class="footer-streak-value">{{ userProfile.streakDays }} DÍAS</div>
+      <div class="footer-streak-text">Sin aflojar. ¡Seguí mandando reviews, chabón!</div>
     </div>
   </aside>
 
+  <!-- ═══════════════════════════════════════
+       MAIN CONTENT AREA
+  ═══════════════════════════════════════ -->
   <section class="content">
+
     <button type="button" class="mobile-menu-button" (click)="toggleMobileMenu()">
-      <span class="icon">☰</span>
-      Menu
+      ☰ MENÚ
     </button>
-    <header class="content-header">
-      <div class="title-group">
-        <h1>Top Reviews for Today</h1>
-        <p>Hand-picked highlights from the tastemakers that keep Tridify buzzing.</p>
+
+    <!-- ─── VISOR HEADER / SEARCH BAR ─── -->
+    <header class="winamp-visor-header">
+      <div class="visor-scanline"></div>
+      <div class="visor-title-group">
+        <h1 class="visor-main-title">TRIDIFY</h1>
+        <p class="visor-subtitle">Lo más zarpado del under, curado por los piolas de siempre.</p>
       </div>
-      <form class="search-group" [formGroup]="searchForm" (ngSubmit)="submitSearch()">
-        <span class="icon" aria-hidden="true">🔍</span>
-        <input
-          type="search"
-          formControlName="term"
-          placeholder="Buscá géneros, álbumes o curadores"
-          aria-label="Buscar en el catálogo de Tridify"
-        />
-        <button type="submit" class="search-button">
-          <span class="label">Buscar</span>
-          <span class="chevron" aria-hidden="true">⏎</span>
-        </button>
-      </form>
+
+      <div class="search-wrapper">
+        <form class="winamp-search-panel" [formGroup]="searchForm" (ngSubmit)="submitSearch()">
+          <div class="search-visor-screen">
+            <span class="search-visor-icon">▷</span>
+            <input
+              type="search"
+              formControlName="term"
+              placeholder="Buscá altas bandas, discos o curadore..."
+              class="search-visor-input"
+              aria-label="Buscar en Tridify"
+            />
+          </div>
+          <button type="submit" class="winamp-search-btn">BUSCAR ⏎</button>
+          <button
+            *ngIf="showSearchResults"
+            type="button"
+            class="winamp-clear-btn"
+            (click)="clearSearch()"
+          >✕</button>
+        </form>
+
+        <!-- Search results dropdown -->
+        <div
+          class="search-results-dropdown"
+          *ngIf="showSearchResults && (searchResults$ | async) as results"
+        >
+          <div *ngIf="results.length === 0" class="search-no-results">
+            Che, no se encontró ningún álbum con esa data...
+          </div>
+          <button
+            class="search-result-item"
+            *ngFor="let result of results; trackBy: searchResultTrackBy"
+            type="button"
+            (click)="selectSearchResult(result)"
+          >
+            <img
+              *ngIf="result.metadata?.['imageUrl']"
+              [src]="result.metadata?.['imageUrl']"
+              [alt]="result.title"
+              class="search-result-cover"
+            />
+            <div
+              *ngIf="!result.metadata?.['imageUrl']"
+              class="search-result-cover search-result-cover--placeholder"
+            >🎵</div>
+            <div class="search-result-info">
+              <span class="search-result-title">{{ result.title }}</span>
+              <span class="search-result-desc">{{ result.description }}</span>
+            </div>
+          </button>
+        </div>
+      </div>
     </header>
 
+    <!-- ─── CONTENT GRID ─── -->
     <div class="content-grid">
+
+      <!-- ═══ MAIN PANEL ═══ -->
       <div class="main-panel">
+
+        <!-- TOP REVIEWS — visualizer-style cards -->
         <section class="reviews-section">
           <div class="section-header">
-            <h2>Top Reviews for Today</h2>
-            <button class="ghost-button">View all</button>
+            <h2 class="section-title-display">// TOP REVIEWS DE HOY</h2>
+            <button class="winamp-ghost-btn" type="button">VER TODO</button>
           </div>
 
           <div class="reviews-list">
             <article
-              class="review-card"
+              class="winamp-review-card"
               *ngFor="let review of (topReviews$ | async); trackBy: reviewTrackBy"
-              [class.violet]="review.tone === 'violet'"
-              [class.cyan]="review.tone === 'cyan'"
+              [class.tone-violet]="review.tone === 'violet'"
+              [class.tone-cyan]="review.tone === 'cyan'"
             >
-              <div class="cover" [style.background-image]="review.imageUrl"></div>
-              <div class="review-body">
-                <div class="review-meta">
-                  <div class="reviewer">
-                    <div class="reviewer-avatar">{{ review.user.charAt(0).toUpperCase() }}</div>
-                    <div>
-                      <span class="name">{{ review.user }}</span>
-                      <span class="timestamp">Posted 2h ago</span>
+              <!-- Left: cover + VU meter -->
+              <div class="review-visual-block">
+                <a
+                  class="review-cover-frame"
+                  [routerLink]="['/tridify/albums', review.albumId]"
+                  [style.background-image]="review.cover ? 'url(' + review.cover + ')' : null"
+                  [class.cover-empty]="!review.cover"
+                >
+                  <div class="cover-scanlines"></div>
+                  <span *ngIf="!review.cover" class="cover-placeholder">🎵</span>
+                </a>
+
+                <!-- VU Meter — replaces stars -->
+                <div class="vu-meter-panel">
+                  <div class="vu-meter-scanline"></div>
+                  <div class="vu-meter-label">RATING {{ review.rating | number: '1.1-1' }}</div>
+                  <div class="vu-meter-bars">
+                    <div
+                      class="vu-bar"
+                      *ngFor="let barH of getVuBars(review.rating); let bi = index"
+                      [style.height.%]="barH"
+                      [class.vu-bar--peak]="bi === 1"
+                      [class.vu-bar--high]="bi === 2"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right: review data -->
+              <div class="review-data-panel">
+                <div class="review-meta-row">
+                  <div class="reviewer-id">
+                    <div class="reviewer-avatar-badge">{{ getUserInitial(review.user) }}</div>
+                    <div class="reviewer-info">
+                      <span class="reviewer-name-display">{{ review.user || 'anonimo_under' }}</span>
+                      <span class="reviewer-timestamp">{{ review.postedAt | date: 'dd/MM/yyyy' }}</span>
                     </div>
                   </div>
-                  <div class="rating">
-                    <span class="score">{{ review.rating | number: '1.1-1' }}</span>
-                    <div class="stars">
-                      <span
-                        *ngFor="let star of getRatingStars(review.rating)"
-                        class="star"
-                        [class.full]="star === 'full'"
-                        [class.half]="star === 'half'"
-                        [class.empty]="star === 'empty'"
-                      ></span>
-                    </div>
+                  <div class="rating-badge">
+                    <span class="rating-score-display">{{ review.rating | number: '1.1-1' }}</span>
                   </div>
                 </div>
 
-                <h3 class="album">{{ review.album }}</h3>
-                <p class="highlight">{{ review.highlight }}</p>
+                <h3 class="review-album-title">
+                  <a [routerLink]="['/tridify/albums', review.albumId]" class="album-link-display">
+                    {{ review.album || 'Álbum' }}
+                  </a>
+                </h3>
 
-                <div class="tags">
-                  <span class="tag" *ngFor="let tag of review.tags">{{ tag }}</span>
+                <p class="review-highlight-text">{{ review.highlight }}</p>
+
+                <div class="metal-tags">
+                  <span class="metal-tag" *ngFor="let tag of review.tags">{{ tag }}</span>
                 </div>
 
-                <div class="review-footer">
-                  <div class="stat">
-                    <span class="icon">❤️</span>
-                    <span>{{ review.stats.likes }}</span>
+                <div class="review-stats-row">
+                  <div class="stat-item">
+                    <span class="stat-icon">❤</span>
+                    <span class="stat-value">{{ review.stats.likes }}</span>
                   </div>
-                  <div class="stat">
-                    <span class="icon">💬</span>
-                    <span>{{ review.stats.comments }}</span>
+                  <div class="stat-item">
+                    <span class="stat-icon">💬</span>
+                    <span class="stat-value">{{ review.stats.comments }}</span>
                   </div>
-                  <div class="stat">
-                    <span class="icon">🔁</span>
-                    <span>{{ review.stats.shares }}</span>
+                  <div class="stat-item">
+                    <span class="stat-icon">↺</span>
+                    <span class="stat-value">{{ review.stats.shares }}</span>
                   </div>
                 </div>
               </div>
@@ -153,65 +263,106 @@
           </div>
         </section>
 
-        <section class="genres-section">
-          <div class="section-header">
-            <h2>Explore by Genre</h2>
-            <button class="ghost-button">View all</button>
+        <!-- EXPLORE GENRES — Winamp playlist window -->
+        <section class="playlist-window">
+          <div class="playlist-titlebar">
+            <div class="playlist-title-text">// LISTA DE GÉNEROS</div>
+            <button class="winamp-ghost-btn" type="button">VER TODO</button>
           </div>
-
-          <div class="genre-grid">
+          <div class="playlist-body">
             <div
-              class="genre-chip"
-              *ngFor="let genre of (genres$ | async); trackBy: genreTrackBy"
+              class="playlist-entry"
+              *ngFor="let genre of (genres$ | async); trackBy: genreTrackBy; let i = index"
               [style.--accent]="genre.accent"
             >
-              <span class="dot"></span>
-              <span>{{ genre.label }}</span>
+              <span class="track-number">{{ getTrackNumber(i) }}.</span>
+              <span
+                class="track-led-indicator"
+                [style.background]="genre.accent"
+                [style.box-shadow]="'0 0 5px ' + genre.accent"
+              ></span>
+              <span class="track-name-display">{{ genre.label }}</span>
+              <span class="track-duration">—:——</span>
             </div>
           </div>
         </section>
-      </div>
 
-      <aside class="side-panel">
-        <section class="top-reviewers">
+      </div><!-- end main-panel -->
+
+      <!-- ═══ RIGHT PANEL — EQ MODULES ═══ -->
+      <aside class="eq-panel">
+
+        <!-- Top Reviewers -->
+        <section class="top-reviewers-section">
           <div class="section-header">
-            <h2>Top Reviewers</h2>
-            <button class="ghost-button">See leaderboard</button>
+            <h2 class="section-title-display">// TOP CURADORE</h2>
+            <button class="winamp-ghost-btn" type="button">RANKING</button>
           </div>
 
-          <div class="reviewer-list">
+          <div class="reviewer-eq-list">
             <article
-              class="reviewer-card"
+              class="eq-module"
               *ngFor="let reviewer of (topReviewers$ | async); trackBy: reviewerTrackBy"
             >
-              <div class="reviewer-cover" [style.background-image]="reviewer.avatarColor"></div>
-              <div class="reviewer-body">
-                <div class="reviewer-meta">
-                  <span class="name">{{ reviewer.name }}</span>
-                  <span class="username">{{ reviewer.username }}</span>
+              <!-- Module title bar -->
+              <div class="eq-module-titlebar">
+                <span class="eq-status-led"></span>
+                <span class="eq-module-title">EQ MODULE #{{ reviewer.id }}</span>
+              </div>
+
+              <!-- Main row: avatar + info on left, faders on right -->
+              <div class="eq-main-row">
+                <div class="eq-avatar-lens">
+                  <div class="eq-avatar-inner" [style.background-image]="reviewer.avatarColor"></div>
                 </div>
-                <p class="specialty">{{ reviewer.specialty }}</p>
-                <p class="highlight">{{ reviewer.highlight }}</p>
-                <div class="streak">
-                  <span class="label">Streak</span>
-                  <span class="value">{{ reviewer.streak }} days</span>
+                <div class="eq-reviewer-info">
+                  <div class="eq-reviewer-name">{{ reviewer.name }}</div>
+                  <div class="eq-reviewer-username">{{ reviewer.username }}</div>
+                  <div class="eq-reviewer-specialty">{{ reviewer.specialty }}</div>
                 </div>
+                <div class="eq-faders-inline">
+                  <div
+                    class="eq-fader-unit"
+                    *ngFor="let faderVal of getEqFaders(reviewer.id); let fi = index"
+                  >
+                    <div class="fader-track-wrap">
+                      <div class="fader-track">
+                        <div class="fader-handle" [style.top.%]="100 - faderVal"></div>
+                      </div>
+                    </div>
+                    <div class="fader-label">{{ getFaderLabel(fi) }}</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Streak display -->
+              <div class="eq-streak-display">
+                <span class="eq-streak-label">RACHA</span>
+                <span class="eq-streak-value">{{ reviewer.streak }} DÍAS</span>
               </div>
             </article>
           </div>
         </section>
 
-        <section class="challenge-card" *ngIf="(dailyChallenge$ | async) as dailyChallenge">
-          <h2>{{ dailyChallenge.title }}</h2>
-          <p class="subtitle">{{ dailyChallenge.subtitle }}</p>
-          <p class="description">{{ dailyChallenge.description }}</p>
-          <div class="streak">
-            <span class="label">{{ dailyChallenge.streakLabel }}</span>
-            <span class="value">{{ dailyChallenge.streakValue }} days</span>
+        <!-- Daily Challenge module -->
+        <section class="challenge-module" *ngIf="(dailyChallenge$ | async) as dailyChallenge">
+          <div class="eq-module-titlebar">
+            <span class="eq-status-led challenge-led"></span>
+            <span class="eq-module-title">{{ dailyChallenge.title | uppercase }}</span>
           </div>
-          <button class="primary-button">Start reviewing</button>
+          <div class="challenge-content">
+            <p class="challenge-subtitle">{{ dailyChallenge.subtitle }}</p>
+            <p class="challenge-description">{{ dailyChallenge.description }}</p>
+            <div class="challenge-streak">
+              <span>{{ dailyChallenge.streakLabel }}</span>
+              <span class="challenge-streak-value">{{ dailyChallenge.streakValue }} días</span>
+            </div>
+            <button class="winamp-primary-btn" type="button">ARRANCAR ▶</button>
+          </div>
         </section>
-      </aside>
-    </div>
-  </section>
-</div>
+
+      </aside><!-- end eq-panel -->
+
+    </div><!-- end content-grid -->
+  </section><!-- end content -->
+</div><!-- end tridify-shell -->

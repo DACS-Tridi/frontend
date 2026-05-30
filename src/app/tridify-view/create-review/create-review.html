@@ -1,175 +1,338 @@
-<section class="review-create">
-  <div class="review-create__breadcrumbs">
-    <a routerLink="/tridify" class="back-link">← Back to discovery</a>
+<div class="cr-shell">
+
+  <!-- ═══ TITLE BAR ═══ -->
+  <div class="cr-titlebar">
+    <div class="win-led-group">
+      <span class="win-led win-led--red"></span>
+      <span class="win-led win-led--yellow"></span>
+      <span class="win-led win-led--green"></span>
+    </div>
+    <span class="cr-titlebar-text">TRIDIFY — EDITOR DE RESEÑAS v2.1.0</span>
+    <a routerLink="/tridify" class="cr-back-btn">◀ VOLVÉ A LA CALLE</a>
   </div>
 
-  <div class="review-create__layout">
-    <form class="review-form" [formGroup]="reviewForm" (ngSubmit)="submit()" novalidate>
-      <header class="review-form__header">
-        <h1>Create a new review</h1>
-        <p>Fill in the fields to save your review.</p>
-      </header>
+  <!-- ═══ VISOR HEADER ═══ -->
+  <div class="cr-visor-header">
+    <div class="cr-scanline-overlay"></div>
+    <div class="cr-header-content">
+      <h1 class="cr-main-title">MANDALE MECHA</h1>
+      <p class="cr-subtitle">Completá el formulón y hacete escuchar en la escena, chabón</p>
+    </div>
+  </div>
 
-        <div class="form-group">
-          <div class="form-group__header">
-            <label for="albumSearch">Album<span aria-hidden="true">*</span></label>
-            <div class="pill">Spotify search</div>
-          </div>
-          <input
-            id="albumSearch"
-            type="search"
-            [formControl]="albumSearchControl"
-            placeholder="Search by artist or album title"
-            autocomplete="off"
-            autocapitalize="off"
-            spellcheck="false"
-          />
-          <div class="helper">
-            Select an album from search to fill the Spotify ID. It must be 22 characters long.
-          </div>
-          <div class="error" *ngIf="albumSearchError">{{ albumSearchError }}</div>
-          <div class="loader" *ngIf="albumSearchLoading">Searching albums...</div>
+  <!-- ═══ TWO-COLUMN LAYOUT ═══ -->
+  <div class="cr-layout">
 
-          <div class="album-results" *ngIf="albumResults.length">
-            <p class="album-results__title">Results</p>
-            <ul>
-              <li *ngFor="let album of albumResults" class="album-result">
-                <img *ngIf="album.metadata?.['imageUrl']" [src]="album.metadata?.['imageUrl']" [alt]="album.title" class="album-result__cover" />
-                <div class="album-result__meta">
-                  <p class="album-result__title">{{ album.title }}</p>
-                  <p class="album-result__description">{{ album.description }}</p>
-                </div>
-                <button type="button" class="tertiary" (click)="selectAlbum(album)">Use</button>
-              </li>
-            </ul>
-          </div>
+    <!-- ══════════════════════
+         LEFT — FORM PANEL
+    ══════════════════════ -->
+    <form class="cr-form-panel" [formGroup]="reviewForm" (ngSubmit)="submit()" novalidate>
 
-          <div class="selected-album" *ngIf="selectedAlbum">
-            <img *ngIf="selectedAlbum.metadata?.['imageUrl']" [src]="selectedAlbum.metadata?.['imageUrl']" [alt]="selectedAlbum.title" class="selected-album__cover" />
-            <div class="selected-album__info">
-              <p class="selected-album__label">Selected album</p>
-              <p class="selected-album__title">{{ selectedAlbum.title }}</p>
-              <p class="selected-album__description">{{ selectedAlbum.description }}</p>
+      <!-- ── ALBUM SEARCH ── -->
+      <div class="cr-field-group">
+        <div class="cr-field-header">
+          <label class="cr-label" for="albumSearch">
+            <span class="cr-label-led on"></span>
+            DISCO / BANDA<span class="cr-required">*</span>
+          </label>
+          <span class="cr-badge">SPOTIFY</span>
+        </div>
+
+        <div class="cr-input-row">
+          <div class="cr-lcd-screen">
+            <div class="cr-lcd-scanline"></div>
+            <span class="cr-lcd-cursor">▷</span>
+            <input
+              id="albumSearch"
+              type="search"
+              [formControl]="albumSearchControl"
+              placeholder="Buscá la banda o el disco..."
+              class="cr-lcd-input"
+              autocomplete="off"
+              autocapitalize="off"
+              spellcheck="false"
+            />
+          </div>
+          <button type="button" class="cr-mech-btn cr-search-btn">BUSCAR ⏎</button>
+        </div>
+
+        <p class="cr-helper">Elegí un disco y te cargamos la ID de Spotify al toque (22 caracteres alfanuméricos)</p>
+
+        <div class="cr-error" *ngIf="albumSearchError">{{ albumSearchError }}</div>
+
+        <div class="cr-loader" *ngIf="albumSearchLoading">
+          <span class="cr-blink">█</span> Buscando discos...
+        </div>
+
+        <!-- Search results dropdown -->
+        <div class="cr-results-panel" *ngIf="albumResults.length">
+          <div class="cr-results-titlebar">
+            <span class="cr-results-led on"></span>
+            <span class="cr-results-title">// LO QUE ENCONTRÉ</span>
+          </div>
+          <ul class="cr-results-list">
+            <li *ngFor="let album of albumResults" class="cr-result-item">
+              <img
+                *ngIf="album.metadata?.['imageUrl']"
+                [src]="album.metadata?.['imageUrl']"
+                [alt]="album.title"
+                class="cr-result-cover"
+              />
+              <div class="cr-result-cover cr-result-cover--ph" *ngIf="!album.metadata?.['imageUrl']">🎵</div>
+              <div class="cr-result-meta">
+                <p class="cr-result-title">{{ album.title }}</p>
+                <p class="cr-result-desc">{{ album.description }}</p>
+              </div>
+              <button type="button" class="cr-mech-btn cr-use-btn" (click)="selectAlbum(album)">ÉSTE ▶</button>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Selected album display -->
+        <div class="cr-selected-album" *ngIf="selectedAlbum">
+          <div class="cr-selected-titlebar">
+            <span class="cr-selected-led on"></span>
+            <span class="cr-selected-label">// DISCO ELEGIDO</span>
+          </div>
+          <div class="cr-selected-body">
+            <img
+              *ngIf="selectedAlbum.metadata?.['imageUrl']"
+              [src]="selectedAlbum.metadata?.['imageUrl']"
+              [alt]="selectedAlbum.title"
+              class="cr-selected-cover"
+            />
+            <div class="cr-selected-info">
+              <p class="cr-selected-title">{{ selectedAlbum.title }}</p>
+              <p class="cr-selected-desc">{{ selectedAlbum.description }}</p>
             </div>
-            <button type="button" class="link" (click)="clearSelectedAlbum()">Change</button>
-          </div>
-
-          <input type="hidden" formControlName="albumId" />
-          <div class="error" *ngIf="showError('albumId', 'required')">This field is required.</div>
-          <div class="error" *ngIf="showError('albumId', 'pattern')">
-            Enter a valid Spotify ID (22 alphanumeric characters).
+            <button type="button" class="cr-link-btn" (click)="clearSelectedAlbum()">CAMBIAR</button>
           </div>
         </div>
 
-      <div class="form-group">
-        <label for="highlight">Review highlight<span aria-hidden="true">*</span></label>
-        <textarea
-          id="highlight"
-          formControlName="highlight"
-          rows="4"
-          maxlength="320"
-          placeholder="Summarize the main idea in a few lines"
-          [class.invalid]="isInvalid('highlight')"
-        ></textarea>
-        <div class="helper">{{ reviewForm.controls.highlight.value?.length || 0 }}/320 characters</div>
-        <div class="error" *ngIf="showError('highlight', 'required')">Highlight is required.</div>
+        <input type="hidden" formControlName="albumId" />
+        <div class="cr-error" *ngIf="showError('albumId', 'required')">Che, elegí un disco primero.</div>
+        <div class="cr-error" *ngIf="showError('albumId', 'pattern')">La ID de Spotify tiene que tener 22 caracteres alfanuméricos, chabón.</div>
       </div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label for="rating">Rating<span aria-hidden="true">*</span></label>
+      <!-- ── REVIEW HIGHLIGHT ── -->
+      <div class="cr-field-group">
+        <label class="cr-label" for="highlight">
+          <span class="cr-label-led on"></span>
+          EL BOMBAZO DE TU RESEÑA<span class="cr-required">*</span>
+        </label>
+        <div class="cr-lcd-textarea-wrap" [class.cr-lcd--invalid]="isInvalid('highlight')">
+          <div class="cr-lcd-scanline"></div>
+          <textarea
+            id="highlight"
+            formControlName="highlight"
+            rows="4"
+            maxlength="320"
+            placeholder="Tirá la idea central, no te cagues en líneas..."
+            class="cr-lcd-textarea"
+          ></textarea>
+        </div>
+        <p class="cr-helper">{{ reviewForm.controls.highlight.value?.length || 0 }}/320 caracteres</p>
+        <div class="cr-error" *ngIf="showError('highlight', 'required')">El bombazo es obligatorio, amigo.</div>
+      </div>
+
+      <!-- ── RATING + TONE ROW ── -->
+      <div class="cr-form-row">
+        <div class="cr-field-group">
+          <label class="cr-label" for="rating">
+            <span class="cr-label-led on"></span>
+            CUÁNTAS ESTRELLITAS<span class="cr-required">*</span>
+          </label>
+          <div class="cr-lcd-screen" [class.cr-lcd--invalid]="isInvalid('rating')">
+            <div class="cr-lcd-scanline"></div>
+            <span class="cr-lcd-cursor">▶</span>
+            <input
+              id="rating"
+              type="number"
+              formControlName="rating"
+              step="0.1"
+              min="0"
+              max="5"
+              placeholder="0.0 – 5.0"
+              class="cr-lcd-input"
+            />
+          </div>
+          <div class="cr-error" *ngIf="showError('rating', 'required')">El puntaje es obligatorio.</div>
+          <div class="cr-error" *ngIf="showError('rating', 'min')">No puede ser menor que 0, chabón.</div>
+          <div class="cr-error" *ngIf="showError('rating', 'max')">Máximo 5, no seas cargoso.</div>
+        </div>
+
+        <div class="cr-field-group">
+          <label class="cr-label" for="tone">
+            <span class="cr-label-led"></span>
+            TONO VISUAL<span class="cr-required">*</span>
+          </label>
+          <div class="cr-lcd-screen" [class.cr-lcd--invalid]="isInvalid('tone')">
+            <div class="cr-lcd-scanline"></div>
+            <span class="cr-lcd-cursor">◈</span>
+            <select id="tone" formControlName="tone" class="cr-lcd-select">
+              <option *ngFor="let toneOption of toneOptions" [value]="toneOption.value">
+                {{ toneOption.label | uppercase }}
+              </option>
+            </select>
+          </div>
+          <div class="cr-error" *ngIf="showError('tone', 'required')">Elegí un tono, che.</div>
+        </div>
+      </div>
+
+      <!-- ── TAGS ── -->
+      <div class="cr-field-group">
+        <label class="cr-label" for="tags">
+          <span class="cr-label-led"></span>
+          ETIQUETAS
+          <span class="cr-helper-inline">(separadas por coma)</span>
+        </label>
+        <div class="cr-lcd-screen" [class.cr-lcd--invalid]="isInvalid('tags')">
+          <div class="cr-lcd-scanline"></div>
+          <span class="cr-lcd-cursor">⊞</span>
           <input
-            id="rating"
-            type="number"
-            formControlName="rating"
-            step="0.1"
-            min="0"
-            max="5"
-            placeholder="E.g., 4.5"
-            [class.invalid]="isInvalid('rating')"
+            id="tags"
+            type="text"
+            formControlName="tags"
+            placeholder="Ej: Rock chabón, Electrónica, Avant-gardia"
+            class="cr-lcd-input"
           />
-          <div class="error" *ngIf="showError('rating', 'required')">Rating is required.</div>
-          <div class="error" *ngIf="showError('rating', 'min')">Rating cannot be below 0.</div>
-          <div class="error" *ngIf="showError('rating', 'max')">Rating cannot exceed 5.</div>
         </div>
-
-        <div class="form-group">
-          <label for="tone">Visual tone<span aria-hidden="true">*</span></label>
-          <select id="tone" formControlName="tone" [class.invalid]="isInvalid('tone')">
-            <option *ngFor="let toneOption of toneOptions" [value]="toneOption.value">
-              {{ toneOption.label }}
-            </option>
-          </select>
-          <div class="error" *ngIf="showError('tone', 'required')">Choose a tone.</div>
+        <div class="cr-tags-preview" *ngIf="tagsPreview.length">
+          <span class="cr-metal-tag" *ngFor="let tag of tagsPreview">{{ tag }}</span>
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="tags">Tags (comma-separated)</label>
-        <input
-          id="tags"
-          type="text"
-          formControlName="tags"
-          placeholder="E.g., Art Rock, Electronic, Avant-Garde"
-          [class.invalid]="isInvalid('tags')"
-        />
-        <div class="helper" *ngIf="tagsPreview.length">
-          Tag preview:
-          <span class="tag" *ngFor="let tag of tagsPreview">{{ tag }}</span>
+      <!-- ── FULL REVIEW ── -->
+      <div class="cr-field-group">
+        <label class="cr-label" for="reviewBody">
+          <span class="cr-label-led"></span>
+          LA POSTA COMPLETA
+          <span class="cr-helper-inline">(opcional)</span>
+        </label>
+        <div class="cr-lcd-textarea-wrap">
+          <div class="cr-lcd-scanline"></div>
+          <textarea
+            id="reviewBody"
+            formControlName="reviewBody"
+            rows="6"
+            maxlength="2000"
+            placeholder="Morfate el espacio y contá todo..."
+            class="cr-lcd-textarea"
+          ></textarea>
         </div>
+        <p class="cr-helper">{{ reviewForm.controls.reviewBody.value?.length || 0 }}/2000 caracteres</p>
       </div>
 
-      <div class="form-group">
-        <label for="reviewBody">Full review</label>
-        <textarea
-          id="reviewBody"
-          formControlName="reviewBody"
-          rows="6"
-          maxlength="2000"
-          placeholder="Write the full review..."
-        ></textarea>
-        <div class="helper">{{ reviewForm.controls.reviewBody.value?.length || 0 }}/2000 characters</div>
-      </div>
-
-      <div class="form-actions">
-        <button type="submit" class="primary" [disabled]="isSubmitting">
-          {{ isSubmitting ? 'Saving...' : 'Create review' }}
+      <!-- ── ACTIONS ── -->
+      <div class="cr-actions">
+        <button type="submit" class="cr-primary-btn" [disabled]="isSubmitting">
+          {{ isSubmitting ? '■ MANDANDO...' : '▶ MANDARLO AL BOMBO' }}
         </button>
-        <button type="button" class="secondary" (click)="resetForm()" [disabled]="isSubmitting">Clear</button>
+        <button type="button" class="cr-secondary-btn" (click)="resetForm()" [disabled]="isSubmitting">
+          ■ BORRAR TODO
+        </button>
       </div>
 
-      <div class="feedback" *ngIf="submitSuccess">
-        ✅ Review created successfully in the BFF.
+      <div class="cr-feedback cr-feedback--ok" *ngIf="submitSuccess">
+        ■ ¡SE MANDÓ LA POSTA! Tu reseña ya está dando vuelta en el sistema.
       </div>
-      <div class="feedback error" *ngIf="submitError">
-        ⚠️ {{ submitError }}
+      <div class="cr-feedback cr-feedback--err" *ngIf="submitError">
+        ▲ {{ submitError }}
       </div>
+
     </form>
 
-    <aside class="review-preview">
-      <h2>Preview</h2>
-      <ul>
-        <li><strong>Album:</strong> {{ selectedAlbum?.title || '—' }}</li>
-        <li><strong>Highlight:</strong> {{ reviewForm.controls.highlight.value || '—' }}</li>
-        <li><strong>Rating:</strong> {{ reviewForm.controls.rating.value ?? '—' }}</li>
-        <li><strong>Tone:</strong> {{ reviewForm.controls.tone.value || '—' }}</li>
-        <li><strong>Tags:</strong>
-          <span *ngIf="tagsPreview.length === 0">—</span>
-          <span class="tag" *ngFor="let tag of tagsPreview">{{ tag }}</span>
-        </li>
-      </ul>
+    <!-- ══════════════════════
+         RIGHT — PREVIEW PANEL
+    ══════════════════════ -->
+    <aside class="cr-preview-panel">
 
-      <h3>Review</h3>
-      <p>{{ reviewForm.controls.reviewBody.value || '—' }}</p>
-
-      <div class="created-review" *ngIf="createdReview">
-        <h3>Saved</h3>
-        <p><strong>ID:</strong> {{ createdReview.id }}</p>
-        <p><strong>Album:</strong> {{ createdReview.album }}</p>
-        <p><strong>User:</strong> {{ createdReview.user }}</p>
-        <p><strong>Rating:</strong> {{ createdReview.rating | number: '1.1-1' }}</p>
-        <p><strong>Highlight:</strong> {{ createdReview.highlight }}</p>
+      <!-- Panel title bar (like Winamp playlist window) -->
+      <div class="cr-preview-titlebar">
+        <div class="win-led-group">
+          <span class="win-led win-led--red"></span>
+          <span class="win-led win-led--yellow"></span>
+          <span class="win-led win-led--green"></span>
+        </div>
+        <span class="cr-preview-title-text">// PREVIEW EN VIVO</span>
       </div>
+
+      <!-- CRT screen area -->
+      <div class="cr-crt-screen">
+        <div class="cr-crt-scanline"></div>
+        <div class="cr-crt-dotmatrix"></div>
+
+        <div class="cr-preview-content">
+
+          <div class="cr-preview-row">
+            <span class="cr-preview-key">DISCO:</span>
+            <span class="cr-preview-val">{{ selectedAlbum?.title || '——————' }}</span>
+          </div>
+
+          <div class="cr-preview-row">
+            <span class="cr-preview-key">BOMBAZO:</span>
+            <span class="cr-preview-val cr-preview-val--multiline">
+              {{ reviewForm.controls.highlight.value || '——————' }}
+            </span>
+          </div>
+
+          <div class="cr-preview-row">
+            <span class="cr-preview-key">PUNTAJE:</span>
+            <span class="cr-preview-val cr-preview-rating">
+              {{ reviewForm.controls.rating.value != null ? (reviewForm.controls.rating.value | number:'1.1-1') : '—.—' }}
+            </span>
+          </div>
+
+          <div class="cr-preview-row">
+            <span class="cr-preview-key">TONO:</span>
+            <span class="cr-preview-val">{{ reviewForm.controls.tone.value | uppercase }}</span>
+          </div>
+
+          <div class="cr-preview-row cr-preview-tags-row">
+            <span class="cr-preview-key">TAGS:</span>
+            <span *ngIf="tagsPreview.length === 0" class="cr-preview-val">——————</span>
+            <span class="cr-preview-tag" *ngFor="let tag of tagsPreview">{{ tag }}</span>
+          </div>
+
+          <div class="cr-preview-divider"></div>
+
+          <div class="cr-preview-body-label">// REVIEW COMPLETA</div>
+          <div class="cr-preview-body-text">
+            {{ reviewForm.controls.reviewBody.value || '——————' }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Saved confirmation panel -->
+      <div class="cr-saved-panel" *ngIf="createdReview">
+        <div class="cr-saved-titlebar">
+          <span class="cr-saved-led"></span>
+          <span class="cr-saved-label">// GUARDADO EN EL SISTEMA</span>
+        </div>
+        <div class="cr-crt-screen cr-saved-screen">
+          <div class="cr-crt-scanline"></div>
+          <div class="cr-preview-content">
+            <div class="cr-preview-row">
+              <span class="cr-preview-key">ID:</span>
+              <span class="cr-preview-val">#{{ createdReview.id }}</span>
+            </div>
+            <div class="cr-preview-row">
+              <span class="cr-preview-key">DISCO:</span>
+              <span class="cr-preview-val">{{ createdReview.album }}</span>
+            </div>
+            <div class="cr-preview-row">
+              <span class="cr-preview-key">CHABÓN:</span>
+              <span class="cr-preview-val">{{ createdReview.user }}</span>
+            </div>
+            <div class="cr-preview-row">
+              <span class="cr-preview-key">PUNTAJE:</span>
+              <span class="cr-preview-val cr-preview-rating">{{ createdReview.rating | number:'1.1-1' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </aside>
-  </div>
-</section>
+
+  </div><!-- end .cr-layout -->
+</div><!-- end .cr-shell -->

@@ -24,5 +24,10 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./tridify-view/create-review/create-review').then(m => m.CreateReviewComponent)
   },
+  {
+    path: 'tridify/albums/:id',
+    loadComponent: () =>
+      import('./tridify-view/album-detail/album-detail').then(m => m.AlbumDetailComponent)
+  },
   { path: '**', redirectTo: '/home' }
 ];
