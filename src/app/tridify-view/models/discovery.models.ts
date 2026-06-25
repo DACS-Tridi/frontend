@@ -19,9 +19,10 @@ export interface ReviewHighlight {
   user: string;
   userId: number;
   album: string;
-  albumId: number;
+  albumId: string;
   highlight: string;
-  imageUrl: string;
+  reviewBody?: string;
+  cover: string;
   rating: number;
   stats: ReviewStats;
   tags: string[];
@@ -65,7 +66,7 @@ export interface UpcomingAlbum {
 export type SearchResultType = 'album' | 'review' | 'curator';
 
 export interface SearchResultItem {
-  id: number;
+  id: string | number;
   type: SearchResultType;
   title: string;
   description: string;
@@ -75,4 +76,20 @@ export interface SearchResultItem {
 export interface TridifySearchPayload {
   term: string;
   filters?: Record<string, string | number | boolean>;
+}
+
+export interface AlbumDetail {
+  id: string;
+  name: string;
+  releaseDate: string;
+  totalTracks: number;
+  artists: string[];
+  imageUrl: string;
+}
+
+export interface AlbumReviewsResponse {
+  albumId: string;
+  averageRating: number;
+  totalReviews: number;
+  reviews: ReviewHighlight[];
 }

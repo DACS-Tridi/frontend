@@ -2,8 +2,8 @@ html,
 body {
   height: 100%;
   margin: 0;
-  background-color: #050715;
-  color: #e2e8f0;
+  background-color: #0e0e0e;
+  color: #cccccc;
 }
 
 body {
@@ -13,4 +13,24 @@ body {
 
 * {
   box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #111;
+  border: 1px solid #000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #444 0%, #2a2a2a 100%);
+  border-radius: 1px;
+  box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #555 0%, #333 100%);
 }
