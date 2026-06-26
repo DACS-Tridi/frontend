@@ -1,0 +1,269 @@
+<div class="tridify-shell">
+  <div class="sidebar-backdrop" *ngIf="mobileMenuOpen" (click)="closeMobileMenu()"></div>
+
+  <!-- ═══════════════════════════════════════
+       LEFT SIDEBAR
+  ═══════════════════════════════════════ -->
+  <aside class="winamp-sidebar" [class.open]="mobileMenuOpen">
+
+    <div class="winamp-title-bar">
+      <div class="win-led-group">
+        <span class="win-led win-led--red"></span>
+        <span class="win-led win-led--yellow"></span>
+        <span class="win-led win-led--green"></span>
+      </div>
+      <span class="winamp-bar-title">TRIDIFY v2.1.0</span>
+      <button class="sidebar-close" type="button" aria-label="Cerrar menú" (click)="closeMobileMenu()">✕</button>
+    </div>
+
+    <div class="winamp-brand-panel">
+      <div class="brand-scanline-overlay"></div>
+      <div class="brand-name">TRIDIFY</div>
+      <div class="brand-tagline">El visor piola del under porteño. Bandas zarpadas, curadas por la gente.</div>
+    </div>
+
+    <div class="winamp-profile-panel" *ngIf="(userProfile$ | async) as userProfile">
+      <div class="profile-display">
+        <div class="profile-avatar-frame">
+          <img class="profile-avatar-img" [src]="getAvatarSrc(userProfile.avatarId)" [alt]="userProfile.displayName" />
+        </div>
+        <div class="profile-meta">
+          <div class="profile-name-display">{{ userProfile.displayName }}</div>
+          <div class="profile-role-display">{{ userProfile.roleTagline }}</div>
+        </div>
+      </div>
+      <a class="winamp-action-btn" routerLink="/tridify/reviews/new">⊕ SUBIR ALTA REVIEW</a>
+    </div>
+
+    <nav class="winamp-nav">
+      <div class="nav-group">
+        <div class="nav-group-label">// MENÚ</div>
+        <ul class="nav-list">
+          <li class="winamp-nav-item" routerLink="/tridify" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span>
+            <span class="nav-item-icon">🏠</span>
+            <span class="nav-item-label">Inicio</span>
+          </li>
+          <li class="winamp-nav-item" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span>
+            <span class="nav-item-icon">🧭</span>
+            <span class="nav-item-label">Explorá</span>
+          </li>
+          <li class="winamp-nav-item active" routerLink="/tridify/my-profile" (click)="closeMobileMenu()">
+            <span class="nav-item-led on"></span>
+            <span class="nav-item-icon">👤</span>
+            <span class="nav-item-label">Mi Perfil</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-label">// BIBLIOTECA</div>
+        <ul class="nav-list">
+          <li class="winamp-nav-item" routerLink="/tridify/my-reviews" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span>
+            <span class="nav-item-icon">📝</span>
+            <span class="nav-item-label">Mis Reviews</span>
+          </li>
+          <li class="winamp-nav-item" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span>
+            <span class="nav-item-icon">⭐</span>
+            <span class="nav-item-label">Reviews Favoritas</span>
+          </li>
+          <li class="winamp-nav-item" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span>
+            <span class="nav-item-icon">🗂️</span>
+            <span class="nav-item-label">Borradores</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-label">// COMUNIDAD</div>
+        <ul class="nav-list">
+          <li class="winamp-nav-item" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span>
+            <span class="nav-item-icon">🔥</span>
+            <span class="nav-item-label">Lo Más Piola</span>
+          </li>
+          <li class="winamp-nav-item" routerLink="/tridify/top-reviews" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span>
+            <span class="nav-item-icon">🎧</span>
+            <span class="nav-item-label">Top Reviews</span>
+          </li>
+          <li class="winamp-nav-item" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span>
+            <span class="nav-item-icon">🎯</span>
+            <span class="nav-item-label">Desafío del Día</span>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="winamp-footer-panel" *ngIf="(userProfile$ | async) as userProfile">
+      <div class="footer-scanline"></div>
+      <div class="footer-label-row">// RACHA ACTIVA</div>
+      <div class="footer-streak-value">{{ userProfile.streakDays }} DÍAS</div>
+      <div class="footer-streak-text">Sin aflojar. ¡Seguí mandando reviews, chabón!</div>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════════════════════
+       MAIN CONTENT
+  ═══════════════════════════════════════ -->
+  <section class="content">
+
+    <button type="button" class="mobile-menu-button" (click)="toggleMobileMenu()">
+      ☰ MENÚ
+    </button>
+
+    <!-- ─── HEADER ─── -->
+    <header class="visor-header" *ngIf="(userProfile$ | async) as userProfile">
+      <div class="visor-scanline"></div>
+      <div class="visor-left">
+        <button class="back-btn" type="button" (click)="backToDiscover()">◀ VOLVER</button>
+        <div class="visor-title-group">
+          <h1 class="visor-main-title">MI PERFIL</h1>
+          <p class="visor-subtitle">Tu identidad en el under. Tu archivo. Tu legado.</p>
+        </div>
+      </div>
+      <button class="winamp-primary-btn" type="button" (click)="goToNewReview()">⊕ NUEVA REVIEW</button>
+    </header>
+
+    <!-- ─── PROFILE CARD ─── -->
+    <div class="profile-card" *ngIf="(userProfile$ | async) as userProfile">
+      <div class="profile-card-scanline"></div>
+      <div class="profile-card-inner">
+        <div class="profile-big-avatar">
+          <img class="profile-big-avatar-img" [src]="getAvatarSrc(userProfile.avatarId)" [alt]="userProfile.displayName" />
+          <div class="avatar-pulse-ring"></div>
+        </div>
+        <div class="profile-card-info">
+          <div class="profile-card-name">{{ userProfile.displayName }}</div>
+          <div class="profile-card-role">{{ userProfile.roleTagline }}</div>
+          <div class="profile-card-username">@{{ userProfile.username }}</div>
+        </div>
+        <div class="profile-streak-display">
+          <div class="streak-label">// RACHA</div>
+          <div class="streak-value">{{ userProfile.streakDays }}</div>
+          <div class="streak-unit">DÍAS</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── STATS BAR ─── -->
+    <div class="stats-bar" *ngIf="!isLoading">
+      <div class="stat-module">
+        <div class="stat-module-scanline"></div>
+        <span class="stat-module-label">// REVIEWS</span>
+        <span class="stat-module-value">{{ getTotalStats().reviews }}</span>
+      </div>
+      <div class="stat-module">
+        <div class="stat-module-scanline"></div>
+        <span class="stat-module-label">// LIKES TOTALES</span>
+        <span class="stat-module-value">{{ getTotalStats().likes }}</span>
+      </div>
+      <div class="stat-module">
+        <div class="stat-module-scanline"></div>
+        <span class="stat-module-label">// COMENTARIOS</span>
+        <span class="stat-module-value">{{ getTotalStats().comments }}</span>
+      </div>
+      <div class="stat-module stat-module--highlight">
+        <div class="stat-module-scanline"></div>
+        <span class="stat-module-label">// RATING PROMEDIO</span>
+        <span class="stat-module-value">{{ getAverageRating() | number:'1.1-1' }}</span>
+      </div>
+    </div>
+
+    <!-- ─── MIS ÚLTIMAS REVIEWS ─── -->
+    <div class="recent-reviews-section" *ngIf="!isLoading && (reviews$ | async) as reviews">
+      <div class="section-header">
+        <h2 class="section-title-display">// MIS ÚLTIMAS REVIEWS</h2>
+        <button class="winamp-ghost-btn" type="button" (click)="goToMyReviews()">VER MÁS ▶</button>
+      </div>
+
+      <div class="reviews-list">
+        <article
+          class="winamp-review-card"
+          *ngFor="let review of reviews | slice:0:2; trackBy: reviewTrackBy"
+          [class.tone-violet]="review.tone === 'violet'"
+          [class.tone-cyan]="review.tone === 'cyan'"
+        >
+          <div class="review-visual-block">
+            <button
+              class="review-cover-frame"
+              type="button"
+              [ngStyle]="getCoverStyle(review.cover)"
+              (click)="goToAlbum(review.albumId)"
+              [attr.aria-label]="'Ver álbum ' + review.album"
+            >
+              <div class="cover-scanlines"></div>
+            </button>
+            <div class="vu-meter-panel">
+              <div class="vu-meter-scanline"></div>
+              <div class="vu-meter-label">RATING {{ review.rating | number:'1.1-1' }}</div>
+              <div class="vu-meter-bars">
+                <div
+                  class="vu-bar"
+                  *ngFor="let barH of getVuBars(review.rating); let bi = index"
+                  [style.height.%]="barH"
+                  [class.vu-bar--peak]="bi === 1"
+                  [class.vu-bar--high]="bi === 2"
+                ></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="review-data-panel">
+            <div class="rating-badge">
+              <span class="rating-score-display">{{ review.rating | number:'1.1-1' }}</span>
+            </div>
+
+            <div class="rdp-left">
+              <div class="reviewer-id">
+                <div class="reviewer-avatar-badge">{{ getUserInitial(review.user) }}</div>
+                <div class="reviewer-info">
+                  <span class="reviewer-name-display">{{ review.user }}</span>
+                  <span class="reviewer-timestamp">{{ review.postedAt | date:'dd/MM/yyyy' }}</span>
+                </div>
+              </div>
+              <h3 class="review-album-title">
+                <button class="album-link-display" type="button" (click)="goToAlbum(review.albumId)">
+                  {{ review.album }}
+                </button>
+              </h3>
+              <p class="review-highlight-text">{{ review.highlight }}</p>
+            </div>
+
+            <div class="rdp-right">
+              <div class="metal-tags">
+                <span class="metal-tag" *ngFor="let tag of review.tags">{{ tag }}</span>
+              </div>
+              <div class="review-stats-row">
+                <div class="stat-item">
+                  <span class="stat-icon">❤</span>
+                  <span class="stat-value">{{ review.stats.likes }}</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-icon">💬</span>
+                  <span class="stat-value">{{ review.stats.comments }}</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-icon">↺</span>
+                  <span class="stat-value">{{ review.stats.shares }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- ─── LOADING ─── -->
+    <div class="loading-visor" *ngIf="isLoading">
+      <div class="loading-scanline"></div>
+      <span class="loading-text">▷ CARGANDO PERFIL...</span>
+    </div>
+
+  </section>
+</div>

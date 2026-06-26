@@ -1,3 +1,30 @@
+export type AvatarId =
+  | 'cyber-skull'
+  | 'robot-head'
+  | 'hacker-cat'
+  | 'vinyl-punk'
+  | 'glitch-face'
+  | 'synth-wave'
+  | 'terminal-ghost'
+  | 'dj-alien';
+
+export const AVATAR_OPTIONS: { id: AvatarId; label: string }[] = [
+  { id: 'cyber-skull', label: 'Cyber Skull' },
+  { id: 'robot-head', label: 'Robot Head' },
+  { id: 'hacker-cat', label: 'Hacker Cat' },
+  { id: 'vinyl-punk', label: 'Vinyl Punk' },
+  { id: 'glitch-face', label: 'Glitch Face' },
+  { id: 'synth-wave', label: 'Synth Wave' },
+  { id: 'terminal-ghost', label: 'Terminal Ghost' },
+  { id: 'dj-alien', label: 'DJ Alien' },
+];
+
+export const DEFAULT_AVATAR: AvatarId = 'synth-wave';
+
+export function getAvatarPath(avatarId: AvatarId | undefined | null): string {
+  return `assets/avatars/avatar-${avatarId || DEFAULT_AVATAR}.svg`;
+}
+
 export interface TridifyUserProfile {
   id: string;
   username: string;
@@ -5,6 +32,7 @@ export interface TridifyUserProfile {
   roleTagline: string;
   avatarInitials: string;
   avatarGradient: string;
+  avatarId?: AvatarId;
   streakDays: number;
 }
 
@@ -37,6 +65,7 @@ export interface ReviewerSpotlight {
   specialty: string;
   highlight: string;
   avatarColor: string;
+  avatarId?: AvatarId;
   streak: number;
 }
 
@@ -63,7 +92,7 @@ export interface UpcomingAlbum {
   tags: string[];
 }
 
-export type SearchResultType = 'album' | 'review' | 'curator';
+export type SearchResultType = 'album' | 'track' | 'review' | 'curator';
 
 export interface SearchResultItem {
   id: string | number;

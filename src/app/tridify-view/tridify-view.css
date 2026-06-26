@@ -1,7 +1,7 @@
-/* ════════════════════════════════════════════════
-   TRIDIFY — WINAMP SKEUOMORPHIC THEME
-   Argentine slang · Metallic · Matrix-green
-════════════════════════════════════════════════ */
+﻿/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   TRIDIFY â€” WINAMP SKEUOMORPHIC THEME
+   Argentine slang Â· Metallic Â· Matrix-green
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 :host {
   display: block;
@@ -9,7 +9,7 @@
   background: #0e0e0e;
   font-family: 'Inter', 'Segoe UI', sans-serif;
 
-  /* ── Colour tokens ── */
+  /* â”€â”€ Colour tokens â”€â”€ */
   --green:        #00ff41;
   --green-dim:    #006b1b;
   --green-glow:   rgba(0, 255, 65, 0.55);
@@ -17,7 +17,7 @@
   --cyan-accent:  #00aacc;
   --amber:        #ffaa00;
 
-  /* ── Metal tones ── */
+  /* â”€â”€ Metal tones â”€â”€ */
   --m900: #0e0e0e;
   --m800: #161616;
   --m700: #1e1e1e;
@@ -28,7 +28,7 @@
   --m200: #555;
   --m100: #777;
 
-  /* ── Bevel shadows ── */
+  /* â”€â”€ Bevel shadows â”€â”€ */
   --bevel-out:
     inset 1px 1px 0 rgba(255, 255, 255, 0.18),
     inset -1px -1px 0 rgba(0, 0, 0, 0.7),
@@ -37,7 +37,7 @@
     inset 2px 2px 4px rgba(0, 0, 0, 0.65),
     inset -1px -1px 0 rgba(255, 255, 255, 0.06);
 
-  /* ── Scanline pattern ── */
+  /* â”€â”€ Scanline pattern â”€â”€ */
   --scanline: repeating-linear-gradient(
     0deg,
     transparent,
@@ -53,11 +53,11 @@
     rgba(0, 255, 65, 0.025) 4px
   );
 
-  /* ── Pixel font ── */
+  /* â”€â”€ Pixel font â”€â”€ */
   --px: 'VT323', 'Share Tech Mono', monospace;
 }
 
-/* ════════ HOST OUTER FRAME ════════ */
+/* â•â•â•â•â•â•â•â• HOST OUTER FRAME â•â•â•â•â•â•â•â• */
 :host {
   display: block;
   min-height: 100vh;
@@ -65,7 +65,7 @@
   padding: 0.9rem 1.5rem;
 }
 
-/* ════════ SHELL LAYOUT ════════ */
+/* â•â•â•â•â•â•â•â• SHELL LAYOUT â•â•â•â•â•â•â•â• */
 .tridify-shell {
   display: grid;
   grid-template-columns: 250px 1fr;
@@ -90,7 +90,7 @@
   z-index: 15;
 }
 
-/* ════════ WINAMP SIDEBAR ════════ */
+/* â•â•â•â•â•â•â•â• WINAMP SIDEBAR â•â•â•â•â•â•â•â• */
 .winamp-sidebar {
   display: flex;
   flex-direction: column;
@@ -107,7 +107,7 @@
   align-self: start;
 }
 
-/* ── Title bar ── */
+/* â”€â”€ Title bar â”€â”€ */
 .winamp-title-bar {
   display: flex;
   align-items: center;
@@ -165,7 +165,7 @@
   box-shadow: var(--bevel-out);
 }
 
-/* ── Brand panel ── */
+/* â”€â”€ Brand panel â”€â”€ */
 .winamp-brand-panel {
   padding: 0.9rem 0.85rem 0.7rem;
   border-bottom: 2px solid #0a0a0a;
@@ -208,7 +208,7 @@
   letter-spacing: 0.06em;
 }
 
-/* ── Profile panel ── */
+/* â”€â”€ Profile panel â”€â”€ */
 .winamp-profile-panel {
   padding: 0.7rem 0.75rem;
   border-bottom: 2px solid #0a0a0a;
@@ -249,6 +249,14 @@
   text-shadow: 0 0 5px var(--green-glow);
 }
 
+.profile-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  image-rendering: pixelated;
+}
+
 .profile-meta {
   min-width: 0;
 }
@@ -272,7 +280,7 @@
   margin-top: 0.1rem;
 }
 
-/* ── Action button (Subir Alta Review) ── */
+/* â”€â”€ Action button (Subir Alta Review) â”€â”€ */
 .winamp-action-btn {
   display: flex;
   align-items: center;
@@ -307,7 +315,7 @@
   background: linear-gradient(180deg, #1a1a1a 0%, #222 100%);
 }
 
-/* ── Navigation ── */
+/* â”€â”€ Navigation â”€â”€ */
 .winamp-nav {
   display: flex;
   flex-direction: column;
@@ -395,7 +403,7 @@
   text-shadow: 0 0 5px var(--green-glow);
 }
 
-/* ── Footer panel ── */
+/* â”€â”€ Footer panel â”€â”€ */
 .winamp-footer-panel {
   padding: 0.65rem 0.75rem;
   border-top: 2px solid #0a0a0a;
@@ -438,7 +446,7 @@
   line-height: 1.35;
 }
 
-/* ════════ CONTENT AREA ════════ */
+/* â•â•â•â•â•â•â•â• CONTENT AREA â•â•â•â•â•â•â•â• */
 .content {
   display: flex;
   flex-direction: column;
@@ -469,7 +477,7 @@
   transform: translate(1px, 1px);
 }
 
-/* ════════ VISOR HEADER / SEARCH ════════ */
+/* â•â•â•â•â•â•â•â• VISOR HEADER / SEARCH â•â•â•â•â•â•â•â• */
 .winamp-visor-header {
   display: flex;
   justify-content: space-between;
@@ -520,7 +528,7 @@
   letter-spacing: 0.07em;
 }
 
-/* ── Search panel ── */
+/* â”€â”€ Search panel â”€â”€ */
 .search-wrapper {
   position: relative;
   width: min(500px, 100%);
@@ -722,7 +730,7 @@
   text-overflow: ellipsis;
 }
 
-/* ════════ CONTENT GRID ════════ */
+/* â•â•â•â•â•â•â•â• CONTENT GRID â•â•â•â•â•â•â•â• */
 .content-grid {
   display: grid;
   grid-template-columns: 65fr 35fr;
@@ -730,7 +738,7 @@
   align-items: stretch;
 }
 
-/* ════════ MAIN PANEL FILLS GRID HEIGHT ════════ */
+/* â•â•â•â•â•â•â•â• MAIN PANEL FILLS GRID HEIGHT â•â•â•â•â•â•â•â• */
 .main-panel {
   display: flex;
   flex-direction: column;
@@ -761,7 +769,7 @@
   height: 100%;
 }
 
-/* ── Section headers ── */
+/* â”€â”€ Section headers â”€â”€ */
 .section-header {
   display: flex;
   justify-content: space-between;
@@ -803,7 +811,7 @@
   color: var(--green);
 }
 
-/* ════════ REVIEW CARDS — VISUALIZER STYLE ════════ */
+/* â•â•â•â•â•â•â•â• REVIEW CARDS â€” VISUALIZER STYLE â•â•â•â•â•â•â•â• */
 .reviews-section {
   margin-bottom: 0.85rem;
 }
@@ -837,13 +845,13 @@
   border-top: 3px solid #009ab8;
 }
 
-/* ── Review visual block (top) — cover left, VU right ── */
+/* â”€â”€ Review visual block (top) â€” cover left, VU right â”€â”€ */
 .review-visual-block {
   display: flex;
   flex-direction: row;
   background: #0e0e0e;
   border-bottom: 2px solid #000;
-  height: 165px;
+  height: 140px;
   flex-shrink: 0;
 }
 
@@ -884,7 +892,7 @@
   opacity: 0.25;
 }
 
-/* ── VU Meter ── */
+/* â”€â”€ VU Meter â”€â”€ */
 .vu-meter-panel {
   padding: 0.45rem 0.5rem;
   background: #080808;
@@ -948,12 +956,12 @@
   background: linear-gradient(180deg, #aaff33 0%, #00ff41 55%, #009922 100%);
 }
 
-/* ── Review data panel (right) ── */
+/* â”€â”€ Review data panel â”€â”€ */
 .review-data-panel {
-  padding: 0.9rem 0.95rem;
+  padding: 0.6rem 0.7rem;
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
+  gap: 0.4rem;
   position: relative;
   overflow: hidden;
   min-height: 0;
@@ -973,17 +981,28 @@
   pointer-events: none;
 }
 
-.review-meta-row {
+/* Top: reviewer id + title + body text */
+.rdp-left {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+/* Bottom: score, tags, stats in a row */
+.rdp-right {
+  display: flex;
+  flex-direction: row;
   align-items: center;
-  position: relative;
+  flex-wrap: wrap;
+  gap: 0.4rem;
 }
 
 .reviewer-id {
   display: flex;
   align-items: center;
   gap: 0.45rem;
+  flex-wrap: nowrap;
 }
 
 .reviewer-avatar-badge {
@@ -1024,11 +1043,15 @@
 }
 
 .rating-badge {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
   background: linear-gradient(180deg, #0e0e0e 0%, #0a0a0a 100%);
   border: 1px solid #000;
   border-radius: 2px;
   padding: 0.1rem 0.4rem;
   box-shadow: var(--bevel-in);
+  z-index: 2;
 }
 
 .rating-score-display {
@@ -1065,12 +1088,31 @@
   color: #555;
   line-height: 1.55;
   position: relative;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.review-ver-mas {
+  font-family: var(--px);
+  font-size: 0.72rem;
+  color: var(--green-dim);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  transition: color 0.08s;
+  position: relative;
+}
+
+.review-ver-mas:hover {
+  color: var(--green);
+  text-shadow: 0 0 4px var(--green-glow);
 }
 
 /* Metal tags */
 .metal-tags {
   display: flex;
-  gap: 0.35rem;
+  gap: 0.28rem;
   flex-wrap: wrap;
   position: relative;
 }
@@ -1094,8 +1136,8 @@
 /* Review stats */
 .review-stats-row {
   display: flex;
-  gap: 0.9rem;
-  margin-top: auto;
+  gap: 0.6rem;
+  margin-left: auto;
   position: relative;
 }
 
@@ -1116,7 +1158,7 @@
   color: #666;
 }
 
-/* ════════ PLAYLIST WINDOW (Genres) ════════ */
+/* â•â•â•â•â•â•â•â• PLAYLIST WINDOW (Genres) â•â•â•â•â•â•â•â• */
 .playlist-window {
   background: linear-gradient(180deg, #181818 0%, #121212 100%);
   border: 2px solid #0a0a0a;
@@ -1213,7 +1255,7 @@
   flex-shrink: 0;
 }
 
-/* ════════ EQ PANEL (Right Sidebar) ════════ */
+/* â•â•â•â•â•â•â•â• EQ PANEL (Right Sidebar) â•â•â•â•â•â•â•â• */
 .eq-panel {
   display: flex;
   flex-direction: column;
@@ -1226,7 +1268,7 @@
   gap: 0.55rem;
 }
 
-/* ── EQ Module ── */
+/* â”€â”€ EQ Module â”€â”€ */
 .eq-module {
   background: linear-gradient(180deg, #222 0%, #1c1c1c 50%, #181818 100%);
   border: 2px solid #0a0a0a;
@@ -1268,7 +1310,7 @@
   letter-spacing: 0.09em;
 }
 
-/* ── EQ main row: avatar + info left, faders flush right ── */
+/* â”€â”€ EQ main row: avatar + info left, faders flush right â”€â”€ */
 .eq-main-row {
   display: flex;
   align-items: center;
@@ -1278,20 +1320,13 @@
   overflow: hidden;
 }
 
-/* Circular metallic avatar lens */
+/* Circular avatar lens */
 .eq-avatar-lens {
   width: 44px;
   height: 44px;
   border-radius: 50%;
   flex-shrink: 0;
-  background: linear-gradient(135deg, #383838 0%, #1e1e1e 100%);
-  border: 3px solid #0a0a0a;
-  box-shadow:
-    inset 2px 2px 4px rgba(255, 255, 255, 0.14),
-    inset -2px -2px 4px rgba(0, 0, 0, 0.8),
-    2px 2px 7px rgba(0, 0, 0, 0.65),
-    0 0 0 1px rgba(255, 255, 255, 0.04);
-  padding: 3px;
+  background: #0a0a0a;
   overflow: hidden;
 }
 
@@ -1299,8 +1334,9 @@
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background-size: cover;
-  background-position: center;
+  object-fit: cover;
+  display: block;
+  image-rendering: pixelated;
 }
 
 .eq-reviewer-info {
@@ -1339,7 +1375,7 @@
   letter-spacing: 0.05em;
 }
 
-/* ── EQ inline faders (flush right edge, full row height) ── */
+/* â”€â”€ EQ inline faders (flush right edge, full row height) â”€â”€ */
 .eq-faders-inline {
   display: flex;
   align-items: flex-end;
@@ -1424,7 +1460,7 @@
   text-align: center;
 }
 
-/* ── EQ streak display ── */
+/* â”€â”€ EQ streak display â”€â”€ */
 .eq-streak-display {
   display: flex;
   justify-content: space-between;
@@ -1448,7 +1484,7 @@
   letter-spacing: 0.06em;
 }
 
-/* ════════ CHALLENGE MODULE ════════ */
+/* â•â•â•â•â•â•â•â• CHALLENGE MODULE â•â•â•â•â•â•â•â• */
 .challenge-module {
   background: linear-gradient(180deg, #191919 0%, #131313 100%);
   border: 2px solid #0a0a0a;
@@ -1539,7 +1575,7 @@
   background: linear-gradient(180deg, #080808 0%, #0e1e0e 100%);
 }
 
-/* ════════ RESPONSIVE ════════ */
+/* â•â•â•â•â•â•â•â• RESPONSIVE â•â•â•â•â•â•â•â• */
 @media (max-width: 1280px) {
   .content-grid {
     grid-template-columns: 1.1fr 0.9fr;
@@ -1626,3 +1662,4 @@
     justify-content: center;
   }
 }
+

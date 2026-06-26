@@ -14,6 +14,7 @@ import {
 import {
   DAILY_CHALLENGE_FIXTURE,
   GENRES_FIXTURE,
+  MY_REVIEWS_FIXTURE,
   TOP_REVIEWS_FIXTURE,
   TOP_REVIEWERS_FIXTURE,
   TRIDIFY_DISCOVERY_SEARCH_FIXTURE,
@@ -37,6 +38,7 @@ export class TridifyDiscoveryStore {
   private readonly dailyChallengeSubject = new BehaviorSubject<DailyChallenge | null>(null);
   private readonly upcomingAlbumsSubject = new BehaviorSubject<UpcomingAlbum[]>([]);
   private readonly searchResultsSubject = new BehaviorSubject<SearchResultItem[]>([]);
+  private readonly myReviewsSubject = new BehaviorSubject<ReviewHighlight[]>([]);
 
   readonly userProfile$ = this.userProfileSubject.asObservable();
   readonly topReviews$ = this.topReviewsSubject.asObservable();
@@ -45,6 +47,7 @@ export class TridifyDiscoveryStore {
   readonly dailyChallenge$ = this.dailyChallengeSubject.asObservable();
   readonly upcomingAlbums$ = this.upcomingAlbumsSubject.asObservable();
   readonly searchResults$ = this.searchResultsSubject.asObservable();
+  readonly myReviews$ = this.myReviewsSubject.asObservable();
 
   constructor(
     private readonly userService: TridifyUserService,
@@ -173,5 +176,18 @@ export class TridifyDiscoveryStore {
         })
       )
       .subscribe(albums => this.upcomingAlbumsSubject.next(albums));
+  }
+
+  private loadMyReviews(): void {
+    this.reviewService
+      .getMyReviews()
+      .pipe(
+        take(1),
+        catchError(error => {
+          console.warn('Using fixture my reviews after API error', error);
+          return of(MY_REVIEWS_FIXTURE);
+        })
+      )
+      .subscribe(reviews => this.myReviewsSubject.next(reviews));
   }
 }

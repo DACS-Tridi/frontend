@@ -7,5 +7,6 @@ export const USER_PROFILE_FIXTURE: TridifyUserProfile = {
   roleTagline: 'Curador del under porteño',
   avatarInitials: 'J',
   avatarGradient: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+  avatarId: 'synth-wave',
   streakDays: 12
 };

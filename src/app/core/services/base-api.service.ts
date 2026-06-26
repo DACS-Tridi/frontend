@@ -18,10 +18,7 @@ export class BaseApiService {
   protected readonly defaultHeaders: HttpHeaders;
 
   constructor(protected http: HttpClient) {
-    // Asegurar que la URL base sea absoluta
-    this.baseUrl = environment.backendForFrontendUrl.startsWith('http') 
-      ? environment.backendForFrontendUrl 
-      : `http://${environment.backendForFrontendUrl}`;
+    this.baseUrl = environment.backendForFrontendUrl;
     
     this.defaultHeaders = new HttpHeaders({
       [HTTP_HEADERS.CONTENT_TYPE]: HTTP_HEADERS.APPLICATION_JSON,

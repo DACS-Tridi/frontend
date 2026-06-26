@@ -15,12 +15,20 @@ export class TridifyReviewService extends BaseApiService {
     super(http);
   }
 
+  getAllReviews(): Observable<ReviewHighlight[]> {
+    return this.get<ReviewHighlight[]>(API_ENDPOINTS.TRIDIFY.ALL_REVIEWS);
+  }
+
   getTopReviewsForToday(): Observable<ReviewHighlight[]> {
     return this.get<ReviewHighlight[]>(API_ENDPOINTS.TRIDIFY.TODAY_REVIEWS);
   }
 
   getDailyChallenge(): Observable<DailyChallenge> {
     return this.get<DailyChallenge>(API_ENDPOINTS.TRIDIFY.DAILY_CHALLENGE);
+  }
+
+  getMyReviews(): Observable<ReviewHighlight[]> {
+    return this.get<ReviewHighlight[]>(API_ENDPOINTS.TRIDIFY.MY_REVIEWS);
   }
 
   createReview(payload: ReviewCreatePayload): Observable<ReviewHighlight> {

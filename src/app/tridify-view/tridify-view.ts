@@ -6,7 +6,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { TridifyDiscoveryStore } from './data-access/tridify-discovery.store';
-import { GenreChip, ReviewHighlight, ReviewerSpotlight, SearchResultItem } from './models/discovery.models';
+import { GenreChip, ReviewHighlight, ReviewerSpotlight, SearchResultItem, getAvatarPath } from './models/discovery.models';
 
 @Component({
   selector: 'app-tridify-view',
@@ -24,21 +24,21 @@ export class TridifyViewComponent implements OnInit {
   protected showSearchResults = false;
 
   protected readonly navigationPrimary = [
-    { icon: '🏠', label: 'Inicio', active: true },
-    { icon: '🧭', label: 'Explorá', active: false },
-    { icon: '👤', label: 'Mi Perfil', active: false }
+    { icon: '🏠', label: 'Inicio', active: true, route: '/tridify' },
+    { icon: '🧭', label: 'Explorá', active: false, route: '/tridify/explore' },
+    { icon: '👤', label: 'Mi Perfil', active: false, route: '/tridify/my-profile' }
   ];
 
   protected readonly navigationLibrary = [
-    { icon: '📝', label: 'Mis Reviews' },
-    { icon: '⭐', label: 'Reviews Favoritas' },
-    { icon: '🗂️', label: 'Borradores' }
+    { icon: '📝', label: 'Mis Reviews', route: '/tridify/my-reviews' },
+    { icon: '⭐', label: 'Reviews Favoritas', route: null },
+    { icon: '🗂️', label: 'Borradores', route: null }
   ];
 
   protected readonly navigationCommunity = [
-    { icon: '🔥', label: 'Lo Más Piola' },
-    { icon: '🎧', label: 'Top Reviews' },
-    { icon: '🎯', label: 'Desafío del Día' }
+    { icon: '🔥', label: 'Lo Más Piola',    route: null },
+    { icon: '🎧', label: 'Top Reviews',      route: '/tridify/top-reviews' },
+    { icon: '🎯', label: 'Desafío del Día',  route: null }
   ];
 
   private readonly EQ_FADER_PATTERNS: Record<number, number[]> = {
@@ -109,6 +109,10 @@ export class TridifyViewComponent implements OnInit {
 
   protected getUserInitial(user: string | null | undefined): string {
     return user ? user.charAt(0).toUpperCase() : '?';
+  }
+
+  protected getAvatarSrc(avatarId?: string): string {
+    return getAvatarPath(avatarId as any);
   }
 
   /** Returns five bar heights (0–100) for the VU-meter rating display. */

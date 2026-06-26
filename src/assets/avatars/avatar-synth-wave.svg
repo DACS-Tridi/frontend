@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" shape-rendering="crispEdges">
+  <defs>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="64" height="64" fill="#0a0a0a"/>
+  <!-- Hair / helmet -->
+  <rect x="16" y="6" width="32" height="4" fill="#ff00ff" opacity="0.7"/>
+  <rect x="12" y="10" width="40" height="4" fill="#ff00ff" opacity="0.5"/>
+  <rect x="12" y="14" width="8" height="8" fill="#ff00ff" opacity="0.3"/>
+  <rect x="44" y="14" width="8" height="8" fill="#ff00ff" opacity="0.3"/>
+  <!-- Face -->
+  <rect x="16" y="14" width="32" height="4" fill="#00ff41"/>
+  <rect x="12" y="18" width="4" height="20" fill="#00ff41"/>
+  <rect x="48" y="18" width="4" height="20" fill="#00ff41"/>
+  <rect x="16" y="38" width="32" height="4" fill="#00ff41"/>
+  <!-- Sunglasses - synthwave gradient -->
+  <rect x="16" y="20" width="14" height="6" fill="#ff00ff" filter="url(#glow)"/>
+  <rect x="34" y="20" width="14" height="6" fill="#00ffff" filter="url(#glow)"/>
+  <rect x="30" y="22" width="4" height="2" fill="#00ff41"/>
+  <!-- Reflection on glasses -->
+  <rect x="18" y="20" width="4" height="2" fill="#ffffff" opacity="0.3"/>
+  <rect x="36" y="20" width="4" height="2" fill="#ffffff" opacity="0.3"/>
+  <!-- Nose -->
+  <rect x="30" y="28" width="4" height="4" fill="#00ff41" opacity="0.7"/>
+  <!-- Mouth - cool smirk -->
+  <rect x="24" y="34" width="14" height="2" fill="#00ff41"/>
+  <rect x="38" y="32" width="4" height="2" fill="#00ff41"/>
+  <!-- Headphones -->
+  <rect x="6" y="18" width="6" height="14" fill="#ff00ff" opacity="0.6"/>
+  <rect x="52" y="18" width="6" height="14" fill="#00ffff" opacity="0.6"/>
+  <!-- Synth wave lines bottom -->
+  <rect x="4" y="48" width="56" height="2" fill="#ff00ff" opacity="0.3"/>
+  <rect x="8" y="52" width="48" height="2" fill="#ff00ff" opacity="0.2"/>
+  <rect x="12" y="56" width="40" height="2" fill="#00ffff" opacity="0.15"/>
+  <rect x="16" y="60" width="32" height="2" fill="#00ffff" opacity="0.1"/>
+</svg>
