@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -19,6 +19,7 @@ export class TridifyViewComponent implements OnInit {
   private readonly discoveryStore = inject(TridifyDiscoveryStore);
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
 
   protected mobileMenuOpen = false;
   protected showSearchResults = false;
@@ -69,7 +70,7 @@ export class TridifyViewComponent implements OnInit {
     this.discoveryStore.initialize();
 
     this.searchForm.controls.term.valueChanges
-      .pipe(debounceTime(300), distinctUntilChanged(), takeUntilDestroyed())
+      .pipe(debounceTime(300), distinctUntilChanged(), takeUntilDestroyed(this.destroyRef))
       .subscribe(value => {
         if (!value.trim()) {
           this.discoveryStore.clearSearch();
