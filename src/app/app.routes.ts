@@ -4,7 +4,7 @@ import { RoleBGuard } from './core/guards/role.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', loadComponent: () => import('./home/home').then(m => m.HomeComponent) },
+  { path: 'home', loadComponent: () => import('./tridify-view/tridify-view').then(m => m.TridifyViewComponent) },
   { 
     path: 'table-grid', 
     loadComponent: () => import('./table-grid/table-grid').then(m => m.TableGridComponent),
