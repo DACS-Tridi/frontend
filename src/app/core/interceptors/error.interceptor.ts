@@ -22,6 +22,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     );
   }
 
+  // TODO: mapear a un archivo a parte un json de errores para poder hacer traducciones.
   private handleError(error: HttpErrorResponse): void {
     let errorMessage = 'Ha ocurrido un error inesperado';
     let errorTitle = 'Error';

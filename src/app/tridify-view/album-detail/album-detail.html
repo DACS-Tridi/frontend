@@ -1,94 +1,216 @@
-<div class="album-detail-page" *ngIf="pageData$ | async as data; else loadingTpl">
+<div class="tridify-shell">
+  <div class="sidebar-backdrop" *ngIf="mobileMenuOpen" (click)="closeMobileMenu()"></div>
 
-  <div class="error-banner" *ngIf="data.error">
-    <p>{{ data.error }}</p>
-    <a routerLink="/tridify">← Volver</a>
-  </div>
+  <!-- ═══════════════════════════════════════
+       LEFT SIDEBAR
+  ═══════════════════════════════════════ -->
+  <aside class="winamp-sidebar" [class.open]="mobileMenuOpen">
 
-  <ng-container *ngIf="data.album as album">
-
-    <!-- Header del álbum -->
-    <div class="album-header">
-      <div class="album-cover">
-        <img
-          *ngIf="album.imageUrl"
-          [src]="album.imageUrl"
-          [alt]="album.name"
-          class="cover-img"
-        />
-        <div *ngIf="!album.imageUrl" class="cover-placeholder">🎵</div>
+    <div class="winamp-title-bar">
+      <div class="win-led-group">
+        <span class="win-led win-led--red"></span>
+        <span class="win-led win-led--yellow"></span>
+        <span class="win-led win-led--green"></span>
       </div>
-
-      <div class="album-info">
-        <h1 class="album-name">{{ album.name }}</h1>
-        <p class="album-artists">{{ album.artists?.join(', ') }}</p>
-        <div class="album-meta">
-          <span class="meta-item">📅 {{ album.releaseDate | date: 'yyyy' }}</span>
-          <span class="meta-item">🎵 {{ album.totalTracks }} tracks</span>
-        </div>
-
-        <!-- Promedio -->
-        <div class="average-rating" *ngIf="data.reviewsData && data.reviewsData.totalReviews > 0">
-          <div class="stars-row">
-            <span
-              *ngFor="let star of getRatingStars(data.reviewsData.averageRating)"
-              class="star"
-              [class.star--full]="star === 'full'"
-              [class.star--half]="star === 'half'"
-              [class.star--empty]="star === 'empty'"
-            >★</span>
-          </div>
-          <span class="avg-value">{{ data.reviewsData.averageRating | number: '1.1-1' }}</span>
-          <span class="avg-label">({{ data.reviewsData.totalReviews }} reseñas)</span>
-        </div>
-        <p class="no-reviews-yet" *ngIf="!data.reviewsData || data.reviewsData.totalReviews === 0">
-          Todavía no hay reseñas para este álbum.
-        </p>
-
-        <a
-          class="btn-create-review"
-          [routerLink]="['/tridify/reviews/new']"
-          [queryParams]="{ albumId: album.id }"
-        >
-          + Escribir reseña
-        </a>
-      </div>
+      <span class="winamp-bar-title">TRIDIFY v2.1.0</span>
+      <button class="sidebar-close" type="button" aria-label="Cerrar menú" (click)="closeMobileMenu()">✕</button>
     </div>
 
-    <!-- Lista de reviews -->
-    <section class="reviews-section" *ngIf="data.reviewsData && data.reviewsData.totalReviews > 0">
-      <h2 class="reviews-title">Reseñas</h2>
+    <div class="winamp-brand-panel">
+      <div class="brand-scanline-overlay"></div>
+      <div class="brand-name">TRIDIFY</div>
+      <div class="brand-tagline">El visor piola del under porteño. Bandas zarpadas, curadas por la gente.</div>
+    </div>
 
-      <div class="review-card" *ngFor="let review of data.reviewsData.reviews; trackBy: reviewTrackBy">
-        <div class="review-header">
-          <span class="review-user">{{ review.user || 'Usuario' }}</span>
-          <div class="review-stars">
-            <span
-              *ngFor="let star of getRatingStars(review.rating)"
-              class="star star--sm"
-              [class.star--full]="star === 'full'"
-              [class.star--half]="star === 'half'"
-              [class.star--empty]="star === 'empty'"
-            >★</span>
-          </div>
-          <span class="review-date">{{ review.postedAt | date: 'dd/MM/yyyy' }}</span>
+    <div class="winamp-profile-panel" *ngIf="(userProfile$ | async) as userProfile">
+      <div class="profile-display">
+        <div class="profile-avatar-frame">
+          <img class="profile-avatar-img" [src]="getAvatarSrc(userProfile.avatarId)" [alt]="userProfile.displayName" />
         </div>
-
-        <p class="review-highlight" *ngIf="review.highlight">{{ review.highlight }}</p>
-
-        <p class="review-body-text" *ngIf="review.reviewBody">{{ review.reviewBody }}</p>
-
-        <div class="review-tags" *ngIf="review.tags?.length">
-          <span class="tag" *ngFor="let tag of review.tags">{{ tag }}</span>
+        <div class="profile-meta">
+          <div class="profile-name-display">{{ userProfile.displayName }}</div>
+          <div class="profile-role-display">{{ userProfile.roleTagline }}</div>
         </div>
       </div>
-    </section>
+      <a class="winamp-action-btn" routerLink="/tridify/reviews/new">⊕ SUBIR ALTA REVIEW</a>
+    </div>
 
-  </ng-container>
+    <nav class="winamp-nav">
+      <div class="nav-group">
+        <div class="nav-group-label">// MENÚ</div>
+        <ul class="nav-list">
+          <li class="winamp-nav-item" routerLink="/tridify" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span>
+            <span class="nav-item-icon">🏠</span>
+            <span class="nav-item-label">Inicio</span>
+          </li>
+          <li class="winamp-nav-item" routerLink="/tridify/explore" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span>
+            <span class="nav-item-icon">🧭</span>
+            <span class="nav-item-label">Explorá</span>
+          </li>
+          <li class="winamp-nav-item" routerLink="/tridify/my-profile" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span>
+            <span class="nav-item-icon">👤</span>
+            <span class="nav-item-label">Mi Perfil</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-label">// BIBLIOTECA</div>
+        <ul class="nav-list">
+          <li class="winamp-nav-item" routerLink="/tridify/my-reviews" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span>
+            <span class="nav-item-icon">📝</span>
+            <span class="nav-item-label">Mis Reviews</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-label">// COMUNIDAD</div>
+        <ul class="nav-list">
+          <li class="winamp-nav-item" routerLink="/tridify/top-reviews" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span>
+            <span class="nav-item-icon">🎧</span>
+            <span class="nav-item-label">Top Reviews</span>
+          </li>
+          <li class="winamp-nav-item" routerLink="/tridify/reviews/new" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span>
+            <span class="nav-item-icon">🎯</span>
+            <span class="nav-item-label">Escribir Review</span>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="winamp-footer-panel" *ngIf="(userProfile$ | async) as userProfile">
+      <div class="footer-scanline"></div>
+      <div class="footer-label-row">// RACHA ACTIVA</div>
+      <div class="footer-streak-value">{{ userProfile.streakDays }} DÍAS</div>
+      <div class="footer-streak-text">Sin aflojar. ¡Seguí mandando reviews, chabón!</div>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════════════════════
+       MAIN CONTENT
+  ═══════════════════════════════════════ -->
+  <section class="content" *ngIf="pageData$ | async as data; else loadingTpl">
+
+    <button type="button" class="mobile-menu-button" (click)="toggleMobileMenu()">
+      ☰ MENÚ
+    </button>
+
+    <!-- ─── ERROR STATE ─── -->
+    <div class="empty-state" *ngIf="data.error">
+      <div class="empty-scanline"></div>
+      <div class="empty-icon">⚠</div>
+      <p class="empty-title">// ERROR AL CARGAR</p>
+      <p class="empty-text">{{ data.error }}</p>
+      <button class="winamp-primary-btn" type="button" (click)="backToDiscover()">◀ VOLVER</button>
+    </div>
+
+    <ng-container *ngIf="data.album as album">
+
+      <!-- ─── VISOR HEADER (album) ─── -->
+      <header class="visor-header album-visor-header">
+        <div class="visor-scanline"></div>
+        <div class="visor-left">
+          <button class="back-btn" type="button" (click)="backToDiscover()">◀ VOLVER</button>
+        </div>
+      </header>
+
+      <!-- ─── ALBUM PLAYER MODULE ─── -->
+      <div class="album-player-module">
+        <div class="album-cover-block">
+          <div class="album-cover-frame" [ngStyle]="getCoverStyle(album.imageUrl)">
+            <div class="cover-scanlines"></div>
+            <div class="cover-placeholder" *ngIf="!album.imageUrl">🎵</div>
+          </div>
+          <div class="album-vu" *ngIf="data.reviewsData && data.reviewsData.totalReviews > 0">
+            <div class="vu-scanline"></div>
+            <div class="vu-label">{{ data.reviewsData.averageRating | number: '1.1-1' }}</div>
+            <div class="vu-bars">
+              <div
+                class="vu-bar"
+                *ngFor="let barH of getVuBars(data.reviewsData.averageRating); let bi = index"
+                [style.height.%]="barH"
+                [class.vu-bar--peak]="bi === 1"
+                [class.vu-bar--high]="bi === 2"
+              ></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="album-info-panel">
+          <span class="album-type-tag">// ÁLBUM</span>
+          <h1 class="album-name-display">{{ album.name }}</h1>
+          <p class="album-artists-display">{{ album.artists?.join(', ') }}</p>
+          <div class="album-meta-row">
+            <span class="meta-chip">📅 {{ album.releaseDate | date: 'yyyy' }}</span>
+            <span class="meta-chip">🎵 {{ album.totalTracks }} TRACKS</span>
+          </div>
+
+          <div class="rating-summary" *ngIf="data.reviewsData && data.reviewsData.totalReviews > 0">
+            <span class="rating-summary-score">{{ data.reviewsData.averageRating | number: '1.1-1' }}</span>
+            <span class="rating-summary-label">PROMEDIO · {{ data.reviewsData.totalReviews }} RESEÑAS</span>
+          </div>
+          <p class="no-reviews-text" *ngIf="!data.reviewsData || data.reviewsData.totalReviews === 0">
+            // TODAVÍA NO HAY RESEÑAS PARA ESTE ÁLBUM
+          </p>
+
+          <button class="winamp-primary-btn" type="button" (click)="goToNewReview()">⊕ ESCRIBIR RESEÑA</button>
+        </div>
+      </div>
+
+      <!-- ─── REVIEWS PLAYLIST ─── -->
+      <div class="reviews-playlist" *ngIf="data.reviewsData && data.reviewsData.totalReviews > 0">
+        <div class="playlist-titlebar">
+          <span class="playlist-title-text">// RESEÑAS ({{ data.reviewsData.totalReviews }})</span>
+          <div class="playlist-led-row">
+            <span class="playlist-led active"></span>
+            <span class="playlist-led"></span>
+            <span class="playlist-led"></span>
+          </div>
+        </div>
+
+        <div class="playlist-body">
+          <article
+            class="review-row"
+            *ngFor="let review of data.reviewsData.reviews; trackBy: reviewTrackBy"
+          >
+            <div class="row-info">
+              <div class="row-avatar-row">
+                <div class="row-avatar">{{ getUserInitial(review.user) }}</div>
+                <span class="row-username">{{ review.user || 'Usuario' }}</span>
+                <span class="row-date">{{ review.postedAt | date: 'dd/MM/yyyy' }}</span>
+              </div>
+
+              <p class="row-highlight" *ngIf="review.highlight">{{ review.highlight }}</p>
+              <p class="row-body-text" *ngIf="review.reviewBody">{{ review.reviewBody }}</p>
+
+              <div class="row-tags" *ngIf="review.tags?.length">
+                <span class="metal-tag" *ngFor="let tag of review.tags">{{ tag }}</span>
+              </div>
+            </div>
+
+            <div class="rating-badge">
+              <span class="rating-score">{{ review.rating | number: '1.1-1' }}</span>
+            </div>
+          </article>
+        </div>
+      </div>
+
+    </ng-container>
+  </section>
 </div>
 
 <ng-template #loadingTpl>
-  <div class="loading-state">
-    <p>Cargando álbum...</p>
+  <div class="tridify-shell tridify-shell--loading">
+    <div class="loading-visor">
+      <div class="loading-scanline"></div>
+      <span class="loading-text">▷ CARGANDO ÁLBUM...</span>
+    </div>
   </div>
 </ng-template>

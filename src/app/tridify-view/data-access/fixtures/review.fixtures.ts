@@ -8,7 +8,7 @@ export const TOP_REVIEWS_FIXTURE: ReviewHighlight[] = [
     album: 'Radiohead — KID A (2000)',
     albumId: '1',
     highlight:
-      'Che, este disco es un golazo total. "Everything in its Right Place" te raja la cabeza al medio. Difícil de entrada, pero si le das su tiempo te regala algo zarpado que no te olvidás más. Una joya del under que pocos bancaron en su momento.',
+      'Che, este disco top top. Calamity jane. "Everything in its Right Place" te raja la cabeza al medio. Difícil de entrada, pero si le das su tiempo te regala algo zarpado que no te olvidás más. Una joya del under que pocos bancaron en su momento.',
     cover: 'radial-gradient(circle at 20% 20%, #ffb347, #ff0844 60%, #1a1a1a 90%)',
     rating: 4.9,
     stats: { likes: 327, comments: 4, shares: 12 },

@@ -1,27 +1,122 @@
-<div class="cr-shell">
+<div class="tridify-shell">
+  <div class="sidebar-backdrop" *ngIf="mobileMenuOpen" (click)="closeMobileMenu()"></div>
 
-  <!-- ═══ TITLE BAR ═══ -->
-  <div class="cr-titlebar">
-    <div class="win-led-group">
-      <span class="win-led win-led--red"></span>
-      <span class="win-led win-led--yellow"></span>
-      <span class="win-led win-led--green"></span>
+  <!-- ═══════════════════════════════════════
+       LEFT SIDEBAR
+  ═══════════════════════════════════════ -->
+  <aside class="winamp-sidebar" [class.open]="mobileMenuOpen">
+
+    <div class="winamp-title-bar">
+      <div class="win-led-group">
+        <span class="win-led win-led--red"></span>
+        <span class="win-led win-led--yellow"></span>
+        <span class="win-led win-led--green"></span>
+      </div>
+      <span class="winamp-bar-title">TRIDIFY v2.1.0</span>
+      <button class="sidebar-close" type="button" aria-label="Cerrar menú" (click)="closeMobileMenu()">✕</button>
     </div>
-    <span class="cr-titlebar-text">TRIDIFY — EDITOR DE RESEÑAS v2.1.0</span>
-    <a routerLink="/tridify" class="cr-back-btn">◀ VOLVÉ A LA CALLE</a>
-  </div>
 
-  <!-- ═══ VISOR HEADER ═══ -->
-  <div class="cr-visor-header">
-    <div class="cr-scanline-overlay"></div>
-    <div class="cr-header-content">
-      <h1 class="cr-main-title">MANDALE MECHA</h1>
-      <p class="cr-subtitle">Completá el formulón y hacete escuchar en la escena, chabón</p>
+    <div class="winamp-brand-panel">
+      <div class="brand-scanline-overlay"></div>
+      <div class="brand-name">TRIDIFY</div>
+      <div class="brand-tagline">El visor piola del under porteño. Bandas zarpadas, curadas por la gente.</div>
     </div>
-  </div>
 
-  <!-- ═══ TWO-COLUMN LAYOUT ═══ -->
-  <div class="cr-layout">
+    <div class="winamp-profile-panel" *ngIf="(userProfile$ | async) as userProfile">
+      <div class="profile-display">
+        <div class="profile-avatar-frame">
+          <img class="profile-avatar-img" [src]="getAvatarSrc(userProfile.avatarId)" [alt]="userProfile.displayName" />
+        </div>
+        <div class="profile-meta">
+          <div class="profile-name-display">{{ userProfile.displayName }}</div>
+          <div class="profile-role-display">{{ userProfile.roleTagline }}</div>
+        </div>
+      </div>
+      <a class="winamp-action-btn" routerLink="/tridify/reviews/new">⊕ SUBIR ALTA REVIEW</a>
+    </div>
+
+    <nav class="winamp-nav">
+      <div class="nav-group">
+        <div class="nav-group-label">// MENÚ</div>
+        <ul class="nav-list">
+          <li class="winamp-nav-item" routerLink="/tridify" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span>
+            <span class="nav-item-icon">🏠</span>
+            <span class="nav-item-label">Inicio</span>
+          </li>
+          <li class="winamp-nav-item" routerLink="/tridify/explore" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span>
+            <span class="nav-item-icon">🧭</span>
+            <span class="nav-item-label">Explorá</span>
+          </li>
+          <li class="winamp-nav-item" routerLink="/tridify/my-profile" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span>
+            <span class="nav-item-icon">👤</span>
+            <span class="nav-item-label">Mi Perfil</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-label">// BIBLIOTECA</div>
+        <ul class="nav-list">
+          <li class="winamp-nav-item" routerLink="/tridify/my-reviews" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span>
+            <span class="nav-item-icon">📝</span>
+            <span class="nav-item-label">Mis Reviews</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-label">// COMUNIDAD</div>
+        <ul class="nav-list">
+          <li class="winamp-nav-item" routerLink="/tridify/top-reviews" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span>
+            <span class="nav-item-icon">🎧</span>
+            <span class="nav-item-label">Top Reviews</span>
+          </li>
+          <li class="winamp-nav-item active" routerLink="/tridify/reviews/new" (click)="closeMobileMenu()">
+            <span class="nav-item-led on"></span>
+            <span class="nav-item-icon">🎯</span>
+            <span class="nav-item-label">Escribir Review</span>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="winamp-footer-panel" *ngIf="(userProfile$ | async) as userProfile">
+      <div class="footer-scanline"></div>
+      <div class="footer-label-row">// RACHA ACTIVA</div>
+      <div class="footer-streak-value">{{ userProfile.streakDays }} DÍAS</div>
+      <div class="footer-streak-text">Sin aflojar. ¡Seguí mandando reviews, chabón!</div>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════════════════════
+       MAIN CONTENT
+  ═══════════════════════════════════════ -->
+  <section class="content">
+
+    <button type="button" class="mobile-menu-button" (click)="toggleMobileMenu()">
+      ☰ MENÚ
+    </button>
+
+    <!-- ─── VISOR HEADER ─── -->
+    <header class="visor-header">
+      <div class="visor-scanline"></div>
+      <div class="visor-left">
+        <button class="back-btn" type="button" (click)="backToDiscover()">◀ VOLVER</button>
+        <div class="visor-title-group">
+          <h1 class="visor-main-title">MANDALE MECHA</h1>
+          <p class="visor-subtitle">Completá el formulón y hacete escuchar en la escena, chabón</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- ─── TWO-COLUMN COMPOSER ─── -->
+    <div class="cr-card">
+    <div class="cr-layout">
 
     <!-- ══════════════════════
          LEFT — FORM PANEL
@@ -334,5 +429,8 @@
 
     </aside>
 
-  </div><!-- end .cr-layout -->
-</div><!-- end .cr-shell -->
+    </div><!-- end .cr-layout -->
+    </div><!-- end .cr-card -->
+
+  </section><!-- end .content -->
+</div><!-- end .tridify-shell -->

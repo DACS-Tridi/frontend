@@ -10,6 +10,7 @@ import { environment } from '../../../environments/environment';
 
 /**
  * Servicio para operaciones de API específicas de la aplicación
+ * Extiende funcionalidades del BaseApiService. 
  */
 @Injectable({
   providedIn: 'root'

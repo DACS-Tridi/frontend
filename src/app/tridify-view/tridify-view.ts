@@ -16,6 +16,7 @@ import { GenreChip, ReviewHighlight, ReviewerSpotlight, SearchResultItem, getAva
   styleUrls: ['./tridify-view.css']
 })
 export class TridifyViewComponent implements OnInit {
+  // store con todo el estado de la pagina, el componente solo lo consume
   private readonly discoveryStore = inject(TridifyDiscoveryStore);
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
@@ -23,6 +24,7 @@ export class TridifyViewComponent implements OnInit {
   protected mobileMenuOpen = false;
   protected showSearchResults = false;
 
+  // items del menu lateral, separados por seccion
   protected readonly navigationPrimary = [
     { icon: '🏠', label: 'Inicio', active: true, route: '/tridify' },
     { icon: '🧭', label: 'Explorá', active: false, route: '/tridify/explore' },
@@ -41,6 +43,7 @@ export class TridifyViewComponent implements OnInit {
     { icon: '🎯', label: 'Desafío del Día',  route: null }
   ];
 
+  // patrones fijos de ecualizador por id de reviewer, son solo decoracion visual
   private readonly EQ_FADER_PATTERNS: Record<number, number[]> = {
     1: [45, 72, 88, 60, 78, 52, 30],
     2: [62, 48, 34, 70, 84, 56, 42],
@@ -49,6 +52,7 @@ export class TridifyViewComponent implements OnInit {
 
   private readonly FADER_LABELS = ['32', '64', '125', '250', '500', '1K', '2K'];
 
+  // streams de datos que vienen del store, listos para usar en el template
   protected readonly userProfile$ = this.discoveryStore.userProfile$;
   protected readonly topReviews$ = this.discoveryStore.topReviews$;
   protected readonly topReviewers$ = this.discoveryStore.topReviewers$;
@@ -60,6 +64,7 @@ export class TridifyViewComponent implements OnInit {
     term: ['']
   });
 
+  // funciones trackby para que *ngfor no re-renderice toda la lista en cada cambio
   protected readonly reviewTrackBy = (_: number, review: ReviewHighlight) => review.id;
   protected readonly reviewerTrackBy = (_: number, reviewer: ReviewerSpotlight) => reviewer.id;
   protected readonly genreTrackBy = (_: number, genre: GenreChip) => genre.id;
@@ -68,6 +73,7 @@ export class TridifyViewComponent implements OnInit {
   ngOnInit(): void {
     this.discoveryStore.initialize();
 
+    // espera que el usuario deje de tipear antes de reaccionar, evita busquedas de mas
     this.searchForm.controls.term.valueChanges
       .pipe(debounceTime(300), distinctUntilChanged(), takeUntilDestroyed())
       .subscribe(value => {
@@ -86,6 +92,7 @@ export class TridifyViewComponent implements OnInit {
     this.mobileMenuOpen = false;
   }
 
+  // dispara la busqueda al enviar el form (enter o boton)
   protected submitSearch(): void {
     const term = this.searchForm.controls.term.value.trim();
     if (!term) return;
@@ -93,6 +100,7 @@ export class TridifyViewComponent implements OnInit {
     this.showSearchResults = true;
   }
 
+  // navega al detalle del album elegido y limpia la busqueda
   protected selectSearchResult(result: SearchResultItem): void {
     const id = result.metadata?.['spotifyId'] ?? result.id;
     this.showSearchResults = false;
@@ -115,29 +123,29 @@ export class TridifyViewComponent implements OnInit {
     return getAvatarPath(avatarId as any);
   }
 
-  /** Returns five bar heights (0–100) for the VU-meter rating display. */
+  // alturas de las cinco barras del vu-metro segun el rating (0 a 100)
   protected getVuBars(rating: number): number[] {
     const base = rating / 5;
     const multipliers = [0.62, 1.0, 0.88, 0.58, 0.36];
     return multipliers.map(m => Math.max(6, Math.round(base * m * 100)));
   }
 
-  /** Returns seven fader positions (0–100, where 100 = top/loud). */
+  // posiciones de los siete faders del ecualizador (100 = arriba del todo)
   protected getEqFaders(reviewerId: number): number[] {
     return this.EQ_FADER_PATTERNS[reviewerId] ?? [50, 60, 72, 55, 66, 46, 74];
   }
 
-  /** Zero-padded track number string, e.g. index 0 → "01". */
+  // numero de track con cero adelante, ej indice 0 da "01"
   protected getTrackNumber(index: number): string {
     return String(index + 1).padStart(2, '0');
   }
 
-  /** Returns the Hz label for a fader column by its index. */
+  // etiqueta en hz para la columna del fader segun su indice
   protected getFaderLabel(index: number): string {
     return this.FADER_LABELS[index] ?? '';
   }
 
-  /** @deprecated kept for backward compatibility; VU meter replaces stars. */
+  // queda solo por compatibilidad vieja, ahora se usa el vu-metro en vez de estrellas
   protected getRatingStars(rating: number): Array<'full' | 'half' | 'empty'> {
     const stars: Array<'full' | 'half' | 'empty'> = [];
     const fullStars = Math.floor(rating);

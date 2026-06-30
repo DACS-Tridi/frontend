@@ -30,6 +30,7 @@ import { TridifyUserService } from './services/tridify-user.service';
 @Injectable({
   providedIn: 'root'
 })
+
 export class TridifyDiscoveryStore {
   private readonly userProfileSubject = new BehaviorSubject<TridifyUserProfile | null>(null);
   private readonly topReviewsSubject = new BehaviorSubject<ReviewHighlight[]>([]);
@@ -176,18 +177,5 @@ export class TridifyDiscoveryStore {
         })
       )
       .subscribe(albums => this.upcomingAlbumsSubject.next(albums));
-  }
-
-  private loadMyReviews(): void {
-    this.reviewService
-      .getMyReviews()
-      .pipe(
-        take(1),
-        catchError(error => {
-          console.warn('Using fixture my reviews after API error', error);
-          return of(MY_REVIEWS_FIXTURE);
-        })
-      )
-      .subscribe(reviews => this.myReviewsSubject.next(reviews));
   }
 }
