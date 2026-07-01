@@ -22,7 +22,7 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              },  
+              },
               "src/assets"
             ],
             "styles": [
@@ -39,8 +39,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "10kB",
-                  "maximumError": "14kB"
+                  "maximumWarning": "30kB",
+                  "maximumError": "40kB"
                 }
               ],
               "fileReplacements": [

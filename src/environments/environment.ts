@@ -5,5 +5,5 @@ export const environment = {
         realm: 'dacs',
         clientId: 'dacs-fe'
     },
-      backendForFrontendUrl: 'https://localhost:9001/bff'
+      backendForFrontendUrl: 'https://dacs2025.local:8443/bff'
 };
