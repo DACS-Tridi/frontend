@@ -1,11 +1,8 @@
 <div class="tridify-shell">
+  <div class="not-implemented-toast" *ngIf="toast">{{ toast }}</div>
   <div class="sidebar-backdrop" *ngIf="mobileMenuOpen" (click)="closeMobileMenu()"></div>
 
-  <!-- ═══════════════════════════════════════
-       LEFT SIDEBAR
-  ═══════════════════════════════════════ -->
   <aside class="winamp-sidebar" [class.open]="mobileMenuOpen">
-
     <div class="winamp-title-bar">
       <div class="win-led-group">
         <span class="win-led win-led--red"></span>
@@ -39,42 +36,42 @@
       <div class="nav-group">
         <div class="nav-group-label">// MENÚ</div>
         <ul class="nav-list">
-          <li class="winamp-nav-item" routerLink="/tridify" (click)="closeMobileMenu()">
-            <span class="nav-item-led"></span>
-            <span class="nav-item-icon">🏠</span>
-            <span class="nav-item-label">Inicio</span>
+          <li class="winamp-nav-item" routerLink="/tridify" [routerLinkActiveOptions]="{exact:true}" routerLinkActive="active" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span><span class="nav-item-icon">🏠</span><span class="nav-item-label">Inicio</span>
           </li>
-          <li class="winamp-nav-item" routerLink="/tridify/my-profile" (click)="closeMobileMenu()">
-            <span class="nav-item-led"></span>
-            <span class="nav-item-icon">👤</span>
-            <span class="nav-item-label">Mi Perfil</span>
+          <li class="winamp-nav-item" routerLink="/tridify/explore" routerLinkActive="active" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span><span class="nav-item-icon">🧭</span><span class="nav-item-label">Explorá</span>
+          </li>
+          <li class="winamp-nav-item" routerLink="/tridify/my-profile" routerLinkActive="active" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span><span class="nav-item-icon">👤</span><span class="nav-item-label">Mi Perfil</span>
           </li>
         </ul>
       </div>
-
       <div class="nav-group">
         <div class="nav-group-label">// BIBLIOTECA</div>
         <ul class="nav-list">
-          <li class="winamp-nav-item" routerLink="/tridify/my-reviews" (click)="closeMobileMenu()">
-            <span class="nav-item-led"></span>
-            <span class="nav-item-icon">📝</span>
-            <span class="nav-item-label">Mis Reviews</span>
+          <li class="winamp-nav-item" routerLink="/tridify/my-reviews" routerLinkActive="active" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span><span class="nav-item-icon">📝</span><span class="nav-item-label">Mis Reviews</span>
+          </li>
+          <li class="winamp-nav-item" (click)="notYet('Reviews Favoritas')">
+            <span class="nav-item-led"></span><span class="nav-item-icon">⭐</span><span class="nav-item-label">Reviews Favoritas</span>
+          </li>
+          <li class="winamp-nav-item" (click)="notYet('Borradores')">
+            <span class="nav-item-led"></span><span class="nav-item-icon">🗂️</span><span class="nav-item-label">Borradores</span>
           </li>
         </ul>
       </div>
-
       <div class="nav-group">
         <div class="nav-group-label">// COMUNIDAD</div>
         <ul class="nav-list">
-          <li class="winamp-nav-item active" routerLink="/tridify/top-reviews" (click)="closeMobileMenu()">
-            <span class="nav-item-led on"></span>
-            <span class="nav-item-icon">🎧</span>
-            <span class="nav-item-label">Top Reviews</span>
+          <li class="winamp-nav-item" (click)="notYet('Lo Más Piola')">
+            <span class="nav-item-led"></span><span class="nav-item-icon">🔥</span><span class="nav-item-label">Lo Más Piola</span>
           </li>
-          <li class="winamp-nav-item" routerLink="/tridify/reviews/new" (click)="closeMobileMenu()">
-            <span class="nav-item-led"></span>
-            <span class="nav-item-icon">🎯</span>
-            <span class="nav-item-label">Escribir Review</span>
+          <li class="winamp-nav-item" routerLink="/tridify/top-reviews" routerLinkActive="active" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span><span class="nav-item-icon">🎧</span><span class="nav-item-label">Top Reviews</span>
+          </li>
+          <li class="winamp-nav-item" (click)="notYet('Desafío del Día')">
+            <span class="nav-item-led"></span><span class="nav-item-icon">🎯</span><span class="nav-item-label">Desafío del Día</span>
           </li>
         </ul>
       </div>

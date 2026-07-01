@@ -33,6 +33,16 @@ export class MyReviewsComponent implements OnInit {
   protected activeSortKey: SortKey = 'recent';
   protected mobileMenuOpen = false;
 
+  /** mensaje transitorio "no implementado" para botones sin funcionalidad */
+  protected toast = '';
+  private toastTimer?: ReturnType<typeof setTimeout>;
+  protected notYet(label: string): void {
+    this.toast = `🚧 "${label}" todavía no está implementado`;
+    clearTimeout(this.toastTimer);
+    this.toastTimer = setTimeout(() => (this.toast = ''), 2500);
+  }
+
+
   protected readonly sortOptions: { key: SortKey; label: string }[] = [
     { key: 'recent', label: 'MÁS RECIENTES' },
     { key: 'rating', label: 'MEJOR RATING' },

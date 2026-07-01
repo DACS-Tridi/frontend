@@ -31,6 +31,16 @@ export class MyProfileComponent implements OnInit {
   protected isLoading = true;
   protected mobileMenuOpen = false;
 
+  /** mensaje transitorio "no implementado" para botones sin funcionalidad */
+  protected toast = '';
+  private toastTimer?: ReturnType<typeof setTimeout>;
+  protected notYet(label: string): void {
+    this.toast = `🚧 "${label}" todavía no está implementado`;
+    clearTimeout(this.toastTimer);
+    this.toastTimer = setTimeout(() => (this.toast = ''), 2500);
+  }
+
+
   ngOnInit(): void {
     this.loadUserProfile();
     this.loadMyReviews();

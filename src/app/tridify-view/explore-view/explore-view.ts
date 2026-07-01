@@ -43,6 +43,16 @@ export class ExploreViewComponent implements OnInit, OnDestroy {
   protected readonly searchControl = this.fb.nonNullable.control('');
 
   protected mobileMenuOpen = false;
+
+  /** mensaje transitorio "no implementado" para botones sin funcionalidad */
+  protected toast = '';
+  private toastTimer?: ReturnType<typeof setTimeout>;
+  protected notYet(label: string): void {
+    this.toast = `🚧 "${label}" todavía no está implementado`;
+    clearTimeout(this.toastTimer);
+    this.toastTimer = setTimeout(() => (this.toast = ''), 2500);
+  }
+
   protected activeFilter: ExploreFilter = 'all';
   protected isSearching = false;
   protected hasSearched = false;

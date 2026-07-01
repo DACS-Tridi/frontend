@@ -53,6 +53,16 @@ export class CreateReviewComponent implements OnInit, OnDestroy {
 
   protected mobileMenuOpen = false;
 
+  /** mensaje transitorio "no implementado" para botones sin funcionalidad */
+  protected toast = '';
+  private toastTimer?: ReturnType<typeof setTimeout>;
+  protected notYet(label: string): void {
+    this.toast = `🚧 "${label}" todavía no está implementado`;
+    clearTimeout(this.toastTimer);
+    this.toastTimer = setTimeout(() => (this.toast = ''), 2500);
+  }
+
+
   protected readonly toneOptions = [
     { value: 'violet', label: 'Violet' },
     { value: 'cyan', label: 'Cyan' }
@@ -78,7 +88,7 @@ export class CreateReviewComponent implements OnInit, OnDestroy {
       validators: [Validators.required]
     }),
     reviewBody: this.fb.control('', {
-      validators: [Validators.maxLength(2000)]
+      validators: [Validators.maxLength(10000)]
     })
   });
 

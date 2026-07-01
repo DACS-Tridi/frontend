@@ -1,12 +1,8 @@
 <div class="tridify-shell">
+  <div class="not-implemented-toast" *ngIf="toast">{{ toast }}</div>
   <div class="sidebar-backdrop" *ngIf="mobileMenuOpen" (click)="closeMobileMenu()"></div>
 
-  <!-- ═══════════════════════════════════════
-       LEFT SIDEBAR
-  ═══════════════════════════════════════ -->
   <aside class="winamp-sidebar" [class.open]="mobileMenuOpen">
-
-    <!-- Title bar -->
     <div class="winamp-title-bar">
       <div class="win-led-group">
         <span class="win-led win-led--red"></span>
@@ -17,14 +13,12 @@
       <button class="sidebar-close" type="button" aria-label="Cerrar menú" (click)="closeMobileMenu()">✕</button>
     </div>
 
-    <!-- Brand display -->
     <div class="winamp-brand-panel">
       <div class="brand-scanline-overlay"></div>
       <div class="brand-name">TRIDIFY</div>
       <div class="brand-tagline">El visor piola del under porteño. Bandas zarpadas, curadas por la gente.</div>
     </div>
 
-    <!-- Profile card -->
     <div class="winamp-profile-panel" *ngIf="(userProfile$ | async) as userProfile">
       <div class="profile-display">
         <div class="profile-avatar-frame">
@@ -38,73 +32,51 @@
       <a class="winamp-action-btn" routerLink="/tridify/reviews/new">⊕ SUBIR ALTA REVIEW</a>
     </div>
 
-    <!-- Navigation -->
     <nav class="winamp-nav">
       <div class="nav-group">
         <div class="nav-group-label">// MENÚ</div>
         <ul class="nav-list">
-          <li class="winamp-nav-item" routerLink="/tridify" (click)="closeMobileMenu()">
-            <span class="nav-item-led"></span>
-            <span class="nav-item-icon">🏠</span>
-            <span class="nav-item-label">Inicio</span>
+          <li class="winamp-nav-item" routerLink="/tridify" [routerLinkActiveOptions]="{exact:true}" routerLinkActive="active" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span><span class="nav-item-icon">🏠</span><span class="nav-item-label">Inicio</span>
           </li>
-          <li class="winamp-nav-item" routerLink="/tridify/explore" (click)="closeMobileMenu()">
-            <span class="nav-item-led"></span>
-            <span class="nav-item-icon">🧭</span>
-            <span class="nav-item-label">Explorá</span>
+          <li class="winamp-nav-item" routerLink="/tridify/explore" routerLinkActive="active" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span><span class="nav-item-icon">🧭</span><span class="nav-item-label">Explorá</span>
           </li>
-          <li class="winamp-nav-item" routerLink="/tridify/my-profile" (click)="closeMobileMenu()">
-            <span class="nav-item-led"></span>
-            <span class="nav-item-icon">👤</span>
-            <span class="nav-item-label">Mi Perfil</span>
+          <li class="winamp-nav-item" routerLink="/tridify/my-profile" routerLinkActive="active" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span><span class="nav-item-icon">👤</span><span class="nav-item-label">Mi Perfil</span>
           </li>
         </ul>
       </div>
-
       <div class="nav-group">
         <div class="nav-group-label">// BIBLIOTECA</div>
         <ul class="nav-list">
-          <li class="winamp-nav-item active" routerLink="/tridify/my-reviews" (click)="closeMobileMenu()">
-            <span class="nav-item-led on"></span>
-            <span class="nav-item-icon">📝</span>
-            <span class="nav-item-label">Mis Reviews</span>
+          <li class="winamp-nav-item" routerLink="/tridify/my-reviews" routerLinkActive="active" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span><span class="nav-item-icon">📝</span><span class="nav-item-label">Mis Reviews</span>
           </li>
-          <li class="winamp-nav-item" (click)="closeMobileMenu()">
-            <span class="nav-item-led"></span>
-            <span class="nav-item-icon">⭐</span>
-            <span class="nav-item-label">Reviews Favoritas</span>
+          <li class="winamp-nav-item" (click)="notYet('Reviews Favoritas')">
+            <span class="nav-item-led"></span><span class="nav-item-icon">⭐</span><span class="nav-item-label">Reviews Favoritas</span>
           </li>
-          <li class="winamp-nav-item" (click)="closeMobileMenu()">
-            <span class="nav-item-led"></span>
-            <span class="nav-item-icon">🗂️</span>
-            <span class="nav-item-label">Borradores</span>
+          <li class="winamp-nav-item" (click)="notYet('Borradores')">
+            <span class="nav-item-led"></span><span class="nav-item-icon">🗂️</span><span class="nav-item-label">Borradores</span>
           </li>
         </ul>
       </div>
-
       <div class="nav-group">
         <div class="nav-group-label">// COMUNIDAD</div>
         <ul class="nav-list">
-          <li class="winamp-nav-item" (click)="closeMobileMenu()">
-            <span class="nav-item-led"></span>
-            <span class="nav-item-icon">🔥</span>
-            <span class="nav-item-label">Lo Más Piola</span>
+          <li class="winamp-nav-item" (click)="notYet('Lo Más Piola')">
+            <span class="nav-item-led"></span><span class="nav-item-icon">🔥</span><span class="nav-item-label">Lo Más Piola</span>
           </li>
-          <li class="winamp-nav-item" routerLink="/tridify/top-reviews" (click)="closeMobileMenu()">
-            <span class="nav-item-led"></span>
-            <span class="nav-item-icon">🎧</span>
-            <span class="nav-item-label">Top Reviews</span>
+          <li class="winamp-nav-item" routerLink="/tridify/top-reviews" routerLinkActive="active" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span><span class="nav-item-icon">🎧</span><span class="nav-item-label">Top Reviews</span>
           </li>
-          <li class="winamp-nav-item" (click)="closeMobileMenu()">
-            <span class="nav-item-led"></span>
-            <span class="nav-item-icon">🎯</span>
-            <span class="nav-item-label">Desafío del Día</span>
+          <li class="winamp-nav-item" (click)="notYet('Desafío del Día')">
+            <span class="nav-item-led"></span><span class="nav-item-icon">🎯</span><span class="nav-item-label">Desafío del Día</span>
           </li>
         </ul>
       </div>
     </nav>
 
-    <!-- Stats footer -->
     <div class="winamp-footer-panel" *ngIf="(userProfile$ | async) as userProfile">
       <div class="footer-scanline"></div>
       <div class="footer-label-row">// RACHA ACTIVA</div>

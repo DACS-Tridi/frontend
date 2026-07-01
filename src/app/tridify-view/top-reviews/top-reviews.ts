@@ -57,6 +57,16 @@ export class TopReviewsComponent implements OnInit {
   protected isLoading = true;
   protected mobileMenuOpen = false;
 
+  /** mensaje transitorio "no implementado" para botones sin funcionalidad */
+  protected toast = '';
+  private toastTimer?: ReturnType<typeof setTimeout>;
+  protected notYet(label: string): void {
+    this.toast = `🚧 "${label}" todavía no está implementado`;
+    clearTimeout(this.toastTimer);
+    this.toastTimer = setTimeout(() => (this.toast = ''), 2500);
+  }
+
+
   protected readonly sortOptions: { key: SortKey; label: string; icon: string }[] = [
     { key: 'likes',  label: 'MÁS LIKEADAS', icon: '❤' },
     { key: 'rating', label: 'MEJOR RATING',  icon: '⭐' },
