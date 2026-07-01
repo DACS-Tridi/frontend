@@ -18,10 +18,9 @@ export class BaseApiService {
   protected readonly defaultHeaders: HttpHeaders;
 
   constructor(protected http: HttpClient) {
-    // Asegurar que la URL base sea absoluta
-    this.baseUrl = environment.backendForFrontendUrl.startsWith('http') 
-      ? environment.backendForFrontendUrl 
-      : `http://${environment.backendForFrontendUrl}`;
+    // http(s) absoluta o ruta relativa (mismo origen) -> tal cual; si es solo host, prefijar http
+    const url = environment.backendForFrontendUrl;
+    this.baseUrl = /^(https?:|\/)/.test(url) ? url : `http://${url}`;
     
     this.defaultHeaders = new HttpHeaders({
       [HTTP_HEADERS.CONTENT_TYPE]: HTTP_HEADERS.APPLICATION_JSON,
@@ -195,7 +194,10 @@ export class BaseApiService {
       requestId: this.generateRequestId()
     };
 
-    console.error('API Error:', apiError);
+    // 404 = endpoint no implementado en el BFF; se maneja con cartelito, no ensuciar consola
+    if (error.status !== 404) {
+      console.error('API Error:', apiError);
+    }
     return throwError(() => apiError);
   }
 

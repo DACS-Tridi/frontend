@@ -1,4 +1,5 @@
 <div class="tridify-shell">
+  <div class="not-implemented-toast" *ngIf="toast">{{ toast }}</div>
   <div class="sidebar-backdrop" *ngIf="mobileMenuOpen" (click)="closeMobileMenu()"></div>
 
   <!-- ═══════════════════════════════════════
@@ -49,7 +50,7 @@
             class="winamp-nav-item"
             *ngFor="let item of navigationPrimary"
             [class.active]="item.active"
-            (click)="closeMobileMenu()"
+            (click)="notYet(item.label); closeMobileMenu()"
           >
             <span class="nav-item-led" [class.on]="item.active"></span>
             <span class="nav-item-icon">{{ item.icon }}</span>
@@ -64,7 +65,7 @@
           <li
             class="winamp-nav-item"
             *ngFor="let item of navigationLibrary"
-            (click)="closeMobileMenu()"
+            (click)="notYet(item.label); closeMobileMenu()"
           >
             <span class="nav-item-led"></span>
             <span class="nav-item-icon">{{ item.icon }}</span>
@@ -79,7 +80,7 @@
           <li
             class="winamp-nav-item"
             *ngFor="let item of navigationCommunity"
-            (click)="closeMobileMenu()"
+            (click)="notYet(item.label); closeMobileMenu()"
           >
             <span class="nav-item-led"></span>
             <span class="nav-item-icon">{{ item.icon }}</span>
@@ -267,6 +268,7 @@
         <section class="playlist-window">
           <div class="playlist-titlebar">
             <div class="playlist-title-text">// LISTA DE GÉNEROS</div>
+            <span class="ni-badge" *ngIf="(notImplemented$ | async)?.has('genres')">🚧 no implementado</span>
             <button class="winamp-ghost-btn" type="button">VER TODO</button>
           </div>
           <div class="playlist-body">
@@ -296,7 +298,8 @@
         <section class="top-reviewers-section">
           <div class="section-header">
             <h2 class="section-title-display">// TOP CURADORE</h2>
-            <button class="winamp-ghost-btn" type="button">RANKING</button>
+            <span class="ni-badge" *ngIf="(notImplemented$ | async)?.has('reviewers')">🚧 no implementado</span>
+            <button class="winamp-ghost-btn" type="button" (click)="notYet('Ranking de curadores')">RANKING</button>
           </div>
 
           <div class="reviewer-eq-list">
@@ -349,6 +352,7 @@
           <div class="eq-module-titlebar">
             <span class="eq-status-led challenge-led"></span>
             <span class="eq-module-title">{{ dailyChallenge.title | uppercase }}</span>
+            <span class="ni-badge" *ngIf="(notImplemented$ | async)?.has('dailyChallenge')">🚧 no implementado</span>
           </div>
           <div class="challenge-content">
             <p class="challenge-subtitle">{{ dailyChallenge.subtitle }}</p>

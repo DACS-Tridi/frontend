@@ -37,6 +37,8 @@ export class TridifyDiscoveryStore {
   private readonly dailyChallengeSubject = new BehaviorSubject<DailyChallenge | null>(null);
   private readonly upcomingAlbumsSubject = new BehaviorSubject<UpcomingAlbum[]>([]);
   private readonly searchResultsSubject = new BehaviorSubject<SearchResultItem[]>([]);
+  // secciones cuyo endpoint aún no existe en el BFF (404) -> se muestra cartelito "no implementado"
+  private readonly notImplementedSubject = new BehaviorSubject<Set<string>>(new Set());
 
   readonly userProfile$ = this.userProfileSubject.asObservable();
   readonly topReviews$ = this.topReviewsSubject.asObservable();
@@ -45,6 +47,16 @@ export class TridifyDiscoveryStore {
   readonly dailyChallenge$ = this.dailyChallengeSubject.asObservable();
   readonly upcomingAlbums$ = this.upcomingAlbumsSubject.asObservable();
   readonly searchResults$ = this.searchResultsSubject.asObservable();
+  readonly notImplemented$ = this.notImplementedSubject.asObservable();
+
+  /** marca una sección como no implementada si el error fue 404 */
+  private flagIfNotImplemented(section: string, error: unknown): void {
+    if ((error as { errorCode?: string })?.errorCode === 'NOT_FOUND') {
+      const next = new Set(this.notImplementedSubject.value);
+      next.add(section);
+      this.notImplementedSubject.next(next);
+    }
+  }
 
   constructor(
     private readonly userService: TridifyUserService,
@@ -54,13 +66,39 @@ export class TridifyDiscoveryStore {
     private readonly albumService: TridifyAlbumService
   ) {}
 
+  // ponytail: endpoints que el BFF aún no expone. Se saltea la llamada (evita el 404 que el
+  // navegador loguea igual) y se usa fixture + badge. Quitar de acá cuando el BFF los implemente.
+  private readonly PENDING = new Set(['genres', 'reviewers', 'dailyChallenge', 'upcomingAlbums']);
+
   initialize(): void {
     this.loadUserProfile();
     this.loadTopReviews();
-    this.loadReviewerSpotlights();
-    this.loadGenres();
-    this.loadDailyChallenge();
-    this.loadUpcomingAlbums();
+
+    if (this.PENDING.has('reviewers')) {
+      this.stubNotImplemented('reviewers', this.topReviewersSubject, TOP_REVIEWERS_FIXTURE);
+    } else {
+      this.loadReviewerSpotlights();
+    }
+    if (this.PENDING.has('genres')) {
+      this.stubNotImplemented('genres', this.genresSubject, GENRES_FIXTURE);
+    } else {
+      this.loadGenres();
+    }
+    if (this.PENDING.has('dailyChallenge')) {
+      this.stubNotImplemented('dailyChallenge', this.dailyChallengeSubject, DAILY_CHALLENGE_FIXTURE);
+    } else {
+      this.loadDailyChallenge();
+    }
+    if (this.PENDING.has('upcomingAlbums')) {
+      this.stubNotImplemented('upcomingAlbums', this.upcomingAlbumsSubject, UPCOMING_ALBUMS_FIXTURE);
+    } else {
+      this.loadUpcomingAlbums();
+    }
+  }
+
+  private stubNotImplemented<T>(section: string, subject: BehaviorSubject<T>, fixture: T): void {
+    this.flagIfNotImplemented(section, { errorCode: 'NOT_FOUND' });
+    subject.next(fixture);
   }
 
   search(term: string): void {
@@ -92,7 +130,7 @@ export class TridifyDiscoveryStore {
       .pipe(
         take(1),
         catchError(error => {
-          console.warn('Using fixture user profile after API error', error);
+          this.flagIfNotImplemented('userProfile', error);
           return of(USER_PROFILE_FIXTURE);
         })
       )
@@ -105,7 +143,7 @@ export class TridifyDiscoveryStore {
       .pipe(
         take(1),
         catchError(error => {
-          console.warn('Using fixture reviews after API error', error);
+          this.flagIfNotImplemented('topReviews', error);
           return of(TOP_REVIEWS_FIXTURE);
         })
       )
@@ -118,7 +156,7 @@ export class TridifyDiscoveryStore {
       .pipe(
         take(1),
         catchError(error => {
-          console.warn('Using fixture reviewers after API error', error);
+          this.flagIfNotImplemented('reviewers', error);
           return of(TOP_REVIEWERS_FIXTURE);
         })
       )
@@ -142,7 +180,7 @@ export class TridifyDiscoveryStore {
           )
         ),
         catchError(error => {
-          console.warn('Using fixture genres after API error', error);
+          this.flagIfNotImplemented('genres', error);
           return of(GENRES_FIXTURE);
         })
       )
@@ -155,7 +193,7 @@ export class TridifyDiscoveryStore {
       .pipe(
         take(1),
         catchError(error => {
-          console.warn('Using fixture daily challenge after API error', error);
+          this.flagIfNotImplemented('dailyChallenge', error);
           return of(DAILY_CHALLENGE_FIXTURE);
         })
       )
@@ -168,7 +206,7 @@ export class TridifyDiscoveryStore {
       .pipe(
         take(1),
         catchError(error => {
-          console.warn('Using fixture upcoming albums after API error', error);
+          this.flagIfNotImplemented('upcomingAlbums', error);
           return of(UPCOMING_ALBUMS_FIXTURE);
         })
       )

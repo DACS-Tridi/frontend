@@ -56,6 +56,17 @@ export class TridifyViewComponent implements OnInit {
   protected readonly genres$ = this.discoveryStore.genres$;
   protected readonly dailyChallenge$ = this.discoveryStore.dailyChallenge$;
   protected readonly searchResults$ = this.discoveryStore.searchResults$;
+  protected readonly notImplemented$ = this.discoveryStore.notImplemented$;
+
+  /** mensaje transitorio "no implementado" para botones sin funcionalidad */
+  protected toast = '';
+  private toastTimer?: ReturnType<typeof setTimeout>;
+
+  protected notYet(label: string): void {
+    this.toast = `🚧 "${label}" todavía no está implementado`;
+    clearTimeout(this.toastTimer);
+    this.toastTimer = setTimeout(() => (this.toast = ''), 2500);
+  }
 
   protected readonly searchForm = this.fb.nonNullable.group({
     term: ['']
