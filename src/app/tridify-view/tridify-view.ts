@@ -5,6 +5,7 @@ import { Router, RouterModule } from '@angular/router';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
+import { KeycloakService } from '../core/services/keycloak.service';
 import { TridifyDiscoveryStore } from './data-access/tridify-discovery.store';
 import { GenreChip, ReviewHighlight, ReviewerSpotlight, SearchResultItem, getAvatarPath } from './models/discovery.models';
 
@@ -21,6 +22,11 @@ export class TridifyViewComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly keycloak = inject(KeycloakService);
+
+  protected logout(): void {
+    this.keycloak.logout();
+  }
 
   protected mobileMenuOpen = false;
   protected showSearchResults = false;

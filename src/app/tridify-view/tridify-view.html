@@ -37,6 +37,7 @@
         </div>
       </div>
       <a class="winamp-action-btn" routerLink="/tridify/reviews/new">⊕ SUBIR ALTA REVIEW</a>
+      <button class="winamp-action-btn" type="button" (click)="logout()">⏻ CERRAR SESIÓN</button>
     </div>
 
     <!-- Navigation — mechanical button list -->
@@ -124,7 +125,7 @@
             <input
               type="search"
               formControlName="term"
-              placeholder="Buscá altas bandas, discos o curadore..."
+              placeholder="Buscá albumes"
               class="search-visor-input"
               aria-label="Buscar en Tridify"
             />
