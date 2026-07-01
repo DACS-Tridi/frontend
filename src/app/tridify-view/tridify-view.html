@@ -29,9 +29,7 @@
     <div class="winamp-profile-panel" *ngIf="(userProfile$ | async) as userProfile">
       <div class="profile-display">
         <div class="profile-avatar-frame">
-          <div class="profile-avatar" [style.background]="userProfile.avatarGradient">
-            {{ userProfile.avatarInitials }}
-          </div>
+          <img class="profile-avatar-img" [src]="getAvatarSrc(userProfile.avatarId)" [alt]="userProfile.displayName" />
         </div>
         <div class="profile-meta">
           <div class="profile-name-display">{{ userProfile.displayName }}</div>
@@ -50,7 +48,8 @@
             class="winamp-nav-item"
             *ngFor="let item of navigationPrimary"
             [class.active]="item.active"
-            (click)="notYet(item.label); closeMobileMenu()"
+            [routerLink]="item.route"
+            (click)="item.route ? closeMobileMenu() : notYet(item.label)"
           >
             <span class="nav-item-led" [class.on]="item.active"></span>
             <span class="nav-item-icon">{{ item.icon }}</span>
@@ -65,7 +64,8 @@
           <li
             class="winamp-nav-item"
             *ngFor="let item of navigationLibrary"
-            (click)="notYet(item.label); closeMobileMenu()"
+            [routerLink]="item.route"
+            (click)="item.route ? closeMobileMenu() : notYet(item.label)"
           >
             <span class="nav-item-led"></span>
             <span class="nav-item-icon">{{ item.icon }}</span>
@@ -80,7 +80,8 @@
           <li
             class="winamp-nav-item"
             *ngFor="let item of navigationCommunity"
-            (click)="notYet(item.label); closeMobileMenu()"
+            [routerLink]="item.route"
+            (click)="item.route ? closeMobileMenu() : notYet(item.label)"
           >
             <span class="nav-item-led"></span>
             <span class="nav-item-icon">{{ item.icon }}</span>
@@ -186,7 +187,7 @@
           <div class="reviews-list">
             <article
               class="winamp-review-card"
-              *ngFor="let review of (topReviews$ | async); trackBy: reviewTrackBy"
+              *ngFor="let review of (topReviews$ | async | slice:0:2); trackBy: reviewTrackBy"
               [class.tone-violet]="review.tone === 'violet'"
               [class.tone-cyan]="review.tone === 'cyan'"
             >
@@ -218,9 +219,15 @@
                 </div>
               </div>
 
-              <!-- Right: review data -->
+              <!-- Right: review data — 2-column: left=info, right=score+tags+stats -->
               <div class="review-data-panel">
-                <div class="review-meta-row">
+
+                <div class="rating-badge">
+                  <span class="rating-score-display">{{ review.rating | number: '1.1-1' }}</span>
+                </div>
+
+                <!-- Left column: reviewer identity + title + body -->
+                <div class="rdp-left">
                   <div class="reviewer-id">
                     <div class="reviewer-avatar-badge">{{ getUserInitial(review.user) }}</div>
                     <div class="reviewer-info">
@@ -228,37 +235,35 @@
                       <span class="reviewer-timestamp">{{ review.postedAt | date: 'dd/MM/yyyy' }}</span>
                     </div>
                   </div>
-                  <div class="rating-badge">
-                    <span class="rating-score-display">{{ review.rating | number: '1.1-1' }}</span>
+                  <h3 class="review-album-title">
+                    <a [routerLink]="['/tridify/albums', review.albumId]" class="album-link-display">
+                      {{ review.album || 'Álbum' }}
+                    </a>
+                  </h3>
+                  <p class="review-highlight-text">{{ review.highlight }}</p>
+                  <a [routerLink]="['/tridify/albums', review.albumId]" class="review-ver-mas">ver más ▸</a>
+                </div>
+
+                <div class="rdp-right">
+                  <div class="metal-tags">
+                    <span class="metal-tag" *ngFor="let tag of review.tags">{{ tag }}</span>
+                  </div>
+                  <div class="review-stats-row">
+                    <div class="stat-item">
+                      <span class="stat-icon">❤</span>
+                      <span class="stat-value">{{ review.stats.likes }}</span>
+                    </div>
+                    <div class="stat-item">
+                      <span class="stat-icon">💬</span>
+                      <span class="stat-value">{{ review.stats.comments }}</span>
+                    </div>
+                    <div class="stat-item">
+                      <span class="stat-icon">↺</span>
+                      <span class="stat-value">{{ review.stats.shares }}</span>
+                    </div>
                   </div>
                 </div>
 
-                <h3 class="review-album-title">
-                  <a [routerLink]="['/tridify/albums', review.albumId]" class="album-link-display">
-                    {{ review.album || 'Álbum' }}
-                  </a>
-                </h3>
-
-                <p class="review-highlight-text">{{ review.highlight }}</p>
-
-                <div class="metal-tags">
-                  <span class="metal-tag" *ngFor="let tag of review.tags">{{ tag }}</span>
-                </div>
-
-                <div class="review-stats-row">
-                  <div class="stat-item">
-                    <span class="stat-icon">❤</span>
-                    <span class="stat-value">{{ review.stats.likes }}</span>
-                  </div>
-                  <div class="stat-item">
-                    <span class="stat-icon">💬</span>
-                    <span class="stat-value">{{ review.stats.comments }}</span>
-                  </div>
-                  <div class="stat-item">
-                    <span class="stat-icon">↺</span>
-                    <span class="stat-value">{{ review.stats.shares }}</span>
-                  </div>
-                </div>
               </div>
             </article>
           </div>
@@ -316,7 +321,7 @@
               <!-- Main row: avatar + info on left, faders on right -->
               <div class="eq-main-row">
                 <div class="eq-avatar-lens">
-                  <div class="eq-avatar-inner" [style.background-image]="reviewer.avatarColor"></div>
+                  <img class="eq-avatar-inner" [src]="getAvatarSrc(reviewer.avatarId)" [alt]="reviewer.name" />
                 </div>
                 <div class="eq-reviewer-info">
                   <div class="eq-reviewer-name">{{ reviewer.name }}</div>

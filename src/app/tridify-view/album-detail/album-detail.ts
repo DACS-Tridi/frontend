@@ -1,11 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
-import { Observable, combineLatest, of } from 'rxjs';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { BehaviorSubject, Observable, combineLatest, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
 import { TridifyAlbumService } from '../data-access/services/tridify-album.service';
-import { AlbumDetail, AlbumReviewsResponse, ReviewHighlight } from '../models/discovery.models';
+import { TridifyUserService } from '../data-access/services/tridify-user.service';
+import { USER_PROFILE_FIXTURE } from '../data-access/fixtures';
+import {
+  AlbumDetail,
+  AlbumReviewsResponse,
+  ReviewHighlight,
+  TridifyUserProfile,
+  getAvatarPath
+} from '../models/discovery.models';
 
 interface AlbumPageData {
   album: AlbumDetail | null;
@@ -22,12 +30,19 @@ interface AlbumPageData {
 })
 export class AlbumDetailComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly albumService = inject(TridifyAlbumService);
+  private readonly userService = inject(TridifyUserService);
+
+  private readonly userProfileSubject = new BehaviorSubject<TridifyUserProfile | null>(null);
+  protected readonly userProfile$ = this.userProfileSubject.asObservable();
 
   protected pageData$!: Observable<AlbumPageData>;
-  protected loading = true;
+  protected mobileMenuOpen = false;
 
   ngOnInit(): void {
+    this.loadUserProfile();
+
     this.pageData$ = this.route.paramMap.pipe(
       switchMap(params => {
         const id = params.get('id') ?? '';
@@ -49,17 +64,52 @@ export class AlbumDetailComponent implements OnInit {
     return this.route.snapshot.paramMap.get('id') ?? '';
   }
 
-  protected getRatingStars(rating: number): Array<'full' | 'half' | 'empty'> {
-    const stars: Array<'full' | 'half' | 'empty'> = [];
-    const fullStars = Math.floor(rating);
-    const hasHalf = rating - fullStars >= 0.5;
-    for (let i = 0; i < fullStars; i++) stars.push('full');
-    if (hasHalf && stars.length < 5) stars.push('half');
-    while (stars.length < 5) stars.push('empty');
-    return stars;
+  protected goToNewReview(): void {
+    this.router.navigate(['/tridify/reviews/new'], { queryParams: { albumId: this.getAlbumId() } });
+  }
+
+  protected backToDiscover(): void {
+    this.router.navigate(['/tridify']);
+  }
+
+  protected toggleMobileMenu(): void {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
+  }
+
+  protected closeMobileMenu(): void {
+    this.mobileMenuOpen = false;
+  }
+
+  protected getAvatarSrc(avatarId?: string): string {
+    return getAvatarPath(avatarId as any);
+  }
+
+  protected getCoverStyle(imageUrl: string | null | undefined): Record<string, string> {
+    if (!imageUrl) return {};
+    return { 'background-image': `url(${imageUrl})`, 'background-size': 'cover', 'background-position': 'center' };
+  }
+
+  protected getVuBars(rating: number): number[] {
+    const base = rating / 5;
+    const multipliers = [0.62, 1.0, 0.88, 0.58, 0.36];
+    return multipliers.map(m => Math.max(6, Math.round(base * m * 100)));
+  }
+
+  protected getUserInitial(user: string | null | undefined): string {
+    return user ? user.charAt(0).toUpperCase() : '?';
   }
 
   protected reviewTrackBy(_: number, review: ReviewHighlight): number {
     return review.id;
+  }
+
+  private loadUserProfile(): void {
+    this.userService
+      .getUserProfile()
+      .pipe(catchError(error => {
+        console.warn('Using fixture user profile after API error', error);
+        return of(USER_PROFILE_FIXTURE);
+      }))
+      .subscribe(profile => this.userProfileSubject.next(profile));
   }
 }

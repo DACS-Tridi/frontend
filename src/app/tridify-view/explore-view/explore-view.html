@@ -1,0 +1,306 @@
+<div class="tridify-shell">
+  <div class="sidebar-backdrop" *ngIf="mobileMenuOpen" (click)="closeMobileMenu()"></div>
+
+  <!-- ═══════════════════════════════════════
+       LEFT SIDEBAR
+  ═══════════════════════════════════════ -->
+  <aside class="winamp-sidebar" [class.open]="mobileMenuOpen">
+
+    <div class="winamp-title-bar">
+      <div class="win-led-group">
+        <span class="win-led win-led--red"></span>
+        <span class="win-led win-led--yellow"></span>
+        <span class="win-led win-led--green"></span>
+      </div>
+      <span class="winamp-bar-title">TRIDIFY v2.1.0</span>
+      <button class="sidebar-close" type="button" aria-label="Cerrar menú" (click)="closeMobileMenu()">✕</button>
+    </div>
+
+    <div class="winamp-brand-panel">
+      <div class="brand-scanline-overlay"></div>
+      <div class="brand-name">TRIDIFY</div>
+      <div class="brand-tagline">El visor piola del under porteño. Bandas zarpadas, curadas por la gente.</div>
+    </div>
+
+    <div class="winamp-profile-panel" *ngIf="(userProfile$ | async) as userProfile">
+      <div class="profile-display">
+        <div class="profile-avatar-frame">
+          <img class="profile-avatar-img" [src]="getAvatarSrc(userProfile.avatarId)" [alt]="userProfile.displayName" />
+        </div>
+        <div class="profile-meta">
+          <div class="profile-name-display">{{ userProfile.displayName }}</div>
+          <div class="profile-role-display">{{ userProfile.roleTagline }}</div>
+        </div>
+      </div>
+      <a class="winamp-action-btn" routerLink="/tridify/reviews/new">⊕ SUBIR ALTA REVIEW</a>
+    </div>
+
+    <nav class="winamp-nav">
+      <div class="nav-group">
+        <div class="nav-group-label">// MENÚ</div>
+        <ul class="nav-list">
+          <li class="winamp-nav-item" routerLink="/tridify" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span>
+            <span class="nav-item-icon">🏠</span>
+            <span class="nav-item-label">Inicio</span>
+          </li>
+          <li class="winamp-nav-item active" routerLink="/tridify/explore" (click)="closeMobileMenu()">
+            <span class="nav-item-led on"></span>
+            <span class="nav-item-icon">🧭</span>
+            <span class="nav-item-label">Explorá</span>
+          </li>
+          <li class="winamp-nav-item" routerLink="/tridify/my-profile" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span>
+            <span class="nav-item-icon">👤</span>
+            <span class="nav-item-label">Mi Perfil</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-label">// BIBLIOTECA</div>
+        <ul class="nav-list">
+          <li class="winamp-nav-item" routerLink="/tridify/my-reviews" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span>
+            <span class="nav-item-icon">📝</span>
+            <span class="nav-item-label">Mis Reviews</span>
+          </li>
+          <li class="winamp-nav-item" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span>
+            <span class="nav-item-icon">⭐</span>
+            <span class="nav-item-label">Reviews Favoritas</span>
+          </li>
+          <li class="winamp-nav-item" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span>
+            <span class="nav-item-icon">🗂️</span>
+            <span class="nav-item-label">Borradores</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-label">// COMUNIDAD</div>
+        <ul class="nav-list">
+          <li class="winamp-nav-item" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span>
+            <span class="nav-item-icon">🔥</span>
+            <span class="nav-item-label">Lo Más Piola</span>
+          </li>
+          <li class="winamp-nav-item" routerLink="/tridify/top-reviews" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span>
+            <span class="nav-item-icon">🎧</span>
+            <span class="nav-item-label">Top Reviews</span>
+          </li>
+          <li class="winamp-nav-item" (click)="closeMobileMenu()">
+            <span class="nav-item-led"></span>
+            <span class="nav-item-icon">🎯</span>
+            <span class="nav-item-label">Desafío del Día</span>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="winamp-footer-panel" *ngIf="(userProfile$ | async) as userProfile">
+      <div class="footer-scanline"></div>
+      <div class="footer-label-row">// RACHA ACTIVA</div>
+      <div class="footer-streak-value">{{ userProfile.streakDays }} DÍAS</div>
+      <div class="footer-streak-text">Sin aflojar. ¡Seguí mandando reviews, chabón!</div>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════════════════════
+       MAIN CONTENT
+  ═══════════════════════════════════════ -->
+  <section class="content">
+
+    <button type="button" class="mobile-menu-button" (click)="toggleMobileMenu()">
+      ☰ MENÚ
+    </button>
+
+    <!-- ─── VISOR HEADER ─── -->
+    <header class="visor-header">
+      <div class="visor-scanline"></div>
+      <div class="visor-title-group">
+        <h1 class="visor-main-title">EXPLORÁ</h1>
+        <p class="visor-subtitle">Buscá discos y canciones del under. Seleccioná lo que te copa y reseñalo.</p>
+      </div>
+    </header>
+
+    <!-- ─── SEARCH BAR ─── -->
+    <div class="search-module">
+      <div class="search-module-titlebar">
+        <span class="search-module-led on"></span>
+        <span class="search-module-title">// BUSCADOR</span>
+      </div>
+      <div class="search-module-body">
+        <div class="winamp-search-panel">
+          <div class="search-visor-screen">
+            <span class="search-visor-icon">▷</span>
+            <input
+              type="search"
+              [formControl]="searchControl"
+              placeholder="Buscá la banda, el disco o la canción..."
+              class="search-visor-input"
+              autocomplete="off"
+              autocapitalize="off"
+              spellcheck="false"
+              aria-label="Buscar discos y canciones"
+            />
+          </div>
+          <button
+            *ngIf="hasQuery"
+            type="button"
+            class="winamp-clear-btn"
+            (click)="clearSearch()"
+            aria-label="Limpiar búsqueda"
+          >✕</button>
+        </div>
+        <p class="search-helper">Escribí al menos 2 caracteres para arrancar la búsqueda.</p>
+      </div>
+    </div>
+
+    <!-- ─── FILTER + RESULTS ─── -->
+    <div class="results-window" *ngIf="hasSearched || isSearching">
+
+      <!-- Window titlebar with filter tabs -->
+      <div class="results-titlebar">
+        <div class="results-title-left">
+          <span class="results-led on"></span>
+          <span class="results-title-text">// RESULTADOS</span>
+        </div>
+        <div class="filter-btn-group">
+          <button
+            class="filter-btn"
+            *ngFor="let opt of filterOptions"
+            [class.active]="activeFilter === opt.id"
+            (click)="setFilter(opt.id)"
+            type="button"
+          >
+            <span class="filter-led" [class.on]="activeFilter === opt.id"></span>
+            {{ opt.icon }} {{ opt.label }}
+            <span class="filter-count" *ngIf="opt.id === 'all'    && hasSearched">{{ allResults.length }}</span>
+            <span class="filter-count" *ngIf="opt.id === 'album'  && hasSearched">{{ albumCount }}</span>
+            <span class="filter-count" *ngIf="opt.id === 'track'  && hasSearched">{{ trackCount }}</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Loading -->
+      <div class="loading-visor" *ngIf="isSearching">
+        <div class="loading-scanline"></div>
+        <span class="loading-text">▷ BUSCANDO EN EL UNDER...</span>
+      </div>
+
+      <!-- No results -->
+      <div class="empty-state" *ngIf="hasSearched && !isSearching && filteredResults.length === 0">
+        <div class="empty-scanline"></div>
+        <div class="empty-icon">◻</div>
+        <p class="empty-title">// SIN RESULTADOS</p>
+        <p class="empty-text">Che, no se encontró nada. Probá con otro nombre o cambiá el filtro.</p>
+      </div>
+
+      <!-- Playlist body -->
+      <div class="results-playlist" *ngIf="!isSearching && filteredResults.length > 0">
+        <div
+          class="result-row"
+          *ngFor="let item of filteredResults; let i = index; trackBy: trackBy"
+          [class.selected]="isSelected(item)"
+          [class.result-row--album]="item.type === 'album'"
+          [class.result-row--track]="item.type === 'track'"
+          (click)="toggleSelect(item)"
+          role="button"
+          [attr.aria-pressed]="isSelected(item)"
+          [attr.aria-label]="item.title"
+        >
+          <!-- Index -->
+          <span class="row-num">{{ getTrackIndex(i) }}</span>
+
+          <!-- Type LED -->
+          <span class="row-type-led"
+            [class.led--album]="item.type === 'album'"
+            [class.led--track]="item.type === 'track'"
+          ></span>
+
+          <!-- Cover / icon -->
+          <div class="row-cover-wrap">
+            <img
+              *ngIf="item.metadata?.['imageUrl']"
+              [src]="item.metadata?.['imageUrl']"
+              [alt]="item.title"
+              class="row-cover"
+            />
+            <div class="row-cover row-cover--ph" *ngIf="!item.metadata?.['imageUrl']">
+              {{ item.type === 'track' ? '♪' : '💿' }}
+            </div>
+            <!-- Selected checkmark overlay -->
+            <div class="row-cover-selected" *ngIf="isSelected(item)">✓</div>
+          </div>
+
+          <!-- Info -->
+          <div class="row-info">
+            <span class="row-type-badge" [class.badge--album]="item.type === 'album'" [class.badge--track]="item.type === 'track'">
+              {{ getTypeLabel(item.type) }}
+            </span>
+            <span class="row-title">{{ item.title }}</span>
+            <span class="row-desc">{{ item.description }}</span>
+          </div>
+
+          <!-- Duration (tracks only) -->
+          <span class="row-duration" *ngIf="item.metadata?.['duration']">
+            {{ item.metadata?.['duration'] }}
+          </span>
+
+          <!-- Select status -->
+          <span class="row-select-hint" [class.hint--active]="isSelected(item)">
+            {{ isSelected(item) ? '■ SEL' : 'TAP' }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── EMPTY SEARCH STATE ─── -->
+    <div class="idle-state" *ngIf="!hasSearched && !isSearching && !hasQuery">
+      <div class="idle-scanline"></div>
+      <div class="idle-icon">🎵</div>
+      <p class="idle-title">// ESPERANDO INPUT</p>
+      <p class="idle-text">Escribí el nombre de un disco o canción para arrancar la búsqueda, chabón.</p>
+      <p class="idle-hint">
+        <span class="hint-led"></span>
+        TIP: Probá con "Microclimas", "Radiohead" o "Cumbia"
+      </p>
+    </div>
+
+    <!-- ─── SELECTION PANEL ─── -->
+    <div class="selection-module" *ngIf="selectedItem">
+      <div class="sel-scanline"></div>
+      <div class="sel-titlebar">
+        <span class="sel-led on"></span>
+        <span class="sel-label">// ELEGISTE ESTO</span>
+      </div>
+      <div class="sel-body">
+        <div class="sel-cover-wrap">
+          <img
+            *ngIf="selectedItem.metadata?.['imageUrl']"
+            [src]="selectedItem.metadata?.['imageUrl']"
+            [alt]="selectedItem.title"
+            class="sel-cover"
+          />
+          <div class="sel-cover sel-cover--ph" *ngIf="!selectedItem.metadata?.['imageUrl']">
+            {{ selectedItem.type === 'track' ? '♪' : '💿' }}
+          </div>
+        </div>
+        <div class="sel-info">
+          <span class="sel-type">{{ getTypeLabel(selectedItem.type) }}</span>
+          <span class="sel-title">{{ selectedItem.title }}</span>
+          <span class="sel-desc">{{ selectedItem.description }}</span>
+        </div>
+        <div class="sel-actions">
+          <button class="winamp-primary-btn" type="button" (click)="goToReview()">▶ RESEÑAR</button>
+          <button class="winamp-ghost-btn" type="button" *ngIf="selectedItem.type === 'album'" (click)="goToAlbum()">◈ VER DISCO</button>
+          <button class="winamp-ghost-btn" type="button" (click)="toggleSelect(selectedItem)">✕ QUITAR</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+</div>

@@ -4,6 +4,7 @@ import { AuthInterceptor } from '../interceptors/auth.interceptor';
 
 /**
  * Configuración de interceptores HTTP
+ * Incluye interceptores para manejo de errores y autenticación.
  */
 export const INTERCEPTOR_CONFIG = [
   {

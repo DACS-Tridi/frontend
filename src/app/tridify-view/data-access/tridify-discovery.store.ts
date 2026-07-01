@@ -14,6 +14,7 @@ import {
 import {
   DAILY_CHALLENGE_FIXTURE,
   GENRES_FIXTURE,
+  MY_REVIEWS_FIXTURE,
   TOP_REVIEWS_FIXTURE,
   TOP_REVIEWERS_FIXTURE,
   TRIDIFY_DISCOVERY_SEARCH_FIXTURE,
@@ -29,6 +30,7 @@ import { TridifyUserService } from './services/tridify-user.service';
 @Injectable({
   providedIn: 'root'
 })
+
 export class TridifyDiscoveryStore {
   private readonly userProfileSubject = new BehaviorSubject<TridifyUserProfile | null>(null);
   private readonly topReviewsSubject = new BehaviorSubject<ReviewHighlight[]>([]);
@@ -39,6 +41,7 @@ export class TridifyDiscoveryStore {
   private readonly searchResultsSubject = new BehaviorSubject<SearchResultItem[]>([]);
   // secciones cuyo endpoint aún no existe en el BFF (404) -> se muestra cartelito "no implementado"
   private readonly notImplementedSubject = new BehaviorSubject<Set<string>>(new Set());
+  private readonly myReviewsSubject = new BehaviorSubject<ReviewHighlight[]>([]);
 
   readonly userProfile$ = this.userProfileSubject.asObservable();
   readonly topReviews$ = this.topReviewsSubject.asObservable();
@@ -48,6 +51,7 @@ export class TridifyDiscoveryStore {
   readonly upcomingAlbums$ = this.upcomingAlbumsSubject.asObservable();
   readonly searchResults$ = this.searchResultsSubject.asObservable();
   readonly notImplemented$ = this.notImplementedSubject.asObservable();
+  readonly myReviews$ = this.myReviewsSubject.asObservable();
 
   /** marca una sección como no implementada si el error fue 404 */
   private flagIfNotImplemented(section: string, error: unknown): void {

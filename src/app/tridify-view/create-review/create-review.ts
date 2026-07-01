@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-import { Observable, Subject, of } from 'rxjs';
+import { Router, RouterModule } from '@angular/router';
+import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
 import {
   catchError,
   debounceTime,
@@ -17,7 +17,9 @@ import {
 
 import { TridifyAlbumService } from '../data-access/services/tridify-album.service';
 import { TridifyReviewService } from '../data-access/services/tridify-review.service';
-import { ReviewHighlight, SearchResultItem } from '../models/discovery.models';
+import { TridifyUserService } from '../data-access/services/tridify-user.service';
+import { USER_PROFILE_FIXTURE } from '../data-access/fixtures';
+import { ReviewHighlight, SearchResultItem, TridifyUserProfile, getAvatarPath } from '../models/discovery.models';
 import { ReviewCreatePayload, ReviewCreateRequest } from '../models/review-create.models';
 
 type ReviewCreateControlName = 'albumId' | 'highlight' | 'rating' | 'tags' | 'tone' | 'reviewBody';
@@ -42,7 +44,14 @@ export class CreateReviewComponent implements OnInit, OnDestroy {
   private readonly fb = inject(FormBuilder);
   private readonly albumService = inject(TridifyAlbumService);
   private readonly reviewService = inject(TridifyReviewService);
+  private readonly userService = inject(TridifyUserService);
+  private readonly router = inject(Router);
   private readonly destroy$ = new Subject<void>();
+
+  private readonly userProfileSubject = new BehaviorSubject<TridifyUserProfile | null>(null);
+  protected readonly userProfile$ = this.userProfileSubject.asObservable();
+
+  protected mobileMenuOpen = false;
 
   protected readonly toneOptions = [
     { value: 'violet', label: 'Violet' },
@@ -87,11 +96,28 @@ export class CreateReviewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.listenToAlbumSearch();
+    this.loadUserProfile();
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  protected backToDiscover(): void {
+    this.router.navigate(['/tridify']);
+  }
+
+  protected toggleMobileMenu(): void {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
+  }
+
+  protected closeMobileMenu(): void {
+    this.mobileMenuOpen = false;
+  }
+
+  protected getAvatarSrc(avatarId?: string): string {
+    return getAvatarPath(avatarId as any);
   }
 
   protected get tagsPreview(): string[] {
@@ -238,6 +264,18 @@ export class CreateReviewComponent implements OnInit, OnDestroy {
         this.albumResults = results;
         this.albumSearchLoading = false;
       });
+  }
+
+  private loadUserProfile(): void {
+    this.userService
+      .getUserProfile()
+      .pipe(
+        catchError(error => {
+          console.warn('Using fixture user profile after API error', error);
+          return of(USER_PROFILE_FIXTURE);
+        })
+      )
+      .subscribe(profile => this.userProfileSubject.next(profile));
   }
 
   private performAlbumSearch(term: string): Observable<SearchResultItem[]> {

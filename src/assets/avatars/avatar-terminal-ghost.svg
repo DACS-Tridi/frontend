@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" shape-rendering="crispEdges">
+  <defs>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="64" height="64" fill="#0a0a0a"/>
+  <!-- Ghost body -->
+  <rect x="18" y="8" width="28" height="4" fill="#00ff41" filter="url(#glow)"/>
+  <rect x="14" y="12" width="4" height="36" fill="#00ff41"/>
+  <rect x="46" y="12" width="4" height="36" fill="#00ff41"/>
+  <rect x="18" y="8" width="4" height="4" fill="#00ff41"/>
+  <rect x="42" y="8" width="4" height="4" fill="#00ff41"/>
+  <!-- Ghost bottom - wavy -->
+  <rect x="14" y="48" width="8" height="4" fill="#00ff41"/>
+  <rect x="26" y="48" width="4" height="8" fill="#00ff41"/>
+  <rect x="34" y="48" width="4" height="4" fill="#00ff41"/>
+  <rect x="42" y="48" width="8" height="8" fill="#00ff41"/>
+  <rect x="18" y="52" width="8" height="4" fill="#00ff41"/>
+  <rect x="34" y="52" width="8" height="4" fill="#00ff41"/>
+  <!-- Eyes - terminal cursor style -->
+  <rect x="20" y="22" width="8" height="8" fill="#00ffff" filter="url(#glow)"/>
+  <rect x="36" y="22" width="8" height="8" fill="#00ffff" filter="url(#glow)"/>
+  <!-- Cursor blink rectangles -->
+  <rect x="22" y="24" width="4" height="4" fill="#0a0a0a"/>
+  <rect x="38" y="24" width="4" height="4" fill="#0a0a0a"/>
+  <!-- > prompt mouth -->
+  <rect x="24" y="36" width="4" height="2" fill="#00ff41"/>
+  <rect x="28" y="38" width="4" height="2" fill="#00ff41"/>
+  <rect x="32" y="36" width="8" height="2" fill="#00ff41" opacity="0.6"/>
+  <!-- Internal glow fill -->
+  <rect x="18" y="16" width="28" height="2" fill="#00ff41" opacity="0.08"/>
+  <rect x="18" y="32" width="28" height="2" fill="#00ff41" opacity="0.08"/>
+  <rect x="18" y="42" width="28" height="2" fill="#00ff41" opacity="0.08"/>
+  <!-- Floating data particles -->
+  <rect x="8" y="16" width="2" height="2" fill="#00ff41" opacity="0.3"/>
+  <rect x="54" y="24" width="2" height="2" fill="#00ff41" opacity="0.25"/>
+  <rect x="6" y="36" width="2" height="2" fill="#00ffff" opacity="0.2"/>
+  <rect x="56" y="40" width="2" height="2" fill="#ff00ff" opacity="0.2"/>
+</svg>

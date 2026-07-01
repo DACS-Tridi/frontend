@@ -8,6 +8,7 @@ import { routes } from './app.routes';
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () => {
+    // Inicializa Keycloak con las opciones de configuración
     return keycloak.init(keycloakInitOptions).catch((error) => {
       console.error('Error en Keycloak:', error);
       return Promise.resolve();

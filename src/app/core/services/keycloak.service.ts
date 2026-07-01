@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 /**
  * Servicio personalizado para manejar Keycloak
+ * inicia Keycloak y proporciona métodos para obtener información del usuario y roles
  */
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,9 @@ export class KeycloakService {
   private async initializeUserProfile(): Promise<void> {
     if (this.isLoggedIn()) {
       try {
+        // Carga el perfil del usuario desde Keycloak
         const profile = await this.keycloak.loadUserProfile();
+        // Actualiza el BehaviorSubject con el perfil del usuario
         this.userProfileSubject.next(profile);
       } catch (error) {
         console.error('Error cargando perfil de usuario:', error);
